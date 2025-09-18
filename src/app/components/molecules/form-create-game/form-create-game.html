@@ -1,1 +1,14 @@
-<p>form-create-game works!</p>
+<form class="form-create-game" (ngSubmit)="onSubmit()" >
+    <app-input-name
+    [error]="error"
+    [placeholder]="'Nombre de la Partida'"
+    (valueChange)="onNameChange($event)"
+    >
+    </app-input-name>
+    <app-button-primary
+    [disabled]="!!error"
+    [text]="'Crear Partida'"
+    (click)="onSubmit()"
+    >
+    </app-button-primary>
+</form>

@@ -1,0 +1,7 @@
+.form-create-game {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 400px;
+}
