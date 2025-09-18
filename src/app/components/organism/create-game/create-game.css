@@ -1,0 +1,30 @@
+.create-game-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
+}
+
+.create-game-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+h1 {
+  color: white;
+  font-size: 24px;
+  margin: 0;
+  font-weight: 500;
+}

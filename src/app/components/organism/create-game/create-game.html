@@ -1,1 +1,12 @@
-<p>create-game works!</p>
+<div class="create-game-container" >
+    <div class="create-game-content" >
+        <img src="" alt="Pragma Logo" class="logo">
+        <h1>Crear partida</h1>
+
+        <app-form-create-game
+        (createGame)="onCreateGame($event)"
+        ></app-form-create-game>
+
+    </div>
+
+</div>

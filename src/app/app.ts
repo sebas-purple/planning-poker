@@ -7,7 +7,7 @@ import { FormCreateGame } from "./components/molecules/form-create-game/form-cre
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CreateGame, InputName, ButtonPrimary, FormCreateGame],
+  imports: [RouterOutlet, CreateGame],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
