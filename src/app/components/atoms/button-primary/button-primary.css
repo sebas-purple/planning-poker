@@ -1,0 +1,23 @@
+.button-primary {
+  padding: 8px 24px;
+  border-radius: 4px;
+  background-color: #6200ee;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.button-primary:hover {
+  background-color: #7722ff;
+}
+
+.button-primary.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button-primary.disabled:hover {
+  background-color: #6200ee;
+}

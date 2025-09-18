@@ -1,0 +1,8 @@
+<button
+class="button-primary"
+[class.disabled]="disabled"
+(click)="onClick()"
+[attr.disabled]="disabled ? '': null"
+>
+    {{text}}
+</button>
