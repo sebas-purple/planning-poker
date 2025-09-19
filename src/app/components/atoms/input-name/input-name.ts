@@ -9,7 +9,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './input-name.css'
 })
 export class InputName {
-  @Input() placeholder = "Nombre de la partida";
   @Input() error = "";
   @Output() valueChange = new EventEmitter<string>();
 

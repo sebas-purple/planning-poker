@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
 }
 
 .create-game-content {
