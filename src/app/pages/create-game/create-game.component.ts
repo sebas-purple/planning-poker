@@ -24,14 +24,32 @@ export class CreateGameComponent {
   altImage = "isotipo";
   sizeImage: ImageSize = "small";
 
+  messageError = "";
+
   createGameForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()])
   })
 
   handleSubmit() {
+    
     if (this.createGameForm.valid) {
-      alert("Partida creada: " + this.createGameForm.value.name)
-      this.createGameForm.reset()
+      alert("Partida creada: " + this.createGameForm.value.name?.trim())
+      this.createGameForm.reset();
+      this.messageError = "";
+    } else {
+      const errors = this.createGameForm.controls.name.errors;
+      if (errors) {
+        // Para el caso especial de specialChars y required que tiene el mensaje directamente
+        if (errors['specialChars'] || errors['required']) {
+          this.messageError = errors['message'];
+          return;
+        } else {
+          const errorKey = Object.keys(errors)[0];
+          this.messageError = errors[errorKey].message;
+          return;
+        }
+      }
+      
     }
   }
 }
