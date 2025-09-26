@@ -1,0 +1,12 @@
+@import '../../../shared/custom-styles/variables';
+
+.input {
+    padding: 0.6rem 1.5rem;
+    border-radius: $border-radius-button-rounded;
+    background-color: $color-primary;
+    color: $color-white;
+    border: 1px solid rgb(187, 101, 255);
+    outline: none;
+    font-size: $font-size-base;
+    font-family: $font-family;
+}

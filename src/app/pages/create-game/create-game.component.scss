@@ -1,0 +1,31 @@
+// header arriba de todo con el logo y el titulo al lado del logo, que quede fixed
+
+:host {
+  height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  top: 2rem;
+  left: 6rem;
+}
+
+// NO quiero que aparezca el scroll
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+// elementos del formulario al centro de la pantalla de arriba a abajo
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

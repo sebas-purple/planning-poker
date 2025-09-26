@@ -1,0 +1,38 @@
+@import '../../../shared/custom-styles/variables';
+
+.button {
+  // Base styles
+  padding: $button-padding-base;
+  border: none;
+  border-radius: $border-radius-button-rounded;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: $transition-base;
+  background-color: $color-white;
+  color: $color-primary;
+  font-family: $font-family;
+  margin: $margin-large;
+
+  // Hover state
+  &:hover {
+    background-color: darken($color-white, 10%);
+  }
+
+  // Disabled state modifier
+  &--disabled,
+  &:disabled {
+    background-color: $color-disabled;
+    cursor: not-allowed;
+    opacity: $opacity-disabled;
+
+    &:hover {
+      background-color: $color-disabled;
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
