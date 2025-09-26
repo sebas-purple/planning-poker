@@ -5,7 +5,7 @@ import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { InputComponent } from "src/app/atomic-design/atoms/input/input.component";
 import { LabelComponent } from "src/app/atomic-design/atoms/label/label.component";
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
-import { ImageComponent } from "src/app/atomic-design/atoms/image/image.component";
+import { ImageComponent, ImageSize } from "src/app/atomic-design/atoms/image/image.component";
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 
 @Component({
@@ -21,9 +21,8 @@ export class CreateGameComponent {
   textButton = "Crear partida";
   textHeader = "Crear partida";
   srcImage = "assets/logo/isotipo_blanco.svg";
-  altImage = "logo";
-  widthImage = "32";
-  
+  altImage = "isotipo";
+  sizeImage: ImageSize = "small";
 
   createGameForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()])

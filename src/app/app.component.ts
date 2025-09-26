@@ -6,11 +6,12 @@ import { LabelComponent } from "./atomic-design/atoms/label/label.component";
 import { ImageComponent } from "./atomic-design/atoms/image/image.component";
 import { TypographyComponent } from "./atomic-design/atoms/typography/typography.component";
 import { CreateGameComponent } from "./pages/create-game/create-game.component";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, InputComponent, LabelComponent, ImageComponent, TypographyComponent, CreateGameComponent],
+  imports: [CommonModule, RouterOutlet, ButtonComponent, InputComponent, LabelComponent, ImageComponent, TypographyComponent, CreateGameComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

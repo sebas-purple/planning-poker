@@ -1,0 +1,20 @@
+// quieor que los elementos esten ocuapdo la misma posicion en X y Y, da iugal si esta uno encima de otro
+
+.splash-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    animation: fadeOut 0.5s ease-in-out 2.5s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
