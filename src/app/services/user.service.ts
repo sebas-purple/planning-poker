@@ -14,6 +14,7 @@ export class UserService {
   createUser(name: string, viewMode: ViewMode): User {
     const newUser: User = {
       name: name.trim(),
+      // TODO: cambiar a UserRole.participante cuando se agregue la funcionalidad de participantes
       rol: UserRole.propietario,
       viewMode: viewMode
     };
