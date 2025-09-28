@@ -1,6 +1,7 @@
 // Colors
 $color-primary: #31016D;
 $color-secondary: #1F1235;
+$color-tertiary: #1f0d3f;
 $color-disabled: grey;
 $color-white: #fff;
 
@@ -10,7 +11,7 @@ $border-radius-base: 0.5rem;
 $border-radius-card: 1.25rem;
 $margin-base: 0.5rem;
 $margin-small: 0.25rem;
-$margin-large: 1rem;
+$margin-large: 1rem; // 16px
 
 // Typography
 $font-size-small: 0.8rem; // 12px
@@ -31,4 +32,4 @@ $opacity-disabled: 0.4;
 // Border radius boton redondeado
 $border-radius-button-rounded: 3.125rem;
 
-$border-color-primary: rgb(187, 101, 255);
+$border-color-primary: #bb65ff;

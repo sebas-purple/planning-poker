@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageComponent, ImageSize } from "src/app/atomic-design/atoms/image/image.component";
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ export class SplashScreenComponent {
   altImagen2 = "logo";
   sizeImagen2: ImageSize = "large";
 
-  constructor(private readonly router: Router) {}
+  private readonly router: Router = inject(Router);
 
   ngOnInit(): void {
     setTimeout(() => {
