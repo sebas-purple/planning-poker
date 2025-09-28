@@ -3,25 +3,22 @@ import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'a-input',
+  selector: 'a-checkbox',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss'],
+  templateUrl: './checkbox.component.html',
+  styleUrls: ['./checkbox.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputComponent),
+      useExisting: forwardRef(() => CheckboxComponent),
       multi: true
     }
   ]
 })
-export class InputComponent implements ControlValueAccessor {
-  @Input() type: string = "text";
-  @Input({required: true}) formControl: FormControl = new FormControl("");
-
-  onChange: (value: string) => void = () => {};
-  onTouched: () => void = () => {};
+export class CheckboxComponent implements ControlValueAccessor {
+  @Input({required: true}) value!: string;
+  @Input({required: true}) formControl!: FormControl;
 
   writeValue(value: string): void {
     // 

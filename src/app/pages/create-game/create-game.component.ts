@@ -7,11 +7,12 @@ import { LabelComponent } from "src/app/atomic-design/atoms/label/label.componen
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { ImageComponent, ImageSize } from "src/app/atomic-design/atoms/image/image.component";
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
+import { InputLabelComponent } from "src/app/atomic-design/molecules/input-label/input-label.component";
 
 @Component({
   selector: 'app-create-game',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, LabelComponent, ButtonComponent, ImageComponent, TypographyComponent],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, LabelComponent, ButtonComponent, ImageComponent, TypographyComponent, InputLabelComponent],
   templateUrl: './create-game.component.html',
   styleUrls: ['./create-game.component.scss']
 })
@@ -31,7 +32,6 @@ export class CreateGameComponent {
   })
 
   handleSubmit() {
-    
     if (this.createGameForm.valid) {
       alert("Partida creada: " + this.createGameForm.value.name?.trim())
       this.createGameForm.reset();

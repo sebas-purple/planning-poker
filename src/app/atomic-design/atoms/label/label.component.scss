@@ -2,7 +2,14 @@
 
 .label {
     font-size: $font-size-base;
-    font-weight: $font-weight-medium;
     color: $color-white;
     font-family: $font-family;
+
+    &--default {
+        font-weight: $font-weight-medium;
+    }
+
+    &--checkbox {
+        font-size: $font-size-small;
+    }
 }

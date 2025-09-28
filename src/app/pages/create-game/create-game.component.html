@@ -5,8 +5,10 @@
 
 <div class="content">
   <form class="form" [formGroup]="createGameForm">
-    <a-label [text]="textLabel"></a-label>
-    <a-input [formControl]="createGameForm.controls.name"> </a-input>
+    <m-input-label
+      [text]="textLabel"
+      [formControl]="createGameForm.controls.name"
+    ></m-input-label>
 
     <!-- si existe mensaje de error, mostrarlo -->
     <a-typography
@@ -15,6 +17,10 @@
       [type]="'error'"
     ></a-typography>
 
-    <a-button [text]="textButton" (click)="handleSubmit()"></a-button>
+    <a-button
+      [text]="textButton"
+      [disabled]="createGameForm.invalid"
+      (click)="handleSubmit()"
+    ></a-button>
   </form>
 </div>

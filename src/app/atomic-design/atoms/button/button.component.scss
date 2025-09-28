@@ -24,15 +24,7 @@
   &:disabled {
     background-color: $color-disabled;
     cursor: not-allowed;
+    color: $color-white;
     opacity: $opacity-disabled;
-
-    &:hover {
-      background-color: $color-disabled;
-      transform: none;
-    }
-
-    &:active {
-      transform: none;
-    }
   }
 }

@@ -1,0 +1,28 @@
+<a-card>
+  <form action="" [formGroup]="gameRoomForm">
+    <a-label [text]="'Tu nombre'"></a-label>
+    <a-input [formControl]="gameRoomForm.controls.name"></a-input>
+
+    <a-label [text]="textLabeljugador" [type]="labelType"></a-label>
+    <a-checkbox
+      [value]="jugador"
+      [formControl]="gameRoomForm.controls.selectedOption"
+    ></a-checkbox>
+
+    <a-label [text]="textLabelespectador" [type]="labelType"></a-label>
+    <a-checkbox
+      [value]="espectador"
+      [formControl]="gameRoomForm.controls.selectedOption"
+    ></a-checkbox>
+
+    <a-button
+      [text]="'Entrar'"
+      [disabled]="gameRoomForm.invalid"
+      (click)="handleSubmit()"
+    ></a-button>
+  </form>
+</a-card>
+<m-input-label
+  [text]="'Tu nombre'"
+  [formControl]="gameRoomForm.controls.name"
+></m-input-label>

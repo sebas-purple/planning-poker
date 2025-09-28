@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+export type LabelType = 'default' | 'checkbox';
+
 @Component({
   selector: 'a-label',
   standalone: true,
@@ -10,4 +12,5 @@ import { CommonModule } from '@angular/common';
 })
 export class LabelComponent {
   @Input({required: true}) text!: string;
+  @Input() type: LabelType = 'default';
 }
