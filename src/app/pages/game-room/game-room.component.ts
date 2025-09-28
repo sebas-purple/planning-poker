@@ -12,11 +12,12 @@ import { UserService } from 'src/app/services/user.service';
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 import { GameService } from 'src/app/services/game.service';
 import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
+import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, CardComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, CardComponent, CardLabelComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
@@ -30,7 +31,7 @@ export class GameRoomComponent {
   textLabeljugador = "Jugador";
   textLabelespectador = "Espectador";
 
-  labelType: LabelType = "checkbox";
+  labelType: LabelType = "small";
 
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
