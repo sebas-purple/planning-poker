@@ -1,43 +1,30 @@
-<!-- <a-container>
-  <form class="form" action="" [formGroup]="gameRoomForm">
-    <m-input-label
-      [text]="textLabel"
-      [formControl]="gameRoomForm.controls.name"
-    ></m-input-label>
+<o-create-user
+  [textLabel]="textLabel"
+  [textLabeljugador]="textLabeljugador"
+  [textLabelespectador]="textLabelespectador"
+  [textButton]="textButton"
+  [labelType]="labelType"
+  [jugador]="jugador"
+  [espectador]="espectador"
+  (formSubmit)="handleCreateUser($event)"
+></o-create-user>
 
-    <div class="checkbox-container">
-      <m-checkbox-label
-        [text]="textLabeljugador"
-        [type]="labelType"
-        [value]="jugador"
-        [formControl]="gameRoomForm.controls.selectedOption"
-      ></m-checkbox-label>
+<!-- <a-table></a-table>
 
-      <m-checkbox-label
-        [text]="textLabelespectador"
-        [type]="labelType"
-        [value]="espectador"
-        [formControl]="gameRoomForm.controls.selectedOption"
-      ></m-checkbox-label>
-    </div>
-
-    <a-typography
-      *ngIf="messageError"
-      [text]="messageError"
-      [type]="'error'"
-    ></a-typography>
-
-    <a-button
-      [text]="textButton"
-      [disabled]="gameRoomForm.invalid"
-      (click)="handleSubmit()"
-    ></a-button>
-  </form>
-</a-container> -->
-
-<a-table></a-table>
-
-<!-- <a-card text="LU" type="viewer"></a-card> -->
+<a-card text="LU" type="viewer"></a-card>
 
 <m-card-label type="player" labelText="Luisa" labelType="small"></m-card-label>
-<a-card type="choice" text="LU"></a-card>
+<a-card type="choice" text="LU"></a-card> -->
+
+<!-- <header class="header">
+  <a-typography [text]="textHeader"></a-typography>
+</header>
+
+<div class="content">
+  <a-table></a-table>
+</div>
+
+<div class="footer">
+  <a-typography [text]="textFooter"></a-typography>
+
+</div> -->
