@@ -1,30 +1,33 @@
-<o-create-user
-  [textLabel]="textLabel"
-  [textLabeljugador]="textLabeljugador"
-  [textLabelespectador]="textLabelespectador"
-  [textButton]="textButton"
-  [labelType]="labelType"
-  [jugador]="jugador"
-  [espectador]="espectador"
-  (formSubmit)="handleCreateUser($event)"
-></o-create-user>
+<div class="game-container">
+  <header class="header">
+    <a-typography [text]="textHeader"></a-typography>
+  </header>
 
-<!-- <a-table></a-table>
+  <div class="content">
+    <a-table></a-table>
+  </div>
 
-<a-card text="LU" type="viewer"></a-card>
-
-<m-card-label type="player" labelText="Luisa" labelType="small"></m-card-label>
-<a-card type="choice" text="LU"></a-card> -->
-
-<!-- <header class="header">
-  <a-typography [text]="textHeader"></a-typography>
-</header>
-
-<div class="content">
-  <a-table></a-table>
+  <div class="footer">
+    <a-typography [type]="textFooterType" [text]="textFooter"></a-typography>
+    <div class="footer-options">
+      <a-card
+        type="choice"
+        *ngFor="let opcion of listaOpciones"
+        [text]="opcion"
+      ></a-card>
+    </div>
+  </div>
 </div>
 
-<div class="footer">
-  <a-typography [text]="textFooter"></a-typography>
-
-</div> -->
+<div class="overlay" *ngIf="showCreateUser">
+  <o-create-user
+    [textLabel]="textLabel"
+    [textLabeljugador]="textLabeljugador"
+    [textLabelespectador]="textLabelespectador"
+    [textButton]="textButton"
+    [labelType]="labelType"
+    [jugador]="jugador"
+    [espectador]="espectador"
+    (formSubmit)="handleCreateUser($event)"
+  ></o-create-user>
+</div>

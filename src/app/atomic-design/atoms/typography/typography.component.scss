@@ -4,9 +4,15 @@
   font-family: $font-family;
 
 
-  &--default {
+  &--title {
     color: $color-white;
     font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+  }
+
+  &--subtitle {
+    color: $color-white;
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
   }
 

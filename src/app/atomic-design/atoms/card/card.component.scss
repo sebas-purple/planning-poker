@@ -2,12 +2,10 @@
 
 // el diseño quiero que sea una tarjeta de planning poker
 .card {
-  width: 45px;
-  height: 85px;
 
   &--choice {
-    width: 45px;
-    height: 75px;
+    width: 40px;
+    height: 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,7 +26,7 @@
     border-radius: $border-radius-base;
   }
   
-//   quieor que sea un circulo
+//   quiero que sea un circulo
   &--viewer {
     width: 50px;
     height: 50px;

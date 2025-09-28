@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-type TypographyType = 'default' | 'error';
+export type TypographyType = 'title' | 'subtitle' | 'error';
 
 @Component({
   selector: 'a-typography',
@@ -12,5 +12,5 @@ type TypographyType = 'default' | 'error';
 })
 export class TypographyComponent {
   @Input({required: true}) text!: string;
-  @Input() type: TypographyType = 'default';
+  @Input() type: TypographyType = 'title';
 }
