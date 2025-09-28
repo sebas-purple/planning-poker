@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 })
 export class CreateGameComponent {
   private readonly gameService: GameService = inject(GameService);
-
   private readonly router: Router = inject(Router);
 
   textLabel = "Nombra la partida";
