@@ -11,11 +11,12 @@ import { CheckboxLabelComponent } from "src/app/atomic-design/molecules/checkbox
 import { UserService } from 'src/app/services/user.service';
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 import { GameService } from 'src/app/services/game.service';
+import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, CardComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })

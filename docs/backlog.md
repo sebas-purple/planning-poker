@@ -62,3 +62,8 @@ para saber si ya todos eligieron carta o falta alguno
 2. si es un jugador espectador la carta sale con un diseño tipo espectador
 
 3. se visualiza a todos los jugadores en mesa redonda
+
+**Atomos**
+
+- card: choice, player, viewer
+- table
