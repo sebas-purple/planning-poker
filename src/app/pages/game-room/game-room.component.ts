@@ -13,11 +13,12 @@ import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typo
 import { GameService } from 'src/app/services/game.service';
 import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
 import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
+import { TableComponent } from "src/app/atomic-design/atoms/table/table.component";
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, CardComponent, CardLabelComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, CardComponent, CardLabelComponent, TableComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })

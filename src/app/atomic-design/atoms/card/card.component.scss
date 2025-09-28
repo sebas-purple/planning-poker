@@ -6,8 +6,8 @@
   height: 85px;
 
   &--choice {
-    width: 55px;
-    height: 95px;
+    width: 45px;
+    height: 75px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,13 +18,14 @@
     font-family: $font-family;
     border: 1px solid #bc91ff;
     border-radius: $border-radius-card;
+    
   }
 
   &--player {
-    width: 42px;
-    height: 80px;
+    width: 35px;
+    height: 65px;
     border: 1px solid #bb65ff;
-    border-radius: $border-radius-card;
+    border-radius: $border-radius-base;
   }
   
 //   quieor que sea un circulo
