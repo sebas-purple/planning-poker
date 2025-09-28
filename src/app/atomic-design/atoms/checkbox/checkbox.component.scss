@@ -1,0 +1,32 @@
+@import '../../../shared/custom-styles/variables';
+
+.checkbox {
+  appearance: none;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  border: 1px solid $border-color-primary;
+  box-shadow: 0px 0px 15px 1px rgba(187, 101, 255, 0.4) inset;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  // quieor que el checkbox este en el centro
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:checked::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    background-color: $border-color-primary;
+    border-radius: 50%;
+    box-shadow: 0 0 1px 1px $border-color-primary;
+ 
+  }
+
+  &:hover {
+    border-color: $border-color-primary;
+    box-shadow: 0 0 10px $border-color-primary;
+  }
+
+}

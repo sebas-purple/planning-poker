@@ -1,21 +1,24 @@
 // Colors
 $color-primary: #31016D;
 $color-secondary: #1F1235;
-$color-disabled: #52317C;
+$color-tertiary: #1f0d3f;
+$color-disabled: grey;
 $color-white: #fff;
 
 // Spacing
 $button-padding-base: 0.50rem 1.5rem;
 $border-radius-base: 0.5rem;
+$border-radius-card: 1.25rem;
 $margin-base: 0.5rem;
 $margin-small: 0.25rem;
-$margin-large: 1rem;
+$margin-large: 1rem; // 16px
 
 // Typography
-$font-size-small: 0.8rem;
+$font-size-small: 0.8rem; // 12px
 $font-size-base: 1rem;
 $font-size-large: 1.2rem;
 $font-size-xlarge: 1.5rem;
+
 $font-weight-medium: 500;
 $font-weight-bold: 600;
 $font-family: 'Poppins', sans-serif;
@@ -24,8 +27,9 @@ $font-family: 'Poppins', sans-serif;
 $transition-base: all 0.2s ease-in-out;
 
 // Opacity
-$opacity-disabled: 0.7;
-
+$opacity-disabled: 0.4;
 
 // Border radius boton redondeado
 $border-radius-button-rounded: 3.125rem;
+
+$border-color-primary: #bb65ff;

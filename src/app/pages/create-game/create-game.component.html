@@ -1,21 +1,21 @@
 <header>
-  <a-image [src]="srcImage" [alt]="altImage" [width]="widthImage"></a-image>
+  <a-image [src]="srcImage" [alt]="altImage" [size]="sizeImage"></a-image>
   <a-typography [text]="textHeader"></a-typography>
 </header>
 
 <div class="content">
   <form class="form" [formGroup]="createGameForm">
-    <a-label [text]="textLabel"></a-label>
-    <a-input [formControl]="createGameForm.controls.name"> </a-input>
+    <m-input-label
+      [text]="textLabel"
+      [formControl]="createGameForm.controls.name"
+    ></m-input-label>
 
-    <ng-container *ngIf="createGameForm.controls.name.errors as errors">
-      <div class="error" *ngFor="let error of errors | keyvalue">
-        <a-typography
-          [text]="error.value.message"
-          [type]="'error'"
-        ></a-typography>
-      </div>
-    </ng-container>
+    <!-- si existe mensaje de error, mostrarlo -->
+    <a-typography
+      *ngIf="messageError"
+      [text]="messageError"
+      [type]="'error'"
+    ></a-typography>
 
     <a-button
       [text]="textButton"

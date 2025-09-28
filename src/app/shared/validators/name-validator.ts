@@ -7,7 +7,15 @@ export function nameValidator(): ValidatorFn {
   const SPECIAL_CHARS = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
 
   return (control: AbstractControl): ValidationErrors | null => {
-    const name = control.value;
+    let name = control.value;
+
+    if (name) {
+    name = name.trim();
+    }
+    
+    if (!name) {
+      return { required: true, message: 'El nombre es requerido' };
+    }
 
     if (name.length < MIN_LENGTH) {
       return { minlength: { requiredLength: MIN_LENGTH, actualLength: name.length, message: 'El nombre debe tener mínimo 5 caracteres' } };
