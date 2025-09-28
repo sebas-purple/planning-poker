@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'a-card',
+  selector: 'a-container',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  templateUrl: './container.component.html',
+  styleUrls: ['./container.component.scss']
 })
-export class CardComponent {
+export class ContainerComponent {
 
 }

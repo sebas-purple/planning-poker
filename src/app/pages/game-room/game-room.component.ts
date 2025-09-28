@@ -5,7 +5,7 @@ import { LabelType } from "src/app/atomic-design/atoms/label/label.component";
 import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
+import { ContainerComponent } from "src/app/atomic-design/atoms/container/container.component";
 import { InputLabelComponent } from "src/app/atomic-design/molecules/input-label/input-label.component";
 import { CheckboxLabelComponent } from "src/app/atomic-design/molecules/checkbox-label/checkbox-label.component";
 import { UserService } from 'src/app/services/user.service';
@@ -15,7 +15,7 @@ import { GameService } from 'src/app/services/game.service';
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, CardComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
@@ -51,6 +51,8 @@ export class GameRoomComponent {
         this.gameService.setGameOwner(newUser.name);
 
         console.log('Usuario creado exitosamente:', newUser);
+        console.log('Partida creada exitosamente:', this.gameService.getCurrentGame());
+
         this.gameRoomForm.reset();
         this.messageError = "";
         // Aquí podríamos agregar navegación a la siguiente pantalla o mostrar un mensaje de éxito
