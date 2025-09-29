@@ -91,3 +91,25 @@ para mostrarles a los demas mi puntaje
 5. una vez elegida la carta se debe notificar a todos los jugadores que se ha elegido una carta y cambiar la carta de la mesa de votación por una carta default
 
 ---
+
+# Historia de Usuario 5
+
+**Rol:** administrador
+
+**Historia de Usuario:**  
+Revelar cartas y puntaje promedio
+
+**Descripción:**  
+Yo como usuario administrador de planning poker
+necesito poder revelar las cartas de todos los jugadores
+para saber tomar una decisión sobre que puntaje elegir
+
+**Criterios de aceptación:**
+
+1. solo el rol administrador puede revelar las cartas
+2. En la mesa de votación de todos los jugadores se visualiza la carta que cada uno eligio
+3. la carta de los espectadores en la mesa de votación se sigue viendo con un diseño tipo espectador
+4. se visualiza la cantidad de persona que votaron por cada carta
+5. se visualiza el puntaje promedio de la votación, los espectadores no se tienen en cuenta para este puntaje promedio"
+
+---

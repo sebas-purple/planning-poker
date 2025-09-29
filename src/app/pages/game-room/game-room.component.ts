@@ -55,6 +55,10 @@ export class GameRoomComponent implements OnInit {
       const newUser = this.userService.createUser(event.name, event.viewMode);
       this.gameService.setGameOwner(newUser.name);
       this.gameService.addPlayer(newUser);
+
+      // todo: se usa para pruebas, eliminar luego de implementar
+      this.gameService.addMockPlayers();
+      
       this.currentUser = newUser;
 
       console.log('Usuario creado exitosamente:', newUser);

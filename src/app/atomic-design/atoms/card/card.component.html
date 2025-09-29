@@ -3,6 +3,5 @@
   [ngClass]="['card--' + type, isSelected ? 'card--selected' : '']"
   (click)="onClick()"
 >
-  <!-- si existe se muestra el texto -->
-  <p *ngIf="text">{{ text }}</p>
+  <p>{{ text }}</p>
 </div>

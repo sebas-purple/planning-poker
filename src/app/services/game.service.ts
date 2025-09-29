@@ -17,8 +17,8 @@ export class GameService {
       id: crypto.randomUUID(), // Genera un ID único
       name: name.trim(),
       createdAt: new Date(),
-      players: this.generateMockPlayers(), // Simulación de 7 jugadores
-      selectedCards: {} // Inicialmente nadie ha seleccionado carta
+      players: [],
+      selectedCards: {}
     };
     
     this.currentGame = newGame;
@@ -34,20 +34,22 @@ export class GameService {
     }
   }
 
-  // convertir a un getter
   get getCurrentGame(): Game | null {
     return this.currentGame;
   }
 
-  // agregar un jugador al principio de la lista
   addPlayer(player: User): void {
     if (this.currentGame) {
-      this.currentGame.players.unshift(player);
+      this.currentGame.players.push(player);
     }
   }
 
-  private generateMockPlayers(): User[] {
-    // Simulación de 7 jugadores (7 jugadores)
+  addMockPlayers(): void {
+    const mockPlayers = this.generateMockPlayers();
+    mockPlayers.forEach(player => this.addPlayer(player));
+  }
+
+  generateMockPlayers(): User[] {
     return [
       {
         name: 'Juan',
@@ -77,7 +79,7 @@ export class GameService {
         name: 'Pedro',
         rol: UserRole.otro,
         viewMode: ViewMode.jugador,
-        isCardSelected: false
+        isCardSelected: true
       },
       {
         name: 'Laura',
@@ -89,7 +91,7 @@ export class GameService {
         name: 'Diego',
         rol: UserRole.otro,
         viewMode: ViewMode.jugador,
-        isCardSelected: false
+        isCardSelected: true
       }
     ];
   }
