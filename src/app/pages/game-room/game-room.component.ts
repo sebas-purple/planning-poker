@@ -95,6 +95,27 @@ export class GameRoomComponent implements OnInit {
   }
 
   isButtonRevealCardsVisible(): boolean {
-    return this.userService.getCurrentUser?.rol === 'propietario' && this.gameService.isGameOwner(this.userService.getCurrentUser?.id || '') && this.gameService.hasAllPlayersSelectedCard();
+    return this.userService.getCurrentUser?.rol === 'propietario' && 
+           this.gameService.isGameOwner(this.userService.getCurrentUser?.id || '') && 
+           this.gameService.hasAllPlayersSelectedCard();
+  }
+
+  getVotesCountArray(): { value: string, count: number }[] {
+    const votesCount = this.gameService.getVotesCount();
+    return Object.entries(votesCount)
+      .map(([value, count]) => ({ value, count }))
+      .sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
+  }
+
+  getAverageScore(): number {
+    return this.gameService.calculateAverageScore();
+  }
+
+  startNewVoting(): void {
+    // Reiniciar el estado
+    this.isRevealed = false;
+    if (this.currentGame) {
+      this.currentGame.selectedCards = {};
+    }
   }
 }

@@ -7,13 +7,45 @@
     <div class="table-container">
       <!-- <a-table></a-table> -->
       <div class="table">
-        <!-- el boton solo se muestra si el usuario es rol propietario y si todos los jugadores han seleccionado una carta -->
         <ng-container *ngIf="isButtonRevealCardsVisible()">
           <a-button
+            *ngIf="!isRevealed"
             [text]="textButtonRevealCards"
             [type]="typeButtonRevealCards"
             (click)="revealCards()"
           ></a-button>
+
+          <!-- Botón Nueva votación solo visible si las cartas están reveladas -->
+          <a-button
+            *ngIf="isRevealed"
+            [text]="'Nueva votación'"
+            [type]="'primary'"
+            (click)="startNewVoting()"
+          ></a-button>
+        </ng-container>
+
+        <!-- Mostrar estadísticas cuando las cartas están reveladas -->
+        <ng-container *ngIf="isRevealed">
+          <div class="statistics">
+            <!-- Conteo de votos por carta -->
+            <div class="votes-count">
+              <ng-container *ngFor="let vote of getVotesCountArray()">
+                <div class="vote-item">
+                  <a-card type="choice" [text]="vote.value"></a-card>
+                  <span
+                    >{{ vote.count }}
+                    {{ vote.count === 1 ? "voto" : "votos" }}</span
+                  >
+                </div>
+              </ng-container>
+            </div>
+
+            <!-- Promedio -->
+            <div class="average" *ngIf="getAverageScore() > 0">
+              <span>Promedio:</span>
+              <span class="average-value">{{ getAverageScore() }}</span>
+            </div>
+          </div>
         </ng-container>
       </div>
       <div class="players-container">

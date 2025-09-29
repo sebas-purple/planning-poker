@@ -157,4 +157,44 @@ export class GameService {
     return this.currentGame?.owner === userId;
   }
 
+  // Obtener el conteo de votos por carta
+  getVotesCount(): { [cardValue: string]: number } {
+    if (!this.currentGame?.selectedCards) return {};
+
+    const votesCount: { [cardValue: string]: number } = {};
+    const players = this.currentGame.players;
+
+    Object.entries(this.currentGame.selectedCards).forEach(([userId, cardId]) => {
+      // Verificar que el usuario no sea espectador
+      const player = players.find(p => p.id === userId);
+      if (player && player.viewMode !== ViewMode.espectador) {
+        votesCount[cardId || ''] = (votesCount[cardId || ''] || 0) + 1;
+      }
+    });
+
+    return votesCount;
+  }
+
+  // Calcular el promedio de los votos (excluyendo espectadores)
+  calculateAverageScore(): number {
+    if (!this.currentGame?.selectedCards) return 0;
+
+    const players = this.currentGame.players;
+    let sum = 0;
+    let count = 0;
+
+    Object.entries(this.currentGame.selectedCards).forEach(([userId, cardId]) => {
+      // Verificar que el usuario no sea espectador
+      const player = players.find(p => p.id === userId);
+      if (player && player.viewMode !== ViewMode.espectador) {
+        const numericValue = parseFloat(cardId || '0');
+        if (!isNaN(numericValue)) { // Solo contar valores numéricos
+          sum += numericValue;
+          count++;
+        }
+      }
+    });
+
+    return count > 0 ? Number((sum / count).toFixed(1)) : 0;
+  }
 }
