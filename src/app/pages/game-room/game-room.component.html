@@ -8,7 +8,13 @@
       <!-- <a-table></a-table> -->
       <div class="table">
         <!-- el boton solo se muestra si el usuario es rol propietario y si todos los jugadores han seleccionado una carta -->
-        <ng-container *ngIf="userService.getCurrentUser?.rol === 'propietario'">
+
+        <ng-container
+          *ngIf="
+            userService.getCurrentUser?.rol === 'propietario' &&
+            gameService.hasAllPlayersSelectedCard()
+          "
+        >
           <a-button
             [text]="textButtonRevealCards"
             [type]="typeButtonRevealCards"
@@ -33,7 +39,7 @@
               [cardtype]="'player'"
               [labelText]="player.name"
               [labelType]="'small'"
-              [isSelected]="player.isCardSelected"
+              [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
               class="player-card"
             ></m-card-label>
           </ng-template>
@@ -52,7 +58,9 @@
         type="choice"
         *ngFor="let card of cards"
         [text]="card.text"
-        [isSelected]="card.isSelected || false"
+        [isSelected]="
+          gameService.getPlayerSelectedCard(currentUser?.id || '') === card.id
+        "
         (cardClick)="onCardSelected(card.id, $event)"
       ></a-card>
     </div>

@@ -25,7 +25,7 @@ import { ButtonType } from 'src/app/shared/types/_types';
 })
 export class GameRoomComponent implements OnInit {
   protected readonly userService: UserService = inject(UserService);
-  private readonly gameService: GameService = inject(GameService);
+  protected readonly gameService: GameService = inject(GameService);
   private readonly cardPoolService: CardPoolService = inject(CardPoolService);
 
   // para manejar la creacion del usuario
@@ -55,12 +55,15 @@ export class GameRoomComponent implements OnInit {
   handleCreateUser(event: {name: string, viewMode: ViewMode}) {
     try {
       const newUser = this.userService.createUser(event.name, event.viewMode);
-      this.gameService.setGameOwner(newUser.name);
+      this.gameService.setGameOwner(newUser.id);
       this.gameService.addPlayer(newUser);
 
       // todo: se usa para pruebas, eliminar luego de implementar
       this.gameService.addMockPlayers();
-      
+
+      // todo: se usa para pruebas, eliminar luego de implementar
+      this.gameService.addMockSelectedCardsToSelectedCards();
+
       this.currentUser = newUser;
 
       console.log('Usuario creado exitosamente:', newUser);
@@ -71,10 +74,14 @@ export class GameRoomComponent implements OnInit {
   }
 
   onCardSelected(cardId: string, isSelected: boolean): void {
+    const currentUser = this.userService.getCurrentUser;
+    if (!currentUser) return;
+
     if (isSelected) {
-      this.cardPoolService.selectCard(cardId);
+      this.gameService.selectCard(currentUser.id, cardId);
+    } else {
+      this.gameService.unselectCard(currentUser.id);
     }
-    this.userService.setIsCardSelected(isSelected);
   }
 
   // para manejar el boton

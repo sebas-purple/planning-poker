@@ -2,7 +2,6 @@ export interface Card {
   id: string;           // Identificador único de la carta
   score: string;        // Puntaje de la carta (no puede repetirse)
   text: string;         // Texto a mostrar en la carta
-  isSelected?: boolean; // Estado de selección de la carta
 }
 
 // Constante con los puntajes disponibles para Planning Poker

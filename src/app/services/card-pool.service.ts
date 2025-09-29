@@ -14,25 +14,15 @@ export class CardPoolService {
   // Inicializa el pool de cartas
   private initializeCards(): void {
     this.cards = AVAILABLE_SCORES.map(score => ({
-      id: crypto.randomUUID(),
+      id: score,
       score: score,
       text: score,
-      isSelected: false
     }));
   }
 
   // convertir a un getter
   get getCards(): Card[] {
     return this.cards;
-  }
-
-  // Solo se puede seleccionar una unica carta
-  selectCard(cardId: string): void {
-    this.cards.forEach(card => card.isSelected = false);
-    const selectedCard = this.cards.find(card => card.id === cardId);
-    if (selectedCard) {
-      selectedCard.isSelected = true;
-    }
   }
 
 }

@@ -6,5 +6,8 @@ export interface Game {
   owner?: string;    // Opcional porque se asignará después en game-room
   createdAt: Date;
   players: User[];   // Lista de jugadores en la partida
-  selectedCards?: { [userId: string]: string | null };  // Mapeo de usuario a carta seleccionada
+  selectedCards?: SelectedCards;  // Mapeo de usuario a carta seleccionada
 }
+
+// tipo para el mapeo de usuario a carta seleccionada
+export type SelectedCards = { [userId: string]: string | null };
