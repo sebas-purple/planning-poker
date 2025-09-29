@@ -5,4 +5,5 @@ export interface User {
   name: string;
   rol: UserRole;
   viewMode: ViewMode;
+  isCardSelected: boolean;
 }

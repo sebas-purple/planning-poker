@@ -16,7 +16,14 @@
     font-family: $font-family;
     border: 1px solid #bc91ff;
     border-radius: $border-radius-small;
-    
+    cursor: pointer;
+
+    &.card--selected {
+      background-color: #8B5CF6;
+      transform: translateY(-5px);
+      box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
+      color: transparent;
+    }
   }
 
   &--player {
@@ -24,6 +31,11 @@
     height: 60px;
     border: 1px solid #bb65ff;
     border-radius: $border-radius-small;
+
+    &.card--selected {
+      background-color: #8B5CF6;
+      box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
+    }
   }
   
 //   quiero que sea un circulo
@@ -42,3 +54,4 @@
     background-color: #bdbdff;
   }
 }
+    
