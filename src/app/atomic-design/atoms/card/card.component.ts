@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type CardType = 'choice' | 'player' | 'viewer';
@@ -11,9 +11,16 @@ export type CardType = 'choice' | 'player' | 'viewer';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
-  // text
   @Input() text!: string;
-
-  // type
   @Input({required: true}) type!: CardType;
+
+  @Input() isSelected: boolean = false;
+  @Output() cardClick = new EventEmitter<boolean>();
+
+  onClick(): void {
+    if (this.type === 'choice') {
+      this.isSelected = !this.isSelected;
+      this.cardClick.emit(this.isSelected);
+    }
+  }
 }

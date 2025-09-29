@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewMode } from 'src/app/core/enums/view-mode.enum';
 import { UserService } from 'src/app/services/user.service';
 import { GameService } from 'src/app/services/game.service';
+import { CardPoolService } from 'src/app/services/card-pool.service';
 import { CreateUserComponent } from 'src/app/atomic-design/organisms/create-user/create-user.component';
 import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
 import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
@@ -11,6 +12,7 @@ import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
 import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
 import { Game } from 'src/app/core/interfaces/game.interface';
 import { User } from 'src/app/core/interfaces/user.interface';
+import { Card } from 'src/app/core/interfaces/card.interface';
 
 @Component({
   selector: 'app-game-room',
@@ -19,9 +21,10 @@ import { User } from 'src/app/core/interfaces/user.interface';
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
-export class GameRoomComponent {
+export class GameRoomComponent implements OnInit {
   protected readonly userService: UserService = inject(UserService);
   private readonly gameService: GameService = inject(GameService);
+  private readonly cardPoolService: CardPoolService = inject(CardPoolService);
 
   // para manejar la creacion del usuario
   textLabel = "Tu nombre";
@@ -32,19 +35,6 @@ export class GameRoomComponent {
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
 
-  handleCreateUser(event: {name: string, viewMode: ViewMode}) {
-    try {
-      const newUser = this.userService.createUser(event.name, event.viewMode);
-      this.gameService.setGameOwner(newUser.name);
-      this.gameService.addPlayer(newUser);
-
-      console.log('Usuario creado exitosamente:', newUser);
-      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
-    }
-  }
-
   // para manejar el overlay
   currentUser: User | null = this.userService.getCurrentUser;
 
@@ -53,7 +43,32 @@ export class GameRoomComponent {
   textHeader: string = this.currentGame?.name || "";
   textFooter: string = "Elije una carta 👇";
   textFooterType: TypographyType = "subtitle";
-  listaOpciones: string[] = ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
+  cards: Card[] = [];
   players: User[] = this.currentGame?.players || [];
+
+  ngOnInit(): void {
+    this.cards = this.cardPoolService.getCards;
+  }
+
+  handleCreateUser(event: {name: string, viewMode: ViewMode}) {
+    try {
+      const newUser = this.userService.createUser(event.name, event.viewMode);
+      this.gameService.setGameOwner(newUser.name);
+      this.gameService.addPlayer(newUser);
+      this.currentUser = newUser;
+
+      console.log('Usuario creado exitosamente:', newUser);
+      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
+    } catch (error) {
+      console.error('Error al crear usuario:', error);
+    }
+  }
+
+  onCardSelected(cardId: string, isSelected: boolean): void {
+    if (isSelected) {
+      this.cardPoolService.selectCard(cardId);
+    }
+    this.userService.setIsCardSelected(isSelected);
+  }
 
 }

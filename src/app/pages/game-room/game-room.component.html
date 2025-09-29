@@ -24,6 +24,7 @@
               [cardtype]="'player'"
               [labelText]="player.name"
               [labelType]="'small'"
+              [isSelected]="player.isCardSelected"
               class="player-card"
             ></m-card-label>
           </ng-template>
@@ -40,8 +41,10 @@
     <div class="footer-options">
       <a-card
         type="choice"
-        *ngFor="let opcion of listaOpciones"
-        [text]="opcion"
+        *ngFor="let card of cards"
+        [text]="card.text"
+        [isSelected]="card.isSelected || false"
+        (cardClick)="onCardSelected(card.id, $event)"
       ></a-card>
     </div>
   </div>

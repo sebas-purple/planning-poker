@@ -52,37 +52,44 @@ export class GameService {
       {
         name: 'Juan',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       },
       {
         name: 'María',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       },
       {
         name: 'Carlos',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       },
       {
         name: 'Ana',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       },
       {
         name: 'Pedro',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       },
       {
         name: 'Laura',
         rol: UserRole.otro,
-        viewMode: ViewMode.espectador
+        viewMode: ViewMode.espectador,
+        isCardSelected: false
       },
       {
         name: 'Diego',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.jugador,
+        isCardSelected: false
       }
     ];
   }
