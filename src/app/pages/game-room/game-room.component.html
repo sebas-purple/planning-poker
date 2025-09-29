@@ -6,7 +6,15 @@
   <div class="content">
     <div class="table-container">
       <!-- <a-table></a-table> -->
-      <div class="table"></div>
+      <div class="table">
+        <!-- el boton solo se muestra si el usuario es rol propietario y si todos los jugadores han seleccionado una carta -->
+        <ng-container *ngIf="userService.getCurrentUser?.rol === 'propietario'">
+          <a-button
+            [text]="textButtonRevealCards"
+            [type]="typeButtonRevealCards"
+          ></a-button>
+        </ng-container>
+      </div>
       <div class="players-container">
         <div class="player-slot" *ngFor="let player of players">
           <ng-container

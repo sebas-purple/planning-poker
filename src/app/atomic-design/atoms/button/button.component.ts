@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ButtonType } from 'src/app/shared/types/_types';
 
 @Component({
   selector: 'a-button',
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
 export class ButtonComponent {
   @Input({required: true}) text!: string;
   @Input() disabled: boolean = false;
+  @Input() type: ButtonType = 'primary';
   
   @Output() clicked = new EventEmitter<void>();
 

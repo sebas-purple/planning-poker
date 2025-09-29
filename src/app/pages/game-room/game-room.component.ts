@@ -13,11 +13,13 @@ import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/c
 import { Game } from 'src/app/core/interfaces/game.interface';
 import { User } from 'src/app/core/interfaces/user.interface';
 import { Card } from 'src/app/core/interfaces/card.interface';
+import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
+import { ButtonType } from 'src/app/shared/types/_types';
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent],
+  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
@@ -75,4 +77,7 @@ export class GameRoomComponent implements OnInit {
     this.userService.setIsCardSelected(isSelected);
   }
 
+  // para manejar el boton
+  textButtonRevealCards: string = "Revelar cartas";
+  typeButtonRevealCards: ButtonType = "secondary";
 }
