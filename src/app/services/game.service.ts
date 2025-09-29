@@ -106,7 +106,7 @@ export class GameService {
         id: crypto.randomUUID(),
         name: 'Ana',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.espectador
       },
       {
         id: crypto.randomUUID(),
@@ -118,7 +118,7 @@ export class GameService {
         id: crypto.randomUUID(),
         name: 'Laura',
         rol: UserRole.otro,
-        viewMode: ViewMode.espectador
+        viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
@@ -141,13 +141,13 @@ export class GameService {
   generateMockSelectedCards(): SelectedCards {
     // los valores son los puntajes de las cartas ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"]
     const mockSelectedCards: SelectedCards = {
-      [this.currentGame?.players[1].id || '']: '3',
-      [this.currentGame?.players[2].id || '']: '3',
-      [this.currentGame?.players[3].id || '']: '5',
-      [this.currentGame?.players[4].id || '']: '8',
-      [this.currentGame?.players[5].id || '']: '13',
-      [this.currentGame?.players[6].id || '']: '21',
-      [this.currentGame?.players[7].id || '']: '8',
+      [this.currentGame?.players[1].id || '']: '0',
+      [this.currentGame?.players[2].id || '']: '1',
+      [this.currentGame?.players[3].id || '']: '3',
+      [this.currentGame?.players[4].id || '']: '5',
+      [this.currentGame?.players[5].id || '']: '8',
+      [this.currentGame?.players[6].id || '']: '13',
+      [this.currentGame?.players[7].id || '']: '21',
     };
 
     return mockSelectedCards;

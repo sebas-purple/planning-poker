@@ -3,7 +3,8 @@
   [ngClass]="[
     'card--' + type,
     isSelected ? 'card--selected' : '',
-    isRevealed ? 'card--revealed' : ''
+    isRevealed ? 'card--revealed' : '',
+    isClickable ? 'card--clickable' : ''
   ]"
   (click)="onClick()"
 >
