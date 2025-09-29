@@ -38,9 +38,10 @@ export class CreateUserComponent {
   handleSubmit() {
     if (this.gameRoomForm.valid) {
       const name = this.gameRoomForm.value.name?.trim() || '';
+      const newName = name.charAt(0).toUpperCase() + name.slice(1);
       const viewMode = this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
       
-      this.formSubmit.emit({ name, viewMode });
+      this.formSubmit.emit({ name: newName, viewMode });
       this.gameRoomForm.reset();
       this.messageError = "";
     } else {

@@ -8,21 +8,20 @@ import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
 import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { TableComponent } from "src/app/atomic-design/atoms/table/table.component";
 import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
+import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
+import { Game } from 'src/app/core/interfaces/game.interface';
+import { User } from 'src/app/core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent],
+  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
 export class GameRoomComponent {
-  private readonly userService: UserService = inject(UserService);
+  protected readonly userService: UserService = inject(UserService);
   private readonly gameService: GameService = inject(GameService);
-
-  get showCreateUser(): boolean {
-    return !this.userService.getCurrentUser(); // Mostrará el overlay si no hay usuario
-  }
 
   // para manejar la creacion del usuario
   textLabel = "Tu nombre";
@@ -37,21 +36,24 @@ export class GameRoomComponent {
     try {
       const newUser = this.userService.createUser(event.name, event.viewMode);
       this.gameService.setGameOwner(newUser.name);
+      this.gameService.addPlayer(newUser);
 
       console.log('Usuario creado exitosamente:', newUser);
-      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame());
-      
-      // Actualizamos el header con el nombre del juego
-      this.textHeader = this.gameService.getCurrentGame()?.name || "";
+      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
     } catch (error) {
       console.error('Error al crear usuario:', error);
     }
   }
 
+  // para manejar el overlay
+  currentUser: User | null = this.userService.getCurrentUser;
+
   // para manejar el game room
-  textHeader = this.gameService.getCurrentGame()?.name || "";
-  textFooter = "Elije una carta 👇";
+  currentGame: Game | null = this.gameService.getCurrentGame;
+  textHeader: string = this.currentGame?.name || "";
+  textFooter: string = "Elije una carta 👇";
   textFooterType: TypographyType = "subtitle";
-  listaOpciones = ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
+  listaOpciones: string[] = ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
+  players: User[] = this.currentGame?.players || [];
 
 }

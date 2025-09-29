@@ -4,7 +4,32 @@
   </header>
 
   <div class="content">
-    <a-table></a-table>
+    <div class="table-container">
+      <a-table></a-table>
+      <div class="players-container">
+        <div class="player-slot" *ngFor="let player of players">
+          <ng-container
+            *ngIf="player.viewMode === 'espectador'; else playerView"
+          >
+            <m-card-label
+              [text]="player.name.slice(0, 2).toUpperCase()"
+              [cardtype]="'viewer'"
+              [labelText]="player.name"
+              [labelType]="'small'"
+              class="player-card"
+            ></m-card-label>
+          </ng-container>
+          <ng-template #playerView>
+            <m-card-label
+              [cardtype]="'player'"
+              [labelText]="player.name"
+              [labelType]="'small'"
+              class="player-card"
+            ></m-card-label>
+          </ng-template>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="footer">
@@ -19,7 +44,7 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="showCreateUser">
+<div class="overlay" *ngIf="!userService.getCurrentUser">
   <o-create-user
     [textLabel]="textLabel"
     [textLabeljugador]="textLabeljugador"

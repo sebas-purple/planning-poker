@@ -12,7 +12,7 @@ import { LabelType, LabelComponent } from '../../atoms/label/label.component';
 })
 export class CardLabelComponent {
   @Input() text!: string;
-  @Input({required: true}) type!: CardType;
+  @Input({required: true}) cardtype!: CardType;
 
   @Input({required: true}) labelText!: string;
   @Input({required: true}) labelType!: LabelType;

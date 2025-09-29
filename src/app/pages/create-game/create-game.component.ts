@@ -18,40 +18,47 @@ import { Router } from '@angular/router';
 })
 export class CreateGameComponent {
   private readonly gameService: GameService = inject(GameService);
-  private readonly router: Router = inject(Router);
+  private readonly router: Router = inject(Router)
 
-  textLabel = "Nombra la partida";
-  textButton = "Crear partida";
-  textHeader = "Crear partida";
-  srcImage = "assets/logo/isotipo_blanco.svg";
-  altImage = "isotipo";
+  // variables para el formulario
+  textLabel: string = "Nombra la partida";
+  textButton: string = "Crear partida";
+  textHeader: string = "Crear partida";
+  srcImage: string = "assets/logo/isotipo_blanco.svg";
+  altImage: string = "isotipo";
   sizeImage: ImageSize = "small";
 
-  messageError = "";
-
+  // para manejar el formulario
   createGameForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()])
   })
+
+  // para manejar validaciones
+  messageError: string = "";
 
   handleSubmit() {
     if (this.createGameForm.valid) {
       const name = this.createGameForm.value.name?.trim() || '';
       
       try {
-        const newGame = this.gameService.createGame(name);
+        const newName = name.charAt(0).toUpperCase() + name.slice(1);
+        const newGame = this.gameService.createGame(newName);
+
         console.log('Partida creada exitosamente:', newGame);
+
+        // resetear el formulario
         this.createGameForm.reset();
         this.messageError = "";
-        // Aquí podríamos agregar navegación a la siguiente pantalla
+
         this.router.navigate(['/game-room']);
       } catch (error) {
         this.messageError = "Error al crear la partida";
         console.error('Error al crear partida:', error);
       }
+
     } else {
       const errors = this.createGameForm.controls.name.errors;
       if (errors) {
-        // Para el caso especial de specialChars y required que tiene el mensaje directamente
         if (errors['specialChars'] || errors['required']) {
           this.messageError = errors['message'];
           return;

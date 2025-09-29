@@ -1,3 +1,4 @@
 export enum UserRole {
-  propietario = 'propietario'
+  propietario = 'propietario',
+  otro = 'otro'
 }

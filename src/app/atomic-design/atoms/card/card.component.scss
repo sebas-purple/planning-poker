@@ -4,8 +4,8 @@
 .card {
 
   &--choice {
-    width: 40px;
-    height: 70px;
+    width: 37px;
+    height: 65px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,15 +15,15 @@
     font-size: $font-size-large;
     font-family: $font-family;
     border: 1px solid #bc91ff;
-    border-radius: $border-radius-card;
+    border-radius: $border-radius-small;
     
   }
 
   &--player {
-    width: 35px;
-    height: 65px;
+    width: 30px;
+    height: 60px;
     border: 1px solid #bb65ff;
-    border-radius: $border-radius-base;
+    border-radius: $border-radius-small;
   }
   
 //   quiero que sea un circulo
