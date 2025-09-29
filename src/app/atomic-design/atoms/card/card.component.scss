@@ -1,15 +1,44 @@
 @import '../../../shared/custom-styles/variables';
 
-// card con bordes redondeados
+// el diseño quiero que sea una tarjeta de planning poker
 .card {
-  border-radius: $border-radius-card;
-  border: 1px solid $border-color-primary;
-  box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4), 0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
-  width: 450px;
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: $color-tertiary;
+
+  &--choice {
+    width: 37px;
+    height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 50px 5px rgba(255, 255, 255, 0.1);
+    color: $color-white;
+    font-size: $font-size-large;
+    font-family: $font-family;
+    border: 1px solid #bc91ff;
+    border-radius: $border-radius-small;
+    
+  }
+
+  &--player {
+    width: 30px;
+    height: 60px;
+    border: 1px solid #bb65ff;
+    border-radius: $border-radius-small;
+  }
+  
+//   quiero que sea un circulo
+  &--viewer {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $color-primary;
+    font-size: $font-size-large;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    background-color: #bdbdff;
+  }
 }

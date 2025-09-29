@@ -1,83 +1,59 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LabelType } from "src/app/atomic-design/atoms/label/label.component";
-import { nameValidator } from 'src/app/shared/validators/name-validator';
-import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
-import { InputLabelComponent } from "src/app/atomic-design/molecules/input-label/input-label.component";
-import { CheckboxLabelComponent } from "src/app/atomic-design/molecules/checkbox-label/checkbox-label.component";
 import { UserService } from 'src/app/services/user.service';
-import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 import { GameService } from 'src/app/services/game.service';
+import { CreateUserComponent } from 'src/app/atomic-design/organisms/create-user/create-user.component';
+import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
+import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
+import { TableComponent } from "src/app/atomic-design/atoms/table/table.component";
+import { CardComponent } from "src/app/atomic-design/atoms/card/card.component";
+import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
+import { Game } from 'src/app/core/interfaces/game.interface';
+import { User } from 'src/app/core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, CardComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent],
+  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
 export class GameRoomComponent {
-  private readonly userService: UserService = inject(UserService);
+  protected readonly userService: UserService = inject(UserService);
   private readonly gameService: GameService = inject(GameService);
 
+  // para manejar la creacion del usuario
   textLabel = "Tu nombre";
-  textButton = "Continuar";
-
   textLabeljugador = "Jugador";
   textLabelespectador = "Espectador";
-
-  labelType: LabelType = "checkbox";
-
+  textButton = "Continuar";
+  labelType: LabelType = "small";
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
 
-  gameRoomForm = new FormGroup({
-    name: new FormControl("", [Validators.required, nameValidator()]),
-    selectedOption: new FormControl("", [Validators.required])
-  })
+  handleCreateUser(event: {name: string, viewMode: ViewMode}) {
+    try {
+      const newUser = this.userService.createUser(event.name, event.viewMode);
+      this.gameService.setGameOwner(newUser.name);
+      this.gameService.addPlayer(newUser);
 
-  messageError = "";
-
-  handleSubmit() {
-    if (this.gameRoomForm.valid) {
-      const name = this.gameRoomForm.value.name?.trim() || '';
-      const viewMode = this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
-      
-      try {
-        const newUser = this.userService.createUser(name, viewMode);
-        this.gameService.setGameOwner(newUser.name);
-
-        console.log('Usuario creado exitosamente:', newUser);
-        this.gameRoomForm.reset();
-        this.messageError = "";
-        // Aquí podríamos agregar navegación a la siguiente pantalla o mostrar un mensaje de éxito
-      } catch (error) {
-        this.messageError = "Error al crear el usuario";
-        console.error('Error al crear usuario:', error);
-      }
-    } else {
-      const errors = this.gameRoomForm.controls.name.errors;
-      if (errors) {
-        // Para el caso especial de specialChars y required que tiene el mensaje directamente
-        if (errors['specialChars'] || errors['required']) {
-          this.messageError = errors['message'];
-          return;
-        } else {
-          const errorKey = Object.keys(errors)[0];
-          this.messageError = errors[errorKey].message;
-          return;
-        }
-      }
-      
-      // Si no hay errores de nombre pero el formulario es inválido, probablemente es el modo de visualización
-      if (!this.gameRoomForm.value.selectedOption) {
-        this.messageError = "Debes seleccionar un modo de visualización";
-      }
+      console.log('Usuario creado exitosamente:', newUser);
+      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
+    } catch (error) {
+      console.error('Error al crear usuario:', error);
     }
   }
 
+  // para manejar el overlay
+  currentUser: User | null = this.userService.getCurrentUser;
+
+  // para manejar el game room
+  currentGame: Game | null = this.gameService.getCurrentGame;
+  textHeader: string = this.currentGame?.name || "";
+  textFooter: string = "Elije una carta 👇";
+  textFooterType: TypographyType = "subtitle";
+  listaOpciones: string[] = ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"];
+  players: User[] = this.currentGame?.players || [];
 
 }

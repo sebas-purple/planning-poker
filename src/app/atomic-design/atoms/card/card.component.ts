@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+export type CardType = 'choice' | 'player' | 'viewer';
 
 @Component({
   selector: 'a-card',
@@ -9,5 +11,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
+  // text
+  @Input() text!: string;
 
+  // type
+  @Input({required: true}) type!: CardType;
 }

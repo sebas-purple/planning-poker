@@ -23,7 +23,9 @@ export class UserService {
     return newUser;
   }
 
-  getCurrentUser(): User | null {
+  // convertir a un getter
+  get getCurrentUser(): User | null {
     return this.currentUser;
   }
+
 }

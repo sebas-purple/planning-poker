@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type LabelType = 'default' | 'checkbox';
+export type LabelType = 'default' | 'small';
 
 @Component({
   selector: 'a-label',

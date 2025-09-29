@@ -1,37 +1,61 @@
-<a-card>
-  <form class="form" action="" [formGroup]="gameRoomForm">
-    <m-input-label
-      [text]="textLabel"
-      [formControl]="gameRoomForm.controls.name"
-    ></m-input-label>
+<div class="game-container">
+  <header class="header">
+    <a-typography [text]="textHeader"></a-typography>
+  </header>
 
-    <div class="checkbox-container">
-      <m-checkbox-label
-        [text]="textLabeljugador"
-        [type]="labelType"
-        [value]="jugador"
-        [formControl]="gameRoomForm.controls.selectedOption"
-      ></m-checkbox-label>
-
-      <m-checkbox-label
-        [text]="textLabelespectador"
-        [type]="labelType"
-        [value]="espectador"
-        [formControl]="gameRoomForm.controls.selectedOption"
-      ></m-checkbox-label>
+  <div class="content">
+    <div class="table-container">
+      <a-table></a-table>
+      <div class="players-container">
+        <div class="player-slot" *ngFor="let player of players">
+          <ng-container
+            *ngIf="player.viewMode === 'espectador'; else playerView"
+          >
+            <m-card-label
+              [text]="player.name.slice(0, 2).toUpperCase()"
+              [cardtype]="'viewer'"
+              [labelText]="player.name"
+              [labelType]="'small'"
+              class="player-card"
+            ></m-card-label>
+          </ng-container>
+          <ng-template #playerView>
+            <m-card-label
+              [cardtype]="'player'"
+              [labelText]="player.name"
+              [labelType]="'small'"
+              class="player-card"
+            ></m-card-label>
+          </ng-template>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- si existe mensaje de error, mostrarlo -->
-    <a-typography
-      *ngIf="messageError"
-      [text]="messageError"
-      [type]="'error'"
-    ></a-typography>
+  <div
+    class="footer"
+    *ngIf="userService.getCurrentUser?.viewMode === 'jugador'"
+  >
+    <a-typography [type]="textFooterType" [text]="textFooter"></a-typography>
+    <div class="footer-options">
+      <a-card
+        type="choice"
+        *ngFor="let opcion of listaOpciones"
+        [text]="opcion"
+      ></a-card>
+    </div>
+  </div>
+</div>
 
-    <a-button
-      [text]="textButton"
-      [disabled]="gameRoomForm.invalid"
-      (click)="handleSubmit()"
-    ></a-button>
-  </form>
-</a-card>
+<div class="overlay" *ngIf="!userService.getCurrentUser">
+  <o-create-user
+    [textLabel]="textLabel"
+    [textLabeljugador]="textLabeljugador"
+    [textLabelespectador]="textLabelespectador"
+    [textButton]="textButton"
+    [labelType]="labelType"
+    [jugador]="jugador"
+    [espectador]="espectador"
+    (formSubmit)="handleCreateUser($event)"
+  ></o-create-user>
+</div>

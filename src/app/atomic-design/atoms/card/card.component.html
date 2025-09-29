@@ -1,4 +1,4 @@
-<!-- atomo card -->
-<div class="card">
-  <ng-content></ng-content>
+<div class="card" [ngClass]="'card--' + type">
+  <!-- si existe se muestra el texto -->
+  <p *ngIf="text">{{ text }}</p>
 </div>
