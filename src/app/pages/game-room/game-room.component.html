@@ -32,7 +32,10 @@
     </div>
   </div>
 
-  <div class="footer">
+  <div
+    class="footer"
+    *ngIf="userService.getCurrentUser?.viewMode === 'jugador'"
+  >
     <a-typography [type]="textFooterType" [text]="textFooter"></a-typography>
     <div class="footer-options">
       <a-card

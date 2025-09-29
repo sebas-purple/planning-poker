@@ -77,7 +77,7 @@ export class GameService {
       {
         name: 'Laura',
         rol: UserRole.otro,
-        viewMode: ViewMode.jugador
+        viewMode: ViewMode.espectador
       },
       {
         name: 'Diego',
