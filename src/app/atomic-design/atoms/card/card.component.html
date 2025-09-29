@@ -1,6 +1,10 @@
 <div
   class="card"
-  [ngClass]="['card--' + type, isSelected ? 'card--selected' : '']"
+  [ngClass]="[
+    'card--' + type,
+    isSelected ? 'card--selected' : '',
+    isRevealed ? 'card--revealed' : ''
+  ]"
   (click)="onClick()"
 >
   <p>{{ text }}</p>

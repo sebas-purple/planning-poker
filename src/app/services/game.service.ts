@@ -153,4 +153,8 @@ export class GameService {
     return mockSelectedCards;
   }
 
+  isGameOwner(userId: string): boolean {
+    return this.currentGame?.owner === userId;
+  }
+
 }

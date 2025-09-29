@@ -36,6 +36,16 @@
       background-color: #8B5CF6;
       box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
     }
+
+    &.card--revealed {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: $color-white;
+      font-size: $font-size-small;
+      font-family: $font-family;
+    }
   }
   
 //   quiero que sea un circulo

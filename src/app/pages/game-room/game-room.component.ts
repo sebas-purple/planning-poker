@@ -87,4 +87,14 @@ export class GameRoomComponent implements OnInit {
   // para manejar el boton
   textButtonRevealCards: string = "Revelar cartas";
   typeButtonRevealCards: ButtonType = "secondary";
+
+  isRevealed: boolean = false;
+
+  revealCards(): void {
+    this.isRevealed = true;
+  }
+
+  isButtonRevealCardsVisible(): boolean {
+    return this.userService.getCurrentUser?.rol === 'propietario' && this.gameService.isGameOwner(this.userService.getCurrentUser?.id || '') && this.gameService.hasAllPlayersSelectedCard();
+  }
 }

@@ -8,16 +8,11 @@
       <!-- <a-table></a-table> -->
       <div class="table">
         <!-- el boton solo se muestra si el usuario es rol propietario y si todos los jugadores han seleccionado una carta -->
-
-        <ng-container
-          *ngIf="
-            userService.getCurrentUser?.rol === 'propietario' &&
-            gameService.hasAllPlayersSelectedCard()
-          "
-        >
+        <ng-container *ngIf="isButtonRevealCardsVisible()">
           <a-button
             [text]="textButtonRevealCards"
             [type]="typeButtonRevealCards"
+            (click)="revealCards()"
           ></a-button>
         </ng-container>
       </div>
@@ -35,11 +30,18 @@
             ></m-card-label>
           </ng-container>
           <ng-template #playerView>
+            <!-- solo pasar el texto si isRevealed es true -->
             <m-card-label
               [cardtype]="'player'"
               [labelText]="player.name"
               [labelType]="'small'"
               [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
+              [isRevealed]="isRevealed"
+              [text]="
+                isRevealed
+                  ? gameService.getPlayerSelectedCard(player.id) || ''
+                  : ''
+              "
               class="player-card"
             ></m-card-label>
           </ng-template>
