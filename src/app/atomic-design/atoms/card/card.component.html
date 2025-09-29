@@ -1,8 +1,12 @@
 <div
   class="card"
-  [ngClass]="['card--' + type, isSelected ? 'card--selected' : '']"
+  [ngClass]="[
+    'card--' + type,
+    isSelected ? 'card--selected' : '',
+    isRevealed ? 'card--revealed' : '',
+    isClickable ? 'card--clickable' : ''
+  ]"
   (click)="onClick()"
 >
-  <!-- si existe se muestra el texto -->
-  <p *ngIf="text">{{ text }}</p>
+  <p>{{ text }}</p>
 </div>

@@ -13,17 +13,19 @@ import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/c
 import { Game } from 'src/app/core/interfaces/game.interface';
 import { User } from 'src/app/core/interfaces/user.interface';
 import { Card } from 'src/app/core/interfaces/card.interface';
+import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
+import { ButtonType } from 'src/app/shared/types/_types';
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent],
+  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
 export class GameRoomComponent implements OnInit {
   protected readonly userService: UserService = inject(UserService);
-  private readonly gameService: GameService = inject(GameService);
+  protected readonly gameService: GameService = inject(GameService);
   private readonly cardPoolService: CardPoolService = inject(CardPoolService);
 
   // para manejar la creacion del usuario
@@ -53,8 +55,15 @@ export class GameRoomComponent implements OnInit {
   handleCreateUser(event: {name: string, viewMode: ViewMode}) {
     try {
       const newUser = this.userService.createUser(event.name, event.viewMode);
-      this.gameService.setGameOwner(newUser.name);
+      this.gameService.setGameOwner(newUser.id);
       this.gameService.addPlayer(newUser);
+
+      // todo: se usa para pruebas, eliminar luego de implementar
+      this.gameService.addMockPlayers();
+
+      // todo: se usa para pruebas, eliminar luego de implementar
+      this.gameService.addMockSelectedCardsToSelectedCards();
+
       this.currentUser = newUser;
 
       console.log('Usuario creado exitosamente:', newUser);
@@ -65,10 +74,48 @@ export class GameRoomComponent implements OnInit {
   }
 
   onCardSelected(cardId: string, isSelected: boolean): void {
+    const currentUser = this.userService.getCurrentUser;
+    if (!currentUser) return;
+
     if (isSelected) {
-      this.cardPoolService.selectCard(cardId);
+      this.gameService.selectCard(currentUser.id, cardId);
+    } else {
+      this.gameService.unselectCard(currentUser.id);
     }
-    this.userService.setIsCardSelected(isSelected);
   }
 
+  // para manejar el boton
+  textButtonRevealCards: string = "Revelar cartas";
+  typeButtonRevealCards: ButtonType = "secondary";
+
+  isRevealed: boolean = false;
+
+  revealCards(): void {
+    this.isRevealed = true;
+  }
+
+  isButtonRevealCardsVisible(): boolean {
+    return this.userService.getCurrentUser?.rol === 'propietario' && 
+           this.gameService.isGameOwner(this.userService.getCurrentUser?.id || '') && 
+           this.gameService.hasAllPlayersSelectedCard();
+  }
+
+  getVotesCountArray(): { value: string, count: number }[] {
+    const votesCount = this.gameService.getVotesCount();
+    return Object.entries(votesCount)
+      .map(([value, count]) => ({ value, count }))
+      .sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
+  }
+
+  getAverageScore(): number {
+    return this.gameService.calculateAverageScore();
+  }
+
+  startNewVoting(): void {
+    // Reiniciar el estado
+    this.isRevealed = false;
+    if (this.currentGame) {
+      this.currentGame.selectedCards = {};
+    }
+  }
 }

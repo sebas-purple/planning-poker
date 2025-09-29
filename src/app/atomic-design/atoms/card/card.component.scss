@@ -16,13 +16,12 @@
     font-family: $font-family;
     border: 1px solid #bc91ff;
     border-radius: $border-radius-small;
-    cursor: pointer;
 
     &.card--selected {
       background-color: #8B5CF6;
       transform: translateY(-5px);
       box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
-      color: transparent;
+      color: $color-primary;
     }
   }
 
@@ -35,6 +34,16 @@
     &.card--selected {
       background-color: #8B5CF6;
       box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
+    }
+
+    &.card--revealed {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: $color-white;
+      font-size: $font-size-small;
+      font-family: $font-family;
     }
   }
   
@@ -52,6 +61,10 @@
     font-family: $font-family;
     font-weight: $font-weight-bold;
     background-color: #bdbdff;
+  }
+
+  &--clickable {
+    cursor: pointer;
   }
 }
     

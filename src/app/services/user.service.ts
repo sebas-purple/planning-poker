@@ -13,11 +13,11 @@ export class UserService {
 
   createUser(name: string, viewMode: ViewMode): User {
     const newUser: User = {
+      id: crypto.randomUUID(),
       name: name.trim(),
       // TODO: cambiar a UserRole.participante cuando se agregue la funcionalidad de participantes
       rol: UserRole.propietario,
       viewMode: viewMode,
-      isCardSelected: false
     };
     
     this.currentUser = newUser;
@@ -27,10 +27,6 @@ export class UserService {
   // convertir a un getter
   get getCurrentUser(): User | null {
     return this.currentUser;
-  }
-
-  setIsCardSelected(isCardSelected: boolean): void {
-    this.currentUser!.isCardSelected = isCardSelected;
   }
 
 }

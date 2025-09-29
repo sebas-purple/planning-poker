@@ -14,6 +14,8 @@ export class CardLabelComponent {
   @Input() text!: string;
   @Input({required: true}) cardtype!: CardType;
   @Input() isSelected!: boolean;
+  @Input() isRevealed!: boolean;
+  @Input() isClickable!: boolean;
 
   @Input({required: true}) labelText!: string;
   @Input({required: true}) labelType!: LabelType;
