@@ -1,0 +1,36 @@
+<a-dialog [showDialog]="showDialog">
+  <form class="form" [formGroup]="gameRoomForm">
+    <m-input-label
+      [text]="textLabel"
+      [formControl]="gameRoomForm.controls.name"
+    ></m-input-label>
+
+    <div class="checkbox-container">
+      <m-checkbox-label
+        [text]="textLabeljugador"
+        [type]="labelType"
+        [value]="jugador"
+        [formControl]="gameRoomForm.controls.selectedOption"
+      ></m-checkbox-label>
+
+      <m-checkbox-label
+        [text]="textLabelespectador"
+        [type]="labelType"
+        [value]="espectador"
+        [formControl]="gameRoomForm.controls.selectedOption"
+      ></m-checkbox-label>
+    </div>
+
+    <a-typography
+      *ngIf="messageError"
+      [text]="messageError"
+      [type]="'error'"
+    ></a-typography>
+
+    <a-button
+      [text]="textButton"
+      [disabled]="gameRoomForm.invalid"
+      (click)="handleSubmit()"
+    ></a-button>
+  </form> </a-dialog
+>>

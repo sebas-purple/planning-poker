@@ -15,11 +15,12 @@ import { User } from 'src/app/core/interfaces/user.interface';
 import { Card } from 'src/app/core/interfaces/card.interface';
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { ButtonType } from 'src/app/shared/types/_types';
+import { GameRoomCreateUserComponent } from "./game-room-create-user/game-room-create-user.component";
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent],
+  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent, GameRoomCreateUserComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
