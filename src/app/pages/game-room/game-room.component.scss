@@ -1,6 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
+  justify-content: space-between; // Header arriba, footer abajo
   min-height: 100vh;
   filter: blur(0);
   transition: filter 0.3s ease;

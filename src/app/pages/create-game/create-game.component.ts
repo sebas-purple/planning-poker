@@ -8,12 +8,11 @@ import { InputLabelComponent } from "src/app/atomic-design/molecules/input-label
 import { GameService } from 'src/app/services/game.service';
 import { Router } from '@angular/router';
 import { ImageSize } from 'src/app/shared/types/_types';
-import { DialogComponent } from "src/app/atomic-design/atoms/dialog/dialog.component";
 
 @Component({
   selector: 'app-create-game',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TypographyComponent, InputLabelComponent, DialogComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TypographyComponent, InputLabelComponent],
   templateUrl: './create-game.component.html',
   styleUrls: ['./create-game.component.scss']
 })

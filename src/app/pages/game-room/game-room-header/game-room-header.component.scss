@@ -1,5 +1,11 @@
 @import '../../../shared/custom-styles/variables';
 
+:host {
+  display: block;
+  position: relative;
+  z-index: 10; // Por encima de la tabla
+}
+
 .header {
   padding: 1rem;
   text-align: center;
