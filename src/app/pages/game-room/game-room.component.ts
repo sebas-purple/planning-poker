@@ -115,7 +115,7 @@ export class GameRoomComponent implements OnInit {
     // Reiniciar el estado
     this.isRevealed = false;
     if (this.currentGame) {
-      this.currentGame.selectedCards = {};
+      this.gameService.resetGame();
     }
   }
 }
