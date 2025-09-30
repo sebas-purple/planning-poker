@@ -113,3 +113,23 @@ para saber tomar una decisión sobre que puntaje elegir
 5. se visualiza el puntaje promedio de la votación, los espectadores no se tienen en cuenta para este puntaje promedio
 
 ---
+
+# Historia de Usuario 6
+
+**Rol:** administrador
+
+**Historia de Usuario:**  
+Reiniciar la partida
+
+**Descripción:**  
+Yo como usuario administrador de planning poker
+necesito poder reinciar la partida
+para volver a elegir nuevas cartas con todos los jugadores
+
+**Criterios de aceptación:**
+
+1. solo el rol administrador puede reiniciar la partida
+2. todos los jugadores y espectadores se les pone la partida por defecto
+3. los jugadores pueden volver a votar, y el adminitrador puede volver a revelear las cartas
+
+---
