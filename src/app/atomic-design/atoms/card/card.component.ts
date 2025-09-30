@@ -16,7 +16,7 @@ export class CardComponent {
 
   @Input() isSelected: boolean = false;
   @Input() isRevealed: boolean = false;
-  @Input() isClickable: boolean = true;
+  @Input() isClickable: boolean = false;
 
   @Output() cardClick = new EventEmitter<boolean>();
 

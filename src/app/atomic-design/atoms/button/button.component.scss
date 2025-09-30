@@ -44,4 +44,26 @@
       background-color: darken(#6429cd, 10%);
     }
   }
+
+  &--tertiary {
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid $color-white;
+    font-size: $font-size-small;
+    font-weight: $font-weight-medium;
+
+    &--disabled,
+    &:disabled {
+      background-color: $color-disabled;
+      cursor: not-allowed;
+      color: $color-white;
+      opacity: $opacity-disabled;
+    }
+
+    &:hover {
+      color: grey;
+      border: 1px solid grey;
+
+    }
+  }
 }

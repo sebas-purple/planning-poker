@@ -11,6 +11,7 @@ import { CheckboxLabelComponent } from "src/app/atomic-design/molecules/checkbox
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
+import { DialogType } from 'src/app/shared/types/_types';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -32,6 +33,7 @@ export class GameRoomCreateUserComponent {
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
   showDialog: boolean = true;
+  dialogType: DialogType = "primary";
 
   gameRoomForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()]),

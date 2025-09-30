@@ -1,3 +1,32 @@
 <header class="header">
-  <a-typography [text]="textHeader"></a-typography>
+  <div class="header-item">
+    <img [src]="srcImage" [alt]="alt" [ngClass]="'image--' + sizeImage" />
+  </div>
+  <div class="header-item">
+    <a-typography [text]="textHeader"></a-typography>
+  </div>
+  <div class="header-item">
+    <a-card [text]="textCard" [type]="typeCard"></a-card>
+    <a-button
+      [text]="textButton"
+      [type]="typeButton"
+      (click)="handleButtonInvitePlayersClick()"
+    ></a-button>
+  </div>
 </header>
+
+<a-dialog [showDialog]="showDialog" [type]="typeDialog" [title]="titleDialog">
+  <div class="dialog-content">
+    <input
+      type="text"
+      placeholder="https://planningpokerapp.com/rooms/voucoduQcPqvE7"
+      class="input"
+      [readonly]="true"
+    />
+    <a-button
+      [text]="textButtonDialog"
+      [type]="typeButtonDialog"
+      (click)="handleButtonDialogCopyLinkClick()"
+    ></a-button>
+  </div>
+</a-dialog>
