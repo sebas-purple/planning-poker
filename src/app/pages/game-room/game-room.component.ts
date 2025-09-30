@@ -4,7 +4,6 @@ import { ViewMode } from 'src/app/core/enums/view-mode.enum';
 import { UserService } from 'src/app/services/user.service';
 import { GameService } from 'src/app/services/game.service';
 import { CardPoolService } from 'src/app/services/card-pool.service';
-import { CreateUserComponent } from 'src/app/atomic-design/organisms/create-user/create-user.component';
 import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
 import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { TableComponent } from "src/app/atomic-design/atoms/table/table.component";
@@ -20,7 +19,7 @@ import { GameRoomCreateUserComponent } from "./game-room-create-user/game-room-c
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, CreateUserComponent, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent, GameRoomCreateUserComponent],
+  imports: [CommonModule, TypographyComponent, TableComponent, CardComponent, CardLabelComponent, ButtonComponent, GameRoomCreateUserComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })
@@ -38,9 +37,6 @@ export class GameRoomComponent implements OnInit {
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
 
-  // para manejar el overlay
-  currentUser: User | null = this.userService.getCurrentUser;
-
   // para manejar el game room
   currentGame: Game | null = this.gameService.getCurrentGame;
   textHeader: string = this.currentGame?.name || "";
@@ -51,27 +47,6 @@ export class GameRoomComponent implements OnInit {
 
   ngOnInit(): void {
     this.cards = this.cardPoolService.getCards;
-  }
-
-  handleCreateUser(event: {name: string, viewMode: ViewMode}) {
-    try {
-      const newUser = this.userService.createUser(event.name, event.viewMode);
-      this.gameService.setGameOwner(newUser.id);
-      this.gameService.addPlayer(newUser);
-
-      // todo: se usa para pruebas, eliminar luego de implementar
-      this.gameService.addMockPlayers();
-
-      // todo: se usa para pruebas, eliminar luego de implementar
-      this.gameService.addMockSelectedCardsToSelectedCards();
-
-      this.currentUser = newUser;
-
-      console.log('Usuario creado exitosamente:', newUser);
-      console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
-    }
   }
 
   onCardSelected(cardId: string, isSelected: boolean): void {
@@ -88,6 +63,7 @@ export class GameRoomComponent implements OnInit {
   // para manejar el boton
   textButtonRevealCards: string = "Revelar cartas";
   typeButtonRevealCards: ButtonType = "secondary";
+  textButtonNewVoting: string = "Nueva votación";
 
   isRevealed: boolean = false;
 

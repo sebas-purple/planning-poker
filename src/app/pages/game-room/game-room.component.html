@@ -18,8 +18,8 @@
           <!-- Botón Nueva votación solo visible si las cartas están reveladas -->
           <a-button
             *ngIf="isRevealed"
-            [text]="'Nueva votación'"
-            [type]="'primary'"
+            [text]="textButtonNewVoting"
+            [type]="typeButtonRevealCards"
             (click)="startNewVoting()"
           ></a-button>
         </ng-container>
@@ -70,7 +70,9 @@
           *ngFor="let card of cards"
           [text]="card.text"
           [isSelected]="
-            gameService.getPlayerSelectedCard(currentUser?.id || '') === card.id
+            gameService.getPlayerSelectedCard(
+              userService.getCurrentUser?.id || ''
+            ) === card.id
           "
           (cardClick)="onCardSelected(card.id, $event)"
           [isClickable]="true"
@@ -109,7 +111,7 @@
   </div>
 </div>
 
-<div class="overlay" *ngIf="!userService.getCurrentUser">
+<!-- <div class="overlay" *ngIf="!userService.getCurrentUser">
   <o-create-user
     [textLabel]="textLabel"
     [textLabeljugador]="textLabeljugador"
@@ -120,7 +122,7 @@
     [espectador]="espectador"
     (formSubmit)="handleCreateUser($event)"
   ></o-create-user>
-</div>
+</div> -->
 
 <!-- 
 <o-create-user
@@ -135,4 +137,4 @@
   (formSubmit)="handleCreateUser($event)"
 ></o-create-use -->
 
-<!-- <app-game-room-create-user></app-game-room-create-user> -->
+<app-game-room-create-user></app-game-room-create-user>
