@@ -1,0 +1,95 @@
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    max-height: 600px;
+  
+    .table-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .players-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 800px;
+      height: 400px;
+      transform: translate(-50%, -50%);
+    }
+  
+    .player-slot {
+      position: absolute;
+      transform-origin: center center;
+      width: 80px;
+      display: flex;
+      justify-content: center;
+  
+      &:nth-child(5) { top: -10px; left: 50%; transform: translateX(-50%); }
+      &:nth-child(4) { top: -10px; right: 30%; }
+      &:nth-child(3) { top: 50%; right: 115px; transform: translateY(-50%); }
+      &:nth-child(2) { bottom: -10px; right: 30%; }
+      &:nth-child(1) { bottom: -10px; left: 50%; transform: translateX(-50%); }
+      &:nth-child(8) { bottom: -10px; left: 30%; }
+      &:nth-child(7) { top: 50%; left: 115px; transform: translateY(-50%); }
+      &:nth-child(6) { top: -10px; left: 30%; }
+    }
+  
+    .player-card {
+      display: block;
+    }
+  }
+  
+  
+  
+  .table {
+    width: 350px;
+    height: 170px;
+    border-radius: 200px;
+    border: 1px solid #6429cd;
+    position: relative;
+    margin: 40px;
+    box-shadow: 0px 0px 30px 1px rgba(187, 101, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    > * {
+      z-index: 10;
+    }
+  
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border: 2px solid #bdbdff;
+        border-radius: 200px;
+        opacity: 0.5;
+    }
+  
+    &::after {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        border: 2px solid #7444d6;
+        border-radius: 200px;
+        opacity: 0.3;
+    box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4), 0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
+  
+    }
+  }

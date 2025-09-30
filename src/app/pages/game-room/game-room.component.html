@@ -2,57 +2,6 @@
   <a-typography [text]="textHeader"></a-typography>
 </header>
 
-<div class="content">
-  <div class="table-container">
-    <div class="table">
-      <ng-container *ngIf="isButtonRevealCardsVisible()">
-        <a-button
-          *ngIf="!isRevealed"
-          [text]="textButtonRevealCards"
-          [type]="typeButtonRevealCards"
-          (click)="revealCards()"
-        ></a-button>
-
-        <!-- Botón Nueva votación solo visible si las cartas están reveladas -->
-        <a-button
-          *ngIf="isRevealed"
-          [text]="textButtonNewVoting"
-          [type]="typeButtonRevealCards"
-          (click)="startNewVoting()"
-        ></a-button>
-      </ng-container>
-    </div>
-    <div class="players-container">
-      <div class="player-slot" *ngFor="let player of players">
-        <ng-container *ngIf="player.viewMode === 'espectador'; else playerView">
-          <m-card-label
-            [text]="player.name.slice(0, 2).toUpperCase()"
-            [cardtype]="'viewer'"
-            [labelText]="player.name"
-            [labelType]="'small'"
-            class="player-card"
-          ></m-card-label>
-        </ng-container>
-        <ng-template #playerView>
-          <!-- solo pasar el texto si isRevealed es true -->
-          <m-card-label
-            [cardtype]="'player'"
-            [labelText]="player.name"
-            [labelType]="'small'"
-            [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
-            [isRevealed]="isRevealed"
-            [text]="
-              isRevealed
-                ? gameService.getPlayerSelectedCard(player.id) || ''
-                : ''
-            "
-            class="player-card"
-          ></m-card-label>
-        </ng-template>
-      </div>
-    </div>
-  </div>
-</div>
-
+<app-game-room-table></app-game-room-table>
 <app-game-room-footer></app-game-room-footer>
 <app-game-room-create-user></app-game-room-create-user>

@@ -9,6 +9,7 @@ import { ViewMode } from '../core/enums/view-mode.enum';
 })
 export class GameService {
   private currentGame: Game | null = null;
+  private isRevealed: boolean = false;
 
   constructor() { }
 
@@ -203,5 +204,21 @@ export class GameService {
     if (this.currentGame) {
       this.currentGame.selectedCards = {};
     }
+  }
+
+  // Getter para isRevealed
+  get getIsRevealed(): boolean {
+    return this.isRevealed;
+  }
+
+  // Revelar cartas
+  revealCards(): void {
+    this.isRevealed = true;
+  }
+
+  // Iniciar nueva votación
+  startNewVoting(): void {
+    this.isRevealed = false;
+    this.resetGame();
   }
 }

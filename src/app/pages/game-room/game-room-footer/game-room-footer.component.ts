@@ -20,11 +20,13 @@ export class GameRoomFooterComponent implements OnInit {
   protected readonly gameService: GameService = inject(GameService);
   private readonly cardPoolService: CardPoolService = inject(CardPoolService);
 
-  isRevealed: boolean = false;
-
   textFooter: string = "Elije una carta 👇";
   textFooterType: TypographyType = "subtitle";
   cards: Card[] = [];
+
+  get isRevealed(): boolean {
+    return this.gameService.getIsRevealed;
+  }
 
   ngOnInit(): void {
     this.cards = this.cardPoolService.getCards;
