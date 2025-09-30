@@ -197,4 +197,11 @@ export class GameService {
 
     return count > 0 ? Number((sum / count).toFixed(1)) : 0;
   }
+
+  // reiniciar la partida
+  resetGame(): void {
+    if (this.currentGame) {
+      this.currentGame.selectedCards = {};
+    }
+  }
 }
