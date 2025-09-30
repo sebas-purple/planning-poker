@@ -9,5 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./container.component.scss']
 })
 export class ContainerComponent {
-
+  
 }

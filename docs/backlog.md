@@ -133,3 +133,22 @@ para volver a elegir nuevas cartas con todos los jugadores
 3. los jugadores pueden volver a votar, y el adminitrador puede volver a revelear las cartas
 
 ---
+
+# Historia de Usuario 7
+
+**Rol:** administrador
+
+**Historia de Usuario:**  
+Invitar participantes por medio de un link
+
+**Descripción:**  
+Yo como usuario administrador de planning poker
+necesito poder generar un link
+para invitar a otros usuarios, y asi tener un puntaje mas certero
+
+**Criterios de aceptación:**
+
+1. generar un link para invitar a otros usuarios
+2. boton para copiarlo de forma rapida
+
+---

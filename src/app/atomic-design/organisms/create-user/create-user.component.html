@@ -1,4 +1,4 @@
-<a-container>
+<a-dialog [showDialog]="showDialog">
   <form class="form" [formGroup]="gameRoomForm">
     <m-input-label
       [text]="textLabel"
@@ -32,5 +32,5 @@
       [disabled]="gameRoomForm.invalid"
       (click)="handleSubmit()"
     ></a-button>
-  </form>
-</a-container>
+  </form> </a-dialog
+>>

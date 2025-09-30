@@ -9,11 +9,12 @@ import { LabelType } from '../../atoms/label/label.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { ViewMode } from 'src/app/core/enums/view-mode.enum';
+import { DialogComponent } from "../../atoms/dialog/dialog.component";
 
 @Component({
   selector: 'o-create-user',
   standalone: true,
-  imports: [CommonModule, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, ContainerComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, ButtonComponent, ReactiveFormsModule, DialogComponent],
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.scss']
 })
@@ -25,7 +26,8 @@ export class CreateUserComponent {
   @Input() labelType: LabelType = "small";
   @Input() jugador: ViewMode = ViewMode.jugador;
   @Input() espectador: ViewMode = ViewMode.espectador;
-  
+  @Input({required: true}) showDialog!: boolean;
+
   @Output() formSubmit = new EventEmitter<{name: string, viewMode: ViewMode}>();
 
   messageError = "";
