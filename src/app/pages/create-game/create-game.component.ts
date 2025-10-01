@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
-import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
+import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { GameService } from 'src/app/services/game.service';
 import { Router } from '@angular/router';
 import { ImageSize } from 'src/app/shared/types/_types';
@@ -25,6 +25,7 @@ export class CreateGameComponent {
   textLabel: string = "Nombra la partida";
   textButton: string = "Crear partida";
   textHeader: string = "Crear partida";
+  typeTypography: TypographyType = "title";
   srcImage: string = "assets/logo/isotipo_blanco.svg";
   alt: string = "isotipo";
   sizeImage: ImageSize = "small";

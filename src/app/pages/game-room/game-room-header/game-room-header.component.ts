@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from 'src/app/services/game.service';
-import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
+import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { ButtonComponent, ButtonType } from "src/app/atomic-design/atoms/button/button.component";
 import { CardComponent, CardType } from "src/app/atomic-design/atoms/card/card.component";
 import {  DialogType, ImageSize } from 'src/app/shared/types/_types';
 import { UserService } from 'src/app/services/user.service';
 import { DialogComponent } from "src/app/atomic-design/atoms/dialog/dialog.component";
-import { User } from 'src/app/core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room-header',
@@ -25,6 +24,7 @@ export class GameRoomHeaderComponent {
   sizeImage: ImageSize = "small";
 
   textHeader: string = this.gameService.getCurrentGame?.name || "";
+  typeTypography: TypographyType = "title";
 
   typeCard: CardType = "profile";
 
