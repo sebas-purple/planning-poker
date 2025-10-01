@@ -8,8 +8,8 @@
   font-weight: $font-weight-bold;
 
   &--choice {
-    width: $xxlarge;
-    height: $xxxxxlarge;
+    width: 2.2rem;
+    height: 3.7rem;
     box-shadow: 0px 0px 15px 2px rgba(255, 255, 255, 0.1);
     color: $color-white;
     font-size: $font-size-base;
@@ -27,7 +27,7 @@
 
   &--player {
     width: $xlarge;
-    height: $xxxxlarge;
+    height: 2.7rem;
     border: 1px solid $color-octonary;
     border-radius: $base;
 

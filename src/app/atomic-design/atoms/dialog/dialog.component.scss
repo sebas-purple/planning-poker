@@ -1,4 +1,4 @@
-@import '../../../shared/custom-styles/variables';
+@import "../../../shared/custom-styles/variables";
 
 .dialog-background {
   position: fixed;
@@ -15,12 +15,12 @@
 }
 
 .dialog-body {
-
   &--primary {
-    background-color: $color-tertiary;
+    background-color: $color-background-secondary;
     border-radius: $border-radius-container;
     border: 1px solid $border-color-primary;
-    box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4), 0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
+    box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4),
+      0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
     width: 450px;
     height: 250px;
     display: flex;
@@ -28,19 +28,18 @@
     justify-content: center;
     align-items: center;
   }
-
 }
-
 
 .dialog-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: $color-tertiary;
+  background-color: $color-background-secondary;
   border-radius: $border-radius-container;
   border: 1px solid $border-color-primary;
-  box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4), 0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
+  box-shadow: 0px 0px 10px 1px rgba(187, 101, 255, 0.4),
+    0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
   overflow: hidden;
   width: 500px;
 }
