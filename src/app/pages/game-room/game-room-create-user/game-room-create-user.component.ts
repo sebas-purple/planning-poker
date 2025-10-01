@@ -37,10 +37,9 @@ export class GameRoomCreateUserComponent {
 
   gameRoomForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()]),
-    selectedOption: new FormControl("", [Validators.required])
-  });
 
-  messageError: string = "";
+    selectedOption: new FormControl(this.jugador, [Validators.required])
+  });
 
   handleSubmit() {
     if (this.gameRoomForm.valid) {
@@ -49,9 +48,13 @@ export class GameRoomCreateUserComponent {
       const viewMode = this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
       
       try {
-        // se crea el usuario como propietario
+        // se crea el usuario de forma local como propietario
         const newUser = this.userService.createUser(newName, viewMode);
+
+        // se setea el usuario como propietario de la partida
         this.gameService.setGameOwner(newUser.id);
+
+        // se agrega el usuario a la partida
         this.gameService.addPlayer(newUser);
   
         // todo: se usa para pruebas, eliminar luego de implementar
@@ -59,33 +62,41 @@ export class GameRoomCreateUserComponent {
   
         // todo: se usa para pruebas, eliminar luego de implementar
         this.gameService.addMockSelectedCardsToSelectedCards();
+
+        this.gameRoomForm.reset();
+        this.showDialog = false;
   
         console.log('Usuario creado exitosamente:', newUser);
         console.log('Partida creada exitosamente:', this.gameService.getCurrentGame);
       } catch (error) {
         console.error('Error al crear usuario:', error);
       }
-    
-      this.gameRoomForm.reset();
-      this.messageError = "";
-      this.showDialog = false;
+  
     } else {
-      const errors = this.gameRoomForm.controls.name.errors;
-      if (errors) {
-        if (errors['specialChars'] || errors['required']) {
-          this.messageError = errors['message'];
-          return;
-        } else {
-          const errorKey = Object.keys(errors)[0];
-          this.messageError = errors[errorKey].message;
-          return;
-        }
-      }
-      
-      if (!this.gameRoomForm.value.selectedOption) {
-        this.messageError = "Debes seleccionar un modo de visualización";
+      console.log('Formulario inválido al crear usuario');
+    } 
+  }
+
+  get messageError(): string {
+    const errors = this.gameRoomForm.controls.name.errors;
+    if (errors) {
+      if (errors['specialChars'] || errors['required']) {
+        return errors['message'];
+      } else {
+        const errorKey = Object.keys(errors)[0];
+        return errors[errorKey].message;
       }
     }
+    return "";
+  }
+
+  get isFormInvalid(): boolean {
+    return this.gameRoomForm.invalid;
+  }
+
+  get hasNameInput(): boolean {
+    const value = this.gameRoomForm.controls.name.value;
+    return (value ?? '').length > 0;
   }
 
 }

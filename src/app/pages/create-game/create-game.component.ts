@@ -29,46 +29,50 @@ export class CreateGameComponent {
   alt: string = "isotipo";
   sizeImage: ImageSize = "small";
 
-  // para manejar el formulario
   createGameForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()])
   })
 
-  // para manejar validaciones
-  messageError: string = "";
-
   handleSubmit() {
     if (this.createGameForm.valid) {
       const name = this.createGameForm.value.name?.trim() || '';
-      
       try {
         const newName = name.charAt(0).toUpperCase() + name.slice(1);
         const newGame = this.gameService.createGame(newName);
-
+  
         console.log('Partida creada exitosamente:', newGame);
-
+  
         // resetear el formulario
         this.createGameForm.reset();
-        this.messageError = "";
-
+  
         this.router.navigate(['/game-room']);
       } catch (error) {
-        this.messageError = "Error al crear la partida";
         console.error('Error al crear partida:', error);
       }
-
     } else {
-      const errors = this.createGameForm.controls.name.errors;
-      if (errors) {
-        if (errors['specialChars'] || errors['required']) {
-          this.messageError = errors['message'];
-          return;
-        } else {
-          const errorKey = Object.keys(errors)[0];
-          this.messageError = errors[errorKey].message;
-          return;
-        }
+      console.log('Formulario inválido al crear partida');
+    }
+  }
+
+  get messageError(): string {
+    const errors = this.createGameForm.controls.name.errors;
+    if (errors) {
+      if (errors['specialChars'] || errors['required']) {
+        return errors['message'];
+      } else {
+        const errorKey = Object.keys(errors)[0];
+        return errors[errorKey].message;
       }
     }
+    return "";
+  }
+
+  get isFormInvalid(): boolean {
+    return this.createGameForm.invalid;
+  }
+
+  get hasNameInput(): boolean {
+    const value = this.createGameForm.controls.name.value;
+    return (value ?? '').length > 0;
   }
 }

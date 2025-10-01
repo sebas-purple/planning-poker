@@ -22,7 +22,7 @@
     </div>
 
     <a-typography
-      *ngIf="messageError"
+      *ngIf="isFormInvalid && hasNameInput"
       [text]="messageError"
       [type]="'error'"
     ></a-typography>

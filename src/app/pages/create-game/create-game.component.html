@@ -10,8 +10,9 @@
       [formControl]="createGameForm.controls.name"
     ></m-input-label>
 
+    <!-- mostrar mensaje de error si el formulario es invalido y a puesto al menos un caracter-->
     <a-typography
-      *ngIf="messageError"
+      *ngIf="isFormInvalid && hasNameInput"
       [text]="messageError"
       [type]="'error'"
     ></a-typography>
