@@ -1,4 +1,4 @@
-@import '../../../shared/custom-styles/variables';
+@import "../../../shared/custom-styles/variables";
 
 .button {
   padding: $base $xlarge;
@@ -60,7 +60,6 @@
     &:hover {
       color: #acacac;
       border: 1px solid #acacac;
-
     }
   }
 }

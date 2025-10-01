@@ -2,8 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameService } from 'src/app/services/game.service';
 import { UserService } from 'src/app/services/user.service';
-import { ButtonType } from 'src/app/shared/types/_types';
-import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
+import { ButtonComponent, ButtonType } from "src/app/atomic-design/atoms/button/button.component";
 import { CardLabelComponent } from "src/app/atomic-design/molecules/card-label/card-label.component";
 import { User } from 'src/app/core/interfaces/user.interface';
 

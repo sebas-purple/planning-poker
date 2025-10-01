@@ -1,19 +1,18 @@
-@import '../../../shared/custom-styles/variables';
+@import "../../../shared/custom-styles/variables";
 
-// el diseño quiero que sea una tarjeta de planning poker
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: $font-weight-bold;
 
   &--choice {
     width: $xxlarge;
     height: $xxxxxlarge;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     box-shadow: 0px 0px 15px 2px rgba(255, 255, 255, 0.1);
     color: $color-white;
     font-size: $font-size-base;
-    font-weight: $font-weight-bold;
     font-family: $font-family;
     border: 1px solid $color-primary;
     border-radius: $base;
@@ -50,15 +49,11 @@
       box-shadow: none;
     }
   }
-  
+
   &--viewer {
     width: $xxxlarge;
     height: $xxxlarge;
     border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     color: $color-background-primary;
     font-size: $font-size-base;
     font-family: $font-family;
@@ -71,10 +66,6 @@
     height: 1.8rem;
     font-size: $font-size-small;
     border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     color: $color-background-primary;
     font-family: $font-family;
     font-weight: $font-weight-bold;
@@ -85,4 +76,3 @@
     cursor: pointer;
   }
 }
-    
