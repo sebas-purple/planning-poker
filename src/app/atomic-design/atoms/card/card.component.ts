@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type CardType = 'choice' | 'player' | 'viewer';
+export type CardType = 'choice' | 'player' | 'viewer' | 'profile';
 
 @Component({
   selector: 'a-card',

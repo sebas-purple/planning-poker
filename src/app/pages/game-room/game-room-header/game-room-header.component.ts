@@ -7,6 +7,7 @@ import { CardComponent, CardType } from "src/app/atomic-design/atoms/card/card.c
 import { ButtonType, DialogType, ImageSize } from 'src/app/shared/types/_types';
 import { UserService } from 'src/app/services/user.service';
 import { DialogComponent } from "src/app/atomic-design/atoms/dialog/dialog.component";
+import { User } from 'src/app/core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room-header',
@@ -23,17 +24,14 @@ export class GameRoomHeaderComponent {
   alt: string = "isotipo";
   sizeImage: ImageSize = "small";
 
-  // el nombre se pasa al inicio cuando no hay nombre y se muestra de nombre "", deberia esperar que se cree el usuario apra poder recibir el nombre y mostrarlo, ayudame
-  // ngOnInit(): void {
-  //   this.userService.getCurrentUser().subscribe((user) => {
-  //     this.textHeader = user.name;
-  //   });
-  // }
   textHeader: string = this.gameService.getCurrentGame?.name || "";
 
-  typeCard: CardType = "viewer";
+  typeCard: CardType = "profile";
 
-  textCard: string = this.userService.getCurrentUser?.name.slice(0, 2).toUpperCase() || "";
+
+  get textCard(): string {
+    return this.userService.getCurrentUser?.name?.slice(0, 2).toUpperCase() || "";
+  }
   textButton: string = "Invitar jugadores";
   typeButton: ButtonType = "tertiary";
 

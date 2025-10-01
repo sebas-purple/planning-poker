@@ -17,5 +17,4 @@ import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.compo
   styleUrls: ['./game-room.component.scss']
 })
 export class GameRoomComponent  {
-
 }

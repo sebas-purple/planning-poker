@@ -4,36 +4,37 @@
 .card {
 
   &--choice {
-    width: 37px;
-    height: 65px;
+    width: $xxlarge;
+    height: $xxxxxlarge;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 0px 50px 5px rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 0px 15px 2px rgba(255, 255, 255, 0.1);
     color: $color-white;
-    font-size: $font-size-large;
+    font-size: $font-size-base;
+    font-weight: $font-weight-bold;
     font-family: $font-family;
-    border: 1px solid #bc91ff;
-    border-radius: $border-radius-small;
+    border: 1px solid $color-primary;
+    border-radius: $base;
 
     &.card--selected {
-      background-color: #8B5CF6;
+      background-color: $color-septenary;
       transform: translateY(-5px);
-      box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
-      color: $color-primary;
+      box-shadow: 0px 0px 10px 2px rgba($color-secondary, 0.5);
+      color: $color-background-primary;
     }
   }
 
   &--player {
-    width: 30px;
-    height: 60px;
-    border: 1px solid #bb65ff;
-    border-radius: $border-radius-small;
+    width: $xlarge;
+    height: $xxxxlarge;
+    border: 1px solid $color-octonary;
+    border-radius: $base;
 
     &.card--selected {
-      background-color: #8B5CF6;
-      box-shadow: 0px 4px 20px rgba(139, 92, 246, 0.5);
+      background-color: $color-octonary;
+      box-shadow: 0px 4px 20px rgba($color-octonary, 0.5);
     }
 
     &.card--revealed {
@@ -43,24 +44,41 @@
       align-items: center;
       color: $color-white;
       font-size: $font-size-small;
+      font-weight: $font-weight-bold;
       font-family: $font-family;
+      background-color: transparent;
+      box-shadow: none;
     }
   }
   
-//   quiero que sea un circulo
   &--viewer {
-    width: 50px;
-    height: 50px;
+    width: $xxxlarge;
+    height: $xxxlarge;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: $color-primary;
-    font-size: $font-size-large;
+    color: $color-background-primary;
+    font-size: $font-size-base;
     font-family: $font-family;
     font-weight: $font-weight-bold;
-    background-color: #bdbdff;
+    background-color: $color-quinary;
+  }
+
+  &--profile {
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: $font-size-small;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: $color-background-primary;
+    font-family: $font-family;
+    font-weight: $font-weight-bold;
+    background-color: $color-quinary;
   }
 
   &--clickable {
