@@ -20,6 +20,11 @@ export class InputComponent implements ControlValueAccessor {
   @Input() type: string = "text";
   @Input({required: true}) formControl: FormControl = new FormControl("");
 
+  // label para el input
+  @Input({required: true}) label!: string;
+  // error para el input
+  @Input() error: string = "";
+
   onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
 

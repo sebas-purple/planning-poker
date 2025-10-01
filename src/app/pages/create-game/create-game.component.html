@@ -5,17 +5,11 @@
 
 <div class="content">
   <form class="form" [formGroup]="createGameForm">
-    <m-input-label
-      [text]="textLabel"
+    <a-input
+      [label]="textLabel"
       [formControl]="createGameForm.controls.name"
-    ></m-input-label>
-
-    <!-- mostrar mensaje de error si el formulario es invalido y a puesto al menos un caracter-->
-    <a-typography
-      *ngIf="isFormInvalid && hasNameInput"
-      [text]="messageError"
-      [type]="'error'"
-    ></a-typography>
+      [error]="hasNameInput ? messageError : ''"
+    ></a-input>
 
     <a-button
       [text]="textButton"

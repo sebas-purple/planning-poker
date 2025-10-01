@@ -1,9 +1,10 @@
 <a-dialog [showDialog]="showDialog" [type]="dialogType">
   <form class="form" [formGroup]="gameRoomForm">
-    <m-input-label
-      [text]="textLabel"
+    <a-input
+      [label]="textLabel"
       [formControl]="gameRoomForm.controls.name"
-    ></m-input-label>
+      [error]="hasNameInput ? messageError : ''"
+    ></a-input>
 
     <div class="checkbox-container">
       <m-checkbox-label
@@ -20,12 +21,6 @@
         [formControl]="gameRoomForm.controls.selectedOption"
       ></m-checkbox-label>
     </div>
-
-    <a-typography
-      *ngIf="isFormInvalid && hasNameInput"
-      [text]="messageError"
-      [type]="'error'"
-    ></a-typography>
 
     <a-button
       [text]="textButton"

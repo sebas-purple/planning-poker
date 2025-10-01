@@ -12,11 +12,12 @@ import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typo
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { LabelType } from 'src/app/atomic-design/atoms/label/label.component';
 import { DialogType } from 'src/app/shared/types/_types';
+import { InputComponent } from "src/app/atomic-design/atoms/input/input.component";
 
 @Component({
   selector: 'app-game-room-create-user',
   standalone: true,
-  imports: [CommonModule, DialogComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, DialogComponent, InputLabelComponent, CheckboxLabelComponent, TypographyComponent, ButtonComponent, ReactiveFormsModule, InputComponent],
   templateUrl: './game-room-create-user.component.html',
   styleUrls: ['./game-room-create-user.component.scss']
 })
@@ -88,10 +89,6 @@ export class GameRoomCreateUserComponent {
       }
     }
     return "";
-  }
-
-  get isFormInvalid(): boolean {
-    return this.gameRoomForm.invalid;
   }
 
   get hasNameInput(): boolean {
