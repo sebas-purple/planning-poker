@@ -1,0 +1,15 @@
+<div class="content">
+  <form class="form" [formGroup]="createGameForm">
+    <a-input
+      [label]="textLabel"
+      [formControl]="createGameForm.controls.name"
+      [error]="hasNameInput ? messageError : ''"
+    ></a-input>
+
+    <a-button
+      [text]="textButton"
+      [disabled]="createGameForm.invalid"
+      (click)="handleSubmit()"
+    ></a-button>
+  </form>
+</div>

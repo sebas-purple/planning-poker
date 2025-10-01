@@ -77,6 +77,11 @@ export class GameService {
     return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length === this.currentGame.players.length : false;
   }
 
+  // metodo para verificar si almenos un jugador ha seleccionado carta
+  hasAtLeastOnePlayerSelectedCard(): boolean {
+    return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length > 0 : false;
+  }
+
 
   addMockPlayers(): void {
     const mockPlayers = this.generateMockPlayers();

@@ -35,22 +35,9 @@ export class GameRoomHeaderComponent {
   textButton: string = "Invitar jugadores";
   typeButton: ButtonType = "tertiary";
 
-  
-  // showDialog: boolean = false;
-  // typeDialog: DialogType = "secondary";
-  // titleDialog: string = "Invitar jugadores";
-
-  // textButtonDialog: string = "Copiar link";
-  // typeButtonDialog: ButtonType = "primary";
-
   handleButtonInvitePlayersClick(): void {
     console.log("Botón clickeado");
-    // this.showDialog = true;
   }
 
-  // handleButtonDialogCopyLinkClick(): void {
-  //   console.log("Botón clickeado");
-  //   // copiar el link al portapapeles
-  //   this.showDialog = false;
-  // }
+
 }

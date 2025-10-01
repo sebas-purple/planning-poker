@@ -29,7 +29,7 @@ export class GameRoomTableComponent {
   isButtonRevealCardsVisible(): boolean {
     return this.userService.getCurrentUser?.rol === 'propietario' && 
            this.gameService.isGameOwner(this.userService.getCurrentUser?.id || '') && 
-           this.gameService.hasAllPlayersSelectedCard();
+           this.gameService.hasAtLeastOnePlayerSelectedCard();
   }
 
   revealCards(): void {

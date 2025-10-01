@@ -1,16 +1,10 @@
 <header class="header">
   <div class="header-item">
     <img [src]="srcImage" [alt]="alt" [ngClass]="'image--' + sizeImage" />
-  </div>
-  <div class="header-item">
     <a-typography [text]="textHeader" [type]="typeTypography"></a-typography>
   </div>
+  <div class="header-item"></div>
   <div class="header-item">
-    <a-card [text]="textCard" [type]="typeCard"></a-card>
-    <a-button
-      [text]="textButton"
-      [type]="typeButton"
-      (click)="handleButtonInvitePlayersClick()"
-    ></a-button>
+    <!-- Espacio vacío para mantener la distribución -->
   </div>
 </header>
