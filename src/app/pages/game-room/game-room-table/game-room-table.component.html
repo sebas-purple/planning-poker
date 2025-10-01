@@ -24,7 +24,6 @@
           [text]="player.name.slice(0, 2).toUpperCase()"
           [cardtype]="'viewer'"
           [labelText]="player.name"
-          [labelType]="'small'"
           class="player-card"
         ></m-card-label>
       </ng-container>
@@ -33,7 +32,6 @@
         <m-card-label
           [cardtype]="'player'"
           [labelText]="player.name"
-          [labelType]="'small'"
           [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
           [isRevealed]="isRevealed"
           [text]="

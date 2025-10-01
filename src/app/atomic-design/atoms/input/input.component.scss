@@ -1,25 +1,5 @@
 @import "../../../shared/custom-styles/variables";
 
-.input {
-  padding: 0.6rem $xlarge;
-  border-radius: $xxlarge;
-  background-color: transparent;
-  color: $color-white;
-  border: 1px solid $color-primary;
-  outline: none;
-  font-size: $font-size-base;
-  font-family: $font-family;
-  width: 78%;
-
-  &:focus {
-    box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
-  }
-
-  &:hover {
-    box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
-  }
-}
-
 .input-container {
   display: flex;
   flex-direction: column;
@@ -27,6 +7,26 @@
   gap: $small;
   width: 250px;
   margin-bottom: $xlarge;
+
+  .input {
+    padding: 0.6rem $xlarge;
+    border-radius: $xxlarge;
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid $color-primary;
+    outline: none;
+    font-size: $font-size-base;
+    font-family: $font-family;
+    width: 78%;
+
+    &:focus {
+      box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
+    }
+
+    &:hover {
+      box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
+    }
+  }
 
   .label {
     font-size: $font-size-base;

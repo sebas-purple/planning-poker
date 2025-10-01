@@ -1,6 +1,18 @@
+@import "../../../shared/custom-styles/variables";
 .card-label {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: $small;
+
+  .label {
+    font-size: $font-size-small;
+    color: $color-white;
+    font-family: $font-family;
+
+    &--choice {
+      font-size: $font-size-base;
+    }
+  }
 }
