@@ -4,7 +4,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
 import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
-import { InputLabelComponent } from "src/app/atomic-design/molecules/input-label/input-label.component";
 import { GameService } from 'src/app/services/game.service';
 import { Router } from '@angular/router';
 import { ImageSize } from 'src/app/shared/types/_types';
@@ -14,7 +13,7 @@ import { InputComponent } from "src/app/atomic-design/atoms/input/input.componen
 @Component({
   selector: 'app-create-game',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TypographyComponent, InputLabelComponent, DialogComponent, InputComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, TypographyComponent, DialogComponent, InputComponent],
   templateUrl: './create-game.component.html',
   styleUrls: ['./create-game.component.scss']
 })
