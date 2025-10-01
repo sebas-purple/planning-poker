@@ -35,3 +35,73 @@ $opacity-disabled: 0.4;
 $border-radius-button-rounded: 3.125rem;
 
 $border-color-primary: #bb65ff;
+
+
+
+
+
+// NUEVAS VARIABLES RECOGIDAS DEL FIGMA
+// ¿que variables se usan? solo dime las categorias
+// colors
+$color-background-primary: #350474;
+
+// usado en background, el fondo del dialog
+$color-background-secondary: #1f1236;
+
+$color-primary: #bb65ff;        // usado en bordes de inputs, dialogs, checkboxes, borde card choice
+$color-secondary: #6429cd;      // usado en 1ra linea de la mesa, fondo de boton secondary, circulos de carga de contando votos, bordes y header de dialog para invitar jugadores 
+$color-tertiary: #9377e7;       // usado en 2da linea de la mesa
+$color-quaternary: #7444d6;     // usado en 3ra linea de la mesa
+$color-quinary: #bdbdff;        // usado en card viewer
+$color-senary: #bc92ff;         // usado en borde card player
+$color-septenary: #e4a4ff;      // usado en fondo card choice
+$color-octonary: #ba65ff;       // usado en fondo card viewer
+$color-disabled: #808080;       // usado en disabled
+
+// spacing
+// padding
+$padding-small: 0.25rem;    //  4 px
+$padding-base: 0.5rem;      //  8 px
+$padding-large: 1rem;       //  16 px
+$padding-xlarge: 1.5rem;    //  24 px
+$padding-xxlarge: 2rem;     //  32 px
+$padding-xxxlarge: 2.5rem;  //  40 px
+$padding-xxxxlarge: 3rem;   //  48 px
+
+// margin
+$margin-small: 0.25rem;    //  4 px
+$margin-base: 0.5rem;      //  8 px
+$margin-large: 1rem;       //  16 px
+$margin-xlarge: 1.5rem;    //  24 px
+$margin-xxlarge: 2rem;     //  32 px
+$margin-xxxlarge: 2.5rem;  //  40 px
+$margin-xxxxlarge: 3rem;   //  48 px
+
+// border radius
+$border-radius-small: 0.25rem;      //  4 px
+$border-radius-base: 0.5rem;        //  8 px
+$border-radius-large: 0.6rem;       //  12 px
+$border-radius-xlarge: 1.25rem;     //  20 px
+$border-radius-xxlarge: 1.5rem;     //  24 px
+$border-radius-xxxlarge: 1.75rem;   //  28 px
+$border-radius-xxxxlarge: 2rem;     //  32 px
+
+// typography
+// font size
+$font-size-small: 0.6rem;       //  9 px
+$font-size-base: 0.8rem;        //  12 px
+$font-size-large: 1.2rem;       //  18 px
+$font-size-xlarge: 1.6rem;      //  24 px
+
+// font weight
+$font-weight-small: 400;
+$font-weight-base: 500;
+$font-weight-large: 600;
+
+// font family
+$font-family: 'Poppins', sans-serif;
+
+// opacity
+$opacity-small: 0.2;
+$opacity-base: 0.4;
+$opacity-large: 0.6;
