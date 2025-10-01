@@ -7,15 +7,13 @@ import { nameValidator } from 'src/app/shared/validators/name-validator';
 import { GameService } from 'src/app/services/game.service';
 import { DialogComponent } from "src/app/atomic-design/atoms/dialog/dialog.component";
 import { CheckboxLabelComponent } from "src/app/atomic-design/molecules/checkbox-label/checkbox-label.component";
-import { TypographyComponent } from "src/app/atomic-design/atoms/typography/typography.component";
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
-import { DialogType } from 'src/app/shared/types/_types';
 import { InputComponent } from "src/app/atomic-design/atoms/input/input.component";
 
 @Component({
   selector: 'app-game-room-create-user',
   standalone: true,
-  imports: [CommonModule, DialogComponent, CheckboxLabelComponent, TypographyComponent, ButtonComponent, ReactiveFormsModule, InputComponent],
+  imports: [CommonModule, DialogComponent, CheckboxLabelComponent, ButtonComponent, ReactiveFormsModule, InputComponent],
   templateUrl: './game-room-create-user.component.html',
   styleUrls: ['./game-room-create-user.component.scss']
 })
@@ -31,7 +29,6 @@ export class GameRoomCreateUserComponent {
   jugador: ViewMode = ViewMode.jugador;
   espectador: ViewMode = ViewMode.espectador;
   showDialog: boolean = true;
-  dialogType: DialogType = "primary";
 
   gameRoomForm = new FormGroup({
     name: new FormControl("", [Validators.required, nameValidator()]),

@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
@@ -16,7 +16,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModu
     }
   ]
 })
-export class InputComponent implements ControlValueAccessor {
+export class InputComponent implements ControlValueAccessor, AfterViewInit {
   @Input() type: string = "text";
   @Input({required: true}) formControl: FormControl = new FormControl("");
 
@@ -24,6 +24,10 @@ export class InputComponent implements ControlValueAccessor {
   @Input({required: true}) label!: string;
   // error para el input
   @Input() error: string = "";
+  // propiedad para controlar si el input debe estar enfocado por defecto
+  @Input() autoFocus: boolean = true;
+
+  @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
   onChange: (value: string) => void = () => {};
   onTouched: () => void = () => {};
@@ -38,5 +42,14 @@ export class InputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     //
+  }
+
+  ngAfterViewInit(): void {
+    if (this.autoFocus && this.inputElement) {
+      // Usar setTimeout para asegurar que el DOM esté completamente renderizado
+      setTimeout(() => {
+        this.inputElement.nativeElement.focus();
+      }, 0);
+    }
   }
 }

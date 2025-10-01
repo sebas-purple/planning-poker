@@ -1,12 +1,5 @@
 <div class="dialog-background" *ngIf="showDialog">
   <div class="dialog-content">
-    <div class="dialog-header" *ngIf="type === 'secondary'">
-      <h2>{{ title }}</h2>
-      <button class="close-btn" (click)="closeDialog()">&times;</button>
-    </div>
-
-    <div class="dialog-body">
-      <ng-content></ng-content>
-    </div>
+    <ng-content></ng-content>
   </div>
 </div>

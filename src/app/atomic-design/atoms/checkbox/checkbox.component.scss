@@ -2,8 +2,8 @@
 
 .checkbox {
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 1px solid $color-primary;
   box-shadow: 0px 0px 15px 1px rgba(187, 101, 255, 0.4) inset;
@@ -14,8 +14,8 @@
 
   &:checked::after {
     content: "";
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     background-color: $color-primary;
     border-radius: 50%;
     box-shadow: 0 0 1px 1px $color-primary;

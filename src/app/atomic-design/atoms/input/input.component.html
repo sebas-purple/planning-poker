@@ -1,5 +1,10 @@
 <div class="input-container">
   <label class="label">{{ label }}</label>
-  <input class="input" [type]="type" [formControl]="formControl" />
+  <input
+    #inputElement
+    class="input"
+    [type]="type"
+    [formControl]="formControl"
+  />
   <p *ngIf="error" class="error">{{ error }}</p>
 </div>
