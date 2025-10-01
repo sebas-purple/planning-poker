@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: $font-weight-bold;
 
   &--choice {
     width: 2.2rem;
@@ -33,7 +32,7 @@
 
     &.card--selected {
       background-color: $color-octonary;
-      box-shadow: 0px 4px 20px rgba($color-octonary, 0.5);
+      box-shadow: 0px 0px 3px 2px rgba($color-octonary, 0.1);
     }
 
     &.card--revealed {
@@ -43,7 +42,7 @@
       align-items: center;
       color: $color-white;
       font-size: $font-size-small;
-      font-weight: $font-weight-bold;
+
       font-family: $font-family;
       background-color: transparent;
       box-shadow: none;
@@ -57,7 +56,7 @@
     color: $color-background-primary;
     font-size: $font-size-base;
     font-family: $font-family;
-    font-weight: $font-weight-bold;
+
     background-color: $color-quinary;
   }
 
@@ -68,7 +67,7 @@
     border-radius: 50%;
     color: $color-background-primary;
     font-family: $font-family;
-    font-weight: $font-weight-bold;
+
     background-color: $color-quinary;
   }
 
