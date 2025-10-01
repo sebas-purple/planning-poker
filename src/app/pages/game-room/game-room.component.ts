@@ -8,11 +8,12 @@ import { DialogComponent } from "src/app/atomic-design/atoms/dialog/dialog.compo
 import { PruebasComponent } from "src/app/atomic-design/atoms/pruebas/pruebas.component";
 import { InputComponent } from "src/app/atomic-design/atoms/input/input.component";
 import { ButtonComponent } from "src/app/atomic-design/atoms/button/button.component";
+import { DialogInvitePlayerComponent } from "./components/dialog-invite-player/dialog-invite-player.component";
 
 @Component({
   selector: 'app-game-room',
   standalone: true,
-  imports: [CommonModule, GameRoomCreateUserComponent, GameRoomFooterComponent, GameRoomTableComponent, GameRoomHeaderComponent, DialogComponent, PruebasComponent, InputComponent, ButtonComponent],
+  imports: [CommonModule, GameRoomCreateUserComponent, GameRoomFooterComponent, GameRoomTableComponent, GameRoomHeaderComponent, DialogComponent, PruebasComponent, InputComponent, ButtonComponent, DialogInvitePlayerComponent],
   templateUrl: './game-room.component.html',
   styleUrls: ['./game-room.component.scss']
 })

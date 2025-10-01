@@ -1,0 +1,64 @@
+@import "../../../../shared/custom-styles/variables";
+
+.dialog-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.dialog-content {
+  background: #1f0d3f;
+  border-radius: $large;
+  border: 1px solid $color-secondary;
+  width: 470px;
+  overflow: hidden;
+  box-shadow: 0px 0px 2px 2px rgba($color-primary, 0.1);
+}
+
+/* Header */
+.dialog-header {
+  background: $color-secondary;
+  padding: 12px 19px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 20px;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-white;
+  font-family: $font-family;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: $color-white;
+  font-size: $font-size-xxlarge;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #ddd;
+}
+
+.dialog-body {
+  padding: 16px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.7rem;
+}

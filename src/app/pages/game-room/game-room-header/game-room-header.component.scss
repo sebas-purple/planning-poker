@@ -1,4 +1,4 @@
-@import '../../../shared/custom-styles/variables';
+@import "../../../shared/custom-styles/variables";
 
 :host {
   display: block;
@@ -51,13 +51,21 @@
 }
 
 .input {
-  padding: 0.6rem 1.5rem;
-  border-radius: $border-radius-button-rounded;
+  padding: 0.6rem $large;
+  border-radius: $xxlarge;
   background-color: transparent;
   color: $color-white;
-  border: 1px solid $border-color-primary;
+  border: 1px solid $color-primary;
   outline: none;
-  font-size: 12px;
+  font-size: $font-size-base;
   font-family: $font-family;
-  width: 400px;
+  width: 88%;
+
+  &:focus {
+    box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 5px 1px rgba(187, 101, 255, 0.4) inset;
+  }
 }

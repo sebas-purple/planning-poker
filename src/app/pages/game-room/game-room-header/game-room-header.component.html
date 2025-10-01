@@ -14,3 +14,16 @@
     ></a-button>
   </div>
 </header>
+
+<c-dialog-invite-player
+  [title]="titleDialog"
+  [showDialog]="showDialog"
+  (closeDialog)="handleCloseDialog()"
+>
+  <input class="input" type="text" readonly [value]="placeholderDialog" />
+  <a-button
+    [text]="textButtonDialog"
+    [type]="typeButtonDialog"
+    (click)="handleButtonCopyLinkDialog()"
+  ></a-button>
+</c-dialog-invite-player>

@@ -1,46 +1,9 @@
-// Colors
-// $color-primary: #31016D;
-// $color-secondary: #1F1235;
-$color-tertiary: #1f0d3f;
-// $color-disabled: grey;
-
-// Spacing
-$button-padding-base: 0.5rem 1.5rem;
-$border-radius-small: 0.4rem;
-$border-radius-base: 0.5rem;
-$border-radius-card: 0.6rem;
-$border-radius-container: 1.25rem;
-$margin-base: 0.5rem;
-$margin-small: 0.25rem;
-$margin-large: 1rem; // 16px
-
-// Typography
-// $font-size-small: 0.8rem; // 12px
-// $font-size-base: 1rem; // 16px
-// $font-size-large: 1.2rem; // 18px
-$font-size-xlarge: 1.5rem;
-
-// $font-weight-medium: 500;
-// $font-weight-bold: 600;
-// $font-family: 'Poppins', sans-serif;
-
-// Transitions
-// $transition-base: all 0.2s ease-in-out;
-
-// Opacity
-$opacity-disabled: 0.4;
-
-// Border radius boton redondeado
-$border-radius-button-rounded: 3.125rem;
-
-$border-color-primary: #bb65ff;
-
-// // NUEVAS VARIABLES RECOGIDAS DEL FIGMA
-// // ¿que variables se usan? solo dime las categorias
-// // colors
+// NUEVAS VARIABLES RECOGIDAS DEL FIGMA
+// ¿que variables se usan? solo dime las categorias
+// colors
 $color-background-primary: #350474;
 
-// // usado en background, el fondo del dialog
+// usado en background, el fondo del dialog
 $color-background-secondary: #1f1236;
 
 $color-primary: #bb65ff; // usado en bordes de inputs, dialogs, checkboxes, borde card choice
@@ -54,11 +17,13 @@ $color-octonary: #ba65ff; // usado en fondo card player
 $color-disabled: #808080; // usado en disabled
 $color-white: #fff;
 $color-error: #ff3b3b;
+$color-green: #59ec60;
+$color-black: #000;
 
-// // spacing
-// // padding
-// // margin
-// // border radius
+// spacing
+// padding
+// margin
+// border radius
 
 // medidas para padding, margin y border radius y mas
 $small: 0.25rem; //  4 px
@@ -79,15 +44,15 @@ $font-size-large: 1rem; //  16 px
 $font-size-xlarge: 1.2rem; //  18 px
 $font-size-xxlarge: 1.6rem; //  24 px
 
-// // font weight
+// font weight
 $font-weight-small: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 600;
 
-// // font family
+// font family
 $font-family: "Poppins", sans-serif;
 
-// // opacity
-// $opacity-small: 0.2;
-// $opacity-base: 0.4;
-// $opacity-large: 0.6;
+// opacity
+$opacity-small: 0.2;
+$opacity-base: 0.4;
+$opacity-large: 0.6;

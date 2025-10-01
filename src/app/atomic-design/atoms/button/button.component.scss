@@ -17,7 +17,7 @@
       background-color: $color-disabled;
       cursor: not-allowed;
       color: $color-white;
-      opacity: $opacity-disabled;
+      opacity: $opacity-base;
     }
 
     &:hover {
@@ -33,7 +33,7 @@
       background-color: $color-disabled;
       cursor: not-allowed;
       color: $color-white;
-      opacity: $opacity-disabled;
+      opacity: $opacity-base;
     }
 
     &:hover {
@@ -53,7 +53,29 @@
       background-color: $color-disabled;
       cursor: not-allowed;
       color: $color-white;
-      opacity: $opacity-disabled;
+      opacity: $opacity-base;
+    }
+
+    &:hover {
+      color: #acacac;
+      border: 1px solid #acacac;
+    }
+  }
+
+  &--quaternary {
+    background-color: $color-green;
+    color: $color-black;
+    border: 1px solid $color-green;
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    padding: $small $large;
+    box-shadow: 0 0 10px 5px rgba($color-green, 0.5);
+
+    &:disabled {
+      background-color: $color-disabled;
+      cursor: not-allowed;
+      color: $color-black;
+      opacity: $opacity-base;
     }
 
     &:hover {

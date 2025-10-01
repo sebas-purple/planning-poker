@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type ButtonType = 'primary' | 'secondary' | 'tertiary';
+export type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary';
 
 @Component({
   selector: 'a-button',
