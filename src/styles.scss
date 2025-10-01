@@ -1,10 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import './app/shared/custom-styles/components';
+@import './app/shared/custom-styles/variables';
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at center, #31016D 0%, #1F1235 100%);
+  font-family: $font-family;
+  background: radial-gradient(circle at center, #350474 0%, #1f1236 100%);
   margin: 0;
   padding: 0;
   height: 100%;

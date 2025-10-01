@@ -1,9 +1,9 @@
 // Colors
 $color-primary: #31016D;
-$color-secondary: #1F1235;
+// $color-secondary: #1F1235;
 $color-tertiary: #1f0d3f;
-$color-disabled: grey;
-$color-white: #fff;
+// $color-disabled: grey;
+
 
 // Spacing
 $button-padding-base: 0.50rem 1.5rem;
@@ -16,17 +16,17 @@ $margin-small: 0.25rem;
 $margin-large: 1rem; // 16px
 
 // Typography
-$font-size-small: 0.8rem; // 12px
-$font-size-base: 1rem;
-$font-size-large: 1.2rem;
+// $font-size-small: 0.8rem; // 12px
+// $font-size-base: 1rem; // 16px
+// $font-size-large: 1.2rem; // 18px
 $font-size-xlarge: 1.5rem;
 
-$font-weight-medium: 500;
-$font-weight-bold: 600;
-$font-family: 'Poppins', sans-serif;
+// $font-weight-medium: 500;
+// $font-weight-bold: 600;
+// $font-family: 'Poppins', sans-serif;
 
 // Transitions
-$transition-base: all 0.2s ease-in-out;
+// $transition-base: all 0.2s ease-in-out;
 
 // Opacity
 $opacity-disabled: 0.4;
@@ -40,68 +40,57 @@ $border-color-primary: #bb65ff;
 
 
 
-// NUEVAS VARIABLES RECOGIDAS DEL FIGMA
-// ¿que variables se usan? solo dime las categorias
-// colors
+// // NUEVAS VARIABLES RECOGIDAS DEL FIGMA
+// // ¿que variables se usan? solo dime las categorias
+// // colors
 $color-background-primary: #350474;
 
-// usado en background, el fondo del dialog
+// // usado en background, el fondo del dialog
 $color-background-secondary: #1f1236;
 
-$color-primary: #bb65ff;        // usado en bordes de inputs, dialogs, checkboxes, borde card choice
+// $color-primary: #bb65ff;        // usado en bordes de inputs, dialogs, checkboxes, borde card choice
 $color-secondary: #6429cd;      // usado en 1ra linea de la mesa, fondo de boton secondary, circulos de carga de contando votos, bordes y header de dialog para invitar jugadores 
-$color-tertiary: #9377e7;       // usado en 2da linea de la mesa
-$color-quaternary: #7444d6;     // usado en 3ra linea de la mesa
-$color-quinary: #bdbdff;        // usado en card viewer
-$color-senary: #bc92ff;         // usado en borde card player
-$color-septenary: #e4a4ff;      // usado en fondo card choice
-$color-octonary: #ba65ff;       // usado en fondo card viewer
+// $color-tertiary: #9377e7;       // usado en 2da linea de la mesa
+// $color-quaternary: #7444d6;     // usado en 3ra linea de la mesa
+// $color-quinary: #bdbdff;        // usado en card viewer
+// $color-senary: #bc92ff;         // usado en borde card player
+// $color-septenary: #e4a4ff;      // usado en fondo card choice
+// $color-octonary: #ba65ff;       // usado en fondo card viewer
 $color-disabled: #808080;       // usado en disabled
+$color-white: #fff;
 
-// spacing
-// padding
-$padding-small: 0.25rem;    //  4 px
-$padding-base: 0.5rem;      //  8 px
-$padding-large: 1rem;       //  16 px
-$padding-xlarge: 1.5rem;    //  24 px
-$padding-xxlarge: 2rem;     //  32 px
-$padding-xxxlarge: 2.5rem;  //  40 px
-$padding-xxxxlarge: 3rem;   //  48 px
+// // spacing
+// // padding
+// // margin
+// // border radius
 
-// margin
-$margin-small: 0.25rem;    //  4 px
-$margin-base: 0.5rem;      //  8 px
-$margin-large: 1rem;       //  16 px
-$margin-xlarge: 1.5rem;    //  24 px
-$margin-xxlarge: 2rem;     //  32 px
-$margin-xxxlarge: 2.5rem;  //  40 px
-$margin-xxxxlarge: 3rem;   //  48 px
-
-// border radius
-$border-radius-small: 0.25rem;      //  4 px
-$border-radius-base: 0.5rem;        //  8 px
-$border-radius-large: 0.6rem;       //  12 px
-$border-radius-xlarge: 1.25rem;     //  20 px
-$border-radius-xxlarge: 1.5rem;     //  24 px
-$border-radius-xxxlarge: 1.75rem;   //  28 px
-$border-radius-xxxxlarge: 2rem;     //  32 px
+// medidas para padding, margin y border radius y mas
+$small: 0.25rem;        //  4 px
+$base: 0.4rem;          //  6 px
+$large: 1rem;           //  16 px
+$xlarge: 1.5rem;        //  24 px
+$xxlarge: 2rem;         //  32 px
+$xxxlarge: 2.5rem;      //  40 px
+$xxxxlarge: 3rem;       //  48 px
+$xxxxxxlarge: 3.5rem;   //  56 px
 
 // typography
 // font size
 $font-size-small: 0.6rem;       //  9 px
 $font-size-base: 0.8rem;        //  12 px
-$font-size-large: 1.2rem;       //  18 px
-$font-size-xlarge: 1.6rem;      //  24 px
+$font-size-large: 1rem;         //  16 px
+$font-size-xlarge: 1.2rem;      //  18 px
+$font-size-xxlarge: 1.6rem;     //  24 px
 
-// font weight
+// // font weight
 $font-weight-small: 400;
-$font-weight-base: 500;
-$font-weight-large: 600;
+$font-weight-medium: 500;
+$font-weight-bold: 600;
 
-// font family
+// // font family
 $font-family: 'Poppins', sans-serif;
 
-// opacity
-$opacity-small: 0.2;
-$opacity-base: 0.4;
-$opacity-large: 0.6;
+// // opacity
+// $opacity-small: 0.2;
+// $opacity-base: 0.4;
+// $opacity-large: 0.6;

@@ -23,6 +23,12 @@ export class GameRoomHeaderComponent {
   alt: string = "isotipo";
   sizeImage: ImageSize = "small";
 
+  // el nombre se pasa al inicio cuando no hay nombre y se muestra de nombre "", deberia esperar que se cree el usuario apra poder recibir el nombre y mostrarlo, ayudame
+  // ngOnInit(): void {
+  //   this.userService.getCurrentUser().subscribe((user) => {
+  //     this.textHeader = user.name;
+  //   });
+  // }
   textHeader: string = this.gameService.getCurrentGame?.name || "";
 
   typeCard: CardType = "viewer";

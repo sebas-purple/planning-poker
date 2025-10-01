@@ -1,21 +1,19 @@
 @import '../../../shared/custom-styles/variables';
 
 .button {
-  padding: $button-padding-base;
+  padding: $base $xlarge;
   border: none;
-  border-radius: $border-radius-button-rounded;
-  font-size: $font-size-base;
+  border-radius: $xlarge;
+  font-size: $font-size-large;
   font-weight: $font-weight-bold;
   cursor: pointer;
-  transition: $transition-base;
   font-family: $font-family;
-  margin: $margin-large;
+  margin: $xlarge;
 
   &--primary {
     background-color: $color-white;
-    color: $color-primary;
+    color: $color-background-primary;
 
-    &--disabled,
     &:disabled {
       background-color: $color-disabled;
       cursor: not-allowed;
@@ -24,15 +22,14 @@
     }
 
     &:hover {
-      background-color: darken($color-white, 10%);
+      background-color: darken($color-white, 15%);
     }
   }
 
   &--secondary {
-    background-color: #6429cd;
+    background-color: $color-secondary;
     color: $color-white;
 
-    &--disabled,
     &:disabled {
       background-color: $color-disabled;
       cursor: not-allowed;
@@ -41,7 +38,7 @@
     }
 
     &:hover {
-      background-color: darken(#6429cd, 10%);
+      background-color: darken($color-secondary, 10%);
     }
   }
 
@@ -49,10 +46,10 @@
     background-color: transparent;
     color: $color-white;
     border: 1px solid $color-white;
-    font-size: $font-size-small;
+    font-size: $font-size-base;
     font-weight: $font-weight-medium;
+    padding: $small $large;
 
-    &--disabled,
     &:disabled {
       background-color: $color-disabled;
       cursor: not-allowed;
@@ -61,8 +58,8 @@
     }
 
     &:hover {
-      color: grey;
-      border: 1px solid grey;
+      color: #acacac;
+      border: 1px solid #acacac;
 
     }
   }
