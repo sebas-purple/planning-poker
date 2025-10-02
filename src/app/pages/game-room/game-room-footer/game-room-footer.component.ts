@@ -50,7 +50,7 @@ export class GameRoomFooterComponent implements OnInit {
       .sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
   }
 
-  getAverageScore(): number {
+  getAverageScore(): string {
     return this.gameService.calculateAverageScore();
   }
 

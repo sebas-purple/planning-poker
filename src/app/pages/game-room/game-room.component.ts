@@ -30,6 +30,8 @@ export class GameRoomComponent implements OnInit {
 
     // Si es usuario invitado, intentar cargar el juego desde localStorage
     if (this.isInvitedUser && this.gameId) {
+
+
       const gameLoaded = this.gameService.loadGameFromStorage(this.gameId);
       
       if (!gameLoaded) {
@@ -37,11 +39,16 @@ export class GameRoomComponent implements OnInit {
         console.error('Juego no encontrado');
         this.router.navigate(['/']);
         return;
+      } 
+      if (this.gameService.hasMaxPlayers()) {
+        console.log('No hay cupo para mas jugadores');
+        this.router.navigate(['/']);
+        return;
       }
     }
   }
 
   get userRole(): UserRole {
-    return this.isInvitedUser ? UserRole.otro : UserRole.propietario;
+    return this.isInvitedUser ? UserRole.jugador : UserRole.propietario;
   }
 }

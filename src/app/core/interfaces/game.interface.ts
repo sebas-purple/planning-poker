@@ -8,6 +8,7 @@ export interface Game {
   players: User[];   // Lista de jugadores en la partida
   selectedCards?: SelectedCards;  // Mapeo de usuario a carta seleccionada
   isRevealed?: boolean;  // Estado de revelación de cartas (sincronizado entre jugadores)
+  maxPlayers: number;
 }
 
 // tipo para el mapeo de usuario a carta seleccionada

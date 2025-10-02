@@ -70,7 +70,6 @@
     font-weight: $font-weight-medium;
     padding: $small $large;
     box-shadow: 0 0 10px 5px rgba($color-green, 0.5);
-    cursor: not-allowed;
 
     &:disabled {
       background-color: $color-disabled;
@@ -82,6 +81,24 @@
     &:hover {
       color: #acacac;
       border: 1px solid #acacac;
+    }
+  }
+
+  &--quinary {
+    background-color: $color-white;
+    color: $color-background-primary;
+    padding: $small $base;
+    font-size: $font-size-small;
+
+    &:disabled {
+      background-color: $color-disabled;
+      cursor: not-allowed;
+      color: $color-white;
+      opacity: $opacity-base;
+    }
+
+    &:hover {
+      background-color: darken($color-white, 15%);
     }
   }
 }

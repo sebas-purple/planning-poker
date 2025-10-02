@@ -23,21 +23,33 @@
         <m-card-label
           [text]="player.name.slice(0, 2).toUpperCase()"
           [cardtype]="'viewer'"
-          [labelText]="player.name"
+          [labelText]="getPlayerDisplayName(player)"
           class="player-card"
+          [enableButton]="canManagePlayer(player)"
+          [buttonText]="
+            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
+          "
+          [buttonType]="'quinary'"
+          (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-container>
       <ng-template #playerView>
         <!-- solo pasar el texto si isRevealed es true -->
         <m-card-label
           [cardtype]="'player'"
-          [labelText]="player.name"
+          [labelText]="getPlayerDisplayName(player)"
           [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
           [isRevealed]="isRevealed"
           [text]="
             isRevealed ? gameService.getPlayerSelectedCard(player.id) || '' : ''
           "
           class="player-card"
+          [enableButton]="canManagePlayer(player)"
+          [buttonText]="
+            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
+          "
+          [buttonType]="'quinary'"
+          (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-template>
     </div>

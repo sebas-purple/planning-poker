@@ -39,7 +39,7 @@
       </div>
 
       <!-- Promedio -->
-      <div class="average" *ngIf="getAverageScore() > 0">
+      <div class="average" *ngIf="getAverageScore() >= '0'">
         <span>Promedio:</span>
         <span class="average-value">{{ getAverageScore() }}</span>
       </div>
