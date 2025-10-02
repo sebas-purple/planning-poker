@@ -1,4 +1,5 @@
 @import "../../../shared/custom-styles/variables";
+@import "./game-room-table-admin.scss";
 
 :host {
   position: fixed; // Posición fija respecto a la pantalla
@@ -119,5 +120,31 @@
     border-radius: 200px;
     box-shadow: 0px 0px 10px 1px rgba($color-quaternary, 0.4),
       0px 0px 25px 1px rgba(255, 255, 255, 0.1) inset;
+  }
+}
+
+// Estilos para controles de administración
+.admin-controls {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.player-slot:hover .admin-controls {
+  opacity: 1;
+}
+
+.admin-btn {
+  font-size: 0.7rem !important;
+  padding: 0.2rem 0.4rem !important;
+  min-height: auto !important;
+}
+
+// Responsive - mostrar controles siempre en móvil
+@media (max-width: 768px) {
+  .admin-controls {
+    opacity: 1;
   }
 }

@@ -141,43 +141,43 @@ export class GameService {
       {
         id: crypto.randomUUID(),
         name: 'Juan',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
         name: 'María',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
         name: 'Carlos',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
         name: 'Ana',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.espectador
       },
       {
         id: crypto.randomUUID(),
         name: 'Pedro',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
         name: 'Laura',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       },
       {
         id: crypto.randomUUID(),
         name: 'Diego',
-        rol: UserRole.otro,
+        rol: UserRole.jugador,
         viewMode: ViewMode.jugador
       }
     ];
@@ -209,6 +209,67 @@ export class GameService {
 
   isGameOwner(userId: string): boolean {
     return this.currentGame?.owner === userId;
+  }
+
+  // Verificar si un usuario es administrador (propietario o administrador)
+  isAdmin(userId: string): boolean {
+    if (!this.currentGame) return false;
+    
+    // El propietario siempre es admin
+    if (this.isGameOwner(userId)) return true;
+    
+    // Verificar si tiene rol de administrador
+    const player = this.currentGame.players.find(p => p.id === userId);
+    return player?.rol === UserRole.administrador;
+  }
+
+  // Promover un jugador a administrador
+  promoteToAdmin(userId: string, promoterId: string): boolean {
+    if (!this.currentGame) return false;
+    
+    // Solo el propietario o administradores pueden promover
+    if (!this.isAdmin(promoterId)) return false;
+    
+    const playerIndex = this.currentGame.players.findIndex(p => p.id === userId);
+    if (playerIndex !== -1) {
+      // No se puede promover al propietario (ya es admin)
+      if (this.isGameOwner(userId)) return false;
+      
+      this.currentGame.players[playerIndex].rol = UserRole.administrador;
+      this.saveGameToStorage();
+      this.gameSubject.next(this.currentGame);
+      return true;
+    }
+    return false;
+  }
+
+  // Degradar un administrador a jugador
+  demoteFromAdmin(userId: string, demoterId: string): boolean {
+    if (!this.currentGame) return false;
+    
+    // Solo el propietario o administradores pueden degradar
+    if (!this.isAdmin(demoterId)) return false;
+    
+    // No se puede degradar al propietario
+    if (this.isGameOwner(userId)) return false;
+    
+    const playerIndex = this.currentGame.players.findIndex(p => p.id === userId);
+    if (playerIndex !== -1 && this.currentGame.players[playerIndex].rol === UserRole.administrador) {
+      this.currentGame.players[playerIndex].rol = UserRole.jugador;
+      this.saveGameToStorage();
+      this.gameSubject.next(this.currentGame);
+      return true;
+    }
+    return false;
+  }
+
+  // Obtener lista de administradores (incluyendo propietario)
+  getAdmins(): User[] {
+    if (!this.currentGame) return [];
+    
+    return this.currentGame.players.filter(player => 
+      this.isGameOwner(player.id) || player.rol === UserRole.administrador
+    );
   }
 
   // Generar link de invitación

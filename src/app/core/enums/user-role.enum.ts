@@ -1,4 +1,5 @@
 export enum UserRole {
   propietario = 'propietario',
-  otro = 'otro'
+  administrador = 'administrador',
+  jugador = 'jugador'
 }

@@ -23,7 +23,7 @@
         <m-card-label
           [text]="player.name.slice(0, 2).toUpperCase()"
           [cardtype]="'viewer'"
-          [labelText]="player.name"
+          [labelText]="getPlayerDisplayName(player)"
           class="player-card"
         ></m-card-label>
       </ng-container>
@@ -31,7 +31,7 @@
         <!-- solo pasar el texto si isRevealed es true -->
         <m-card-label
           [cardtype]="'player'"
-          [labelText]="player.name"
+          [labelText]="getPlayerDisplayName(player)"
           [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
           [isRevealed]="isRevealed"
           [text]="
@@ -40,6 +40,27 @@
           class="player-card"
         ></m-card-label>
       </ng-template>
+
+      <!-- Botones de administración (solo visible para admins) -->
+      <div class="admin-controls" *ngIf="canManagePlayer(player)">
+        <a-button
+          *ngIf="!gameService.isAdmin(player.id)"
+          [text]="'👑 Admin'"
+          [type]="'quaternary'"
+          (click)="promoteToAdmin(player.id)"
+          class="admin-btn"
+        ></a-button>
+        <a-button
+          *ngIf="
+            gameService.isAdmin(player.id) &&
+            !gameService.isGameOwner(player.id)
+          "
+          [text]="'❌ Quitar'"
+          [type]="'quaternary'"
+          (click)="demoteFromAdmin(player.id)"
+          class="admin-btn"
+        ></a-button>
+      </div>
     </div>
   </div>
 </div>

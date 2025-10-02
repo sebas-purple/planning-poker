@@ -70,7 +70,6 @@
     font-weight: $font-weight-medium;
     padding: $small $large;
     box-shadow: 0 0 10px 5px rgba($color-green, 0.5);
-    cursor: not-allowed;
 
     &:disabled {
       background-color: $color-disabled;

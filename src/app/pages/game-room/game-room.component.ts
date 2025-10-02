@@ -42,6 +42,6 @@ export class GameRoomComponent implements OnInit {
   }
 
   get userRole(): UserRole {
-    return this.isInvitedUser ? UserRole.otro : UserRole.propietario;
+    return this.isInvitedUser ? UserRole.jugador : UserRole.propietario;
   }
 }

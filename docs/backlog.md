@@ -257,3 +257,22 @@ para no votar en determinado momento
 3. el modo espectador en todo momento mantiene el mismo diseño de carta en la mesa de votación
 
 ---
+
+# Historia de Usuario 13
+
+**Rol:** administrador
+
+**Historia de Usuario:**  
+Darle el rol administrador a otros usuarios
+
+**Descripción:**  
+"Yo como usuario administrador de planning poker
+necesito poder asignarle el rol administrador a otros usuarios
+para delegar la tarea de revelar votación en determinado momento"
+
+**Criterios de aceptación:**
+
+1. los usuarios administrador son los unicos que pueden revelar las cartas
+2. los usuarios administrador son los unicos que pueden reinciiar la partida
+
+---
