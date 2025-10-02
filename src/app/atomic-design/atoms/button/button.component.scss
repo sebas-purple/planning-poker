@@ -83,4 +83,22 @@
       border: 1px solid #acacac;
     }
   }
+
+  &--quinary {
+    background-color: $color-white;
+    color: $color-background-primary;
+    padding: $small $base;
+    font-size: $font-size-small;
+
+    &:disabled {
+      background-color: $color-disabled;
+      cursor: not-allowed;
+      color: $color-white;
+      opacity: $opacity-base;
+    }
+
+    &:hover {
+      background-color: darken($color-white, 15%);
+    }
+  }
 }
