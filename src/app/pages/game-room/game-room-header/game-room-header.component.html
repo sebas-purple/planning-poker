@@ -7,6 +7,11 @@
   </div>
   <div class="header-item">
     <a-card [text]="textCard" [type]="typeCard"></a-card>
+    <a-toggle
+      [options]="viewModeOptions"
+      [selectedValue]="currentViewMode"
+      (valueChange)="onViewModeChange($event)"
+    ></a-toggle>
     <a-button
       [text]="textButton"
       [type]="typeButton"

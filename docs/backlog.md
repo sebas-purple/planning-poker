@@ -237,3 +237,23 @@ para invitar a otros usuarios, y asi tener un puntaje mas certero
 2. boton para copiarlo de forma rapida
 
 ---
+
+# Historia de Usuario 12
+
+**Rol:** administrador/jugador
+
+**Historia de Usuario:**  
+Cambiar el modo de visualización
+
+**Descripción:**  
+Yo como usuario jugador/administrador de planning poker
+necesito poder cambiar el modo de visualizacion
+para no votar en determinado momento
+
+**Criterios de aceptación:**
+
+1. modos de visualización (jugador, espectador)
+2. al cambiar al modo jugador se podra elegir una carta, y en el modo espectador no
+3. el modo espectador en todo momento mantiene el mismo diseño de carta en la mesa de votación
+
+---

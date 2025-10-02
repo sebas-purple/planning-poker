@@ -77,6 +77,20 @@ export class GameService {
     }
   }
 
+  // Método para actualizar un jugador existente en la partida
+  updatePlayer(updatedPlayer: User): boolean {
+    if (this.currentGame) {
+      const playerIndex = this.currentGame.players.findIndex(p => p.id === updatedPlayer.id);
+      if (playerIndex !== -1) {
+        this.currentGame.players[playerIndex] = updatedPlayer;
+        this.saveGameToStorage(); // Guardar cambios
+        this.gameSubject.next(this.currentGame); // Notificar cambios
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Método para manejar la selección de cartas
   selectCard(userId: string, cardId: string): void {
     if (this.currentGame) {
