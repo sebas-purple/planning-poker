@@ -81,31 +81,33 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
     
     // No se puede gestionar a sí mismo
     if (player.id === currentUserId) return false;
+
+    // No se puede gestionar al propietario
+    if (this.gameService.isGameOwner(player.id)) return false;
     
     return true;
   }
 
-  // Promover jugador a administrador
-  promoteToAdmin(playerId: string): void {
+  changeAdminStatus(playerId: string): void {
     const currentUserId = this.userService.getCurrentUser?.id || '';
-    const success = this.gameService.promoteToAdmin(playerId, currentUserId);
-    
-    if (success) {
-      console.log('Jugador promovido a administrador exitosamente');
+
+    if (this.gameService.isAdmin(playerId)) {
+      const success = this.gameService.demoteFromAdmin(playerId, currentUserId);
+
+      if (success) {
+        console.log('Administrador degradado a jugador exitosamente');
+      } else {
+        console.error('Error al degradar administrador');
+      }
     } else {
-      console.error('Error al promover jugador a administrador');
+      const success = this.gameService.promoteToAdmin(playerId, currentUserId);
+
+      if (success) {
+        console.log('Jugador promovido a administrador exitosamente');
+      } else {
+        console.error('Error al promover jugador a administrador');
+      }
     }
   }
 
-  // Degradar administrador a jugador
-  demoteFromAdmin(playerId: string): void {
-    const currentUserId = this.userService.getCurrentUser?.id || '';
-    const success = this.gameService.demoteFromAdmin(playerId, currentUserId);
-    
-    if (success) {
-      console.log('Administrador degradado a jugador exitosamente');
-    } else {
-      console.error('Error al degradar administrador');
-    }
-  }
 }

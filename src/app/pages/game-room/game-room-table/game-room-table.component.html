@@ -25,6 +25,12 @@
           [cardtype]="'viewer'"
           [labelText]="getPlayerDisplayName(player)"
           class="player-card"
+          [enableButton]="canManagePlayer(player)"
+          [buttonText]="
+            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
+          "
+          [buttonType]="'quinary'"
+          (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-container>
       <ng-template #playerView>
@@ -38,29 +44,14 @@
             isRevealed ? gameService.getPlayerSelectedCard(player.id) || '' : ''
           "
           class="player-card"
+          [enableButton]="canManagePlayer(player)"
+          [buttonText]="
+            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
+          "
+          [buttonType]="'quinary'"
+          (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-template>
-
-      <!-- Botones de administración (solo visible para admins) -->
-      <div class="admin-controls" *ngIf="canManagePlayer(player)">
-        <a-button
-          *ngIf="!gameService.isAdmin(player.id)"
-          [text]="'👑 Admin'"
-          [type]="'quaternary'"
-          (click)="promoteToAdmin(player.id)"
-          class="admin-btn"
-        ></a-button>
-        <a-button
-          *ngIf="
-            gameService.isAdmin(player.id) &&
-            !gameService.isGameOwner(player.id)
-          "
-          [text]="'❌ Quitar'"
-          [type]="'quaternary'"
-          (click)="demoteFromAdmin(player.id)"
-          class="admin-btn"
-        ></a-button>
-      </div>
     </div>
   </div>
 </div>

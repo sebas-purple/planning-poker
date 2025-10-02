@@ -10,6 +10,7 @@ import { ViewMode } from '../core/enums/view-mode.enum';
 })
 export class GameService {
   private currentGame: Game | null = null;
+  private readonly maxPlayers: number = 8;
 
   // BehaviorSubject para notificar cambios del juego
   private readonly gameSubject = new BehaviorSubject<Game | null>(null);
@@ -48,7 +49,8 @@ export class GameService {
       createdAt: new Date(),
       players: [],
       selectedCards: {},
-      isRevealed: false  // Inicializar estado de revelación
+      isRevealed: false,  // Inicializar estado de revelación
+      maxPlayers: this.maxPlayers
     };
     
     this.currentGame = newGame;
@@ -72,8 +74,12 @@ export class GameService {
 
   addPlayer(player: User): void {
     if (this.currentGame) {
+      if (this.hasMaxPlayers()) {
+        console.log('No hay cupo para mas jugadores');
+        return;
+      }
       this.currentGame.players.push(player);
-      this.saveGameToStorage(); // Guardar cambios
+      this.saveGameToStorage();
     }
   }
 
@@ -128,83 +134,6 @@ export class GameService {
   // metodo para verificar si almenos un jugador ha seleccionado carta
   hasAtLeastOnePlayerSelectedCard(): boolean {
     return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length > 0 : false;
-  }
-
-
-  addMockPlayers(): void {
-    const mockPlayers = this.generateMockPlayers();
-    mockPlayers.forEach(player => this.addPlayer(player));
-  }
-
-  generateMockPlayers(): User[] {
-    const mockPlayers = [
-      {
-        id: crypto.randomUUID(),
-        name: 'Juan',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'María',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'Carlos',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'Ana',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.espectador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'Pedro',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'Laura',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      },
-      {
-        id: crypto.randomUUID(),
-        name: 'Diego',
-        rol: UserRole.jugador,
-        viewMode: ViewMode.jugador
-      }
-    ];
-
-    return mockPlayers;
-  }
-
-  addMockSelectedCardsToSelectedCards(): void {
-    if (this.currentGame) {
-      this.currentGame.selectedCards = this.generateMockSelectedCards();
-    }
-  }
-
-  // crear mock de selectedCards
-  generateMockSelectedCards(): SelectedCards {
-    // los valores son los puntajes de las cartas ["0", "1", "3", "5", "8", "13", "21", "34", "55", "89", "?", "☕"]
-    const mockSelectedCards: SelectedCards = {
-      [this.currentGame?.players[1].id || '']: '0',
-      [this.currentGame?.players[2].id || '']: '1',
-      [this.currentGame?.players[3].id || '']: '3',
-      [this.currentGame?.players[4].id || '']: '5',
-      [this.currentGame?.players[5].id || '']: '8',
-      [this.currentGame?.players[6].id || '']: '13',
-      [this.currentGame?.players[7].id || '']: '21',
-    };
-
-    return mockSelectedCards;
   }
 
   isGameOwner(userId: string): boolean {
@@ -334,8 +263,8 @@ export class GameService {
   }
 
   // Calcular el promedio de los votos (excluyendo espectadores)
-  calculateAverageScore(): number {
-    if (!this.currentGame?.selectedCards) return 0;
+  calculateAverageScore(): string {
+    if (!this.currentGame?.selectedCards) return '0';
 
     const players = this.currentGame.players;
     let sum = 0;
@@ -353,7 +282,12 @@ export class GameService {
       }
     });
 
-    return count > 0 ? Number((sum / count).toFixed(1)) : 0;
+    // devoler con "," no con "."
+    const result = count > 0 ? Number((sum / count).toFixed(1)) : 0;
+
+    // reemplazar "." por ","
+    const result2 = result.toString().replace('.', ',');
+    return result2;
   }
 
   // reiniciar la partida
@@ -383,5 +317,10 @@ export class GameService {
       this.currentGame.isRevealed = false;
       this.resetGame(); // resetGame ya guarda los cambios
     }
+  }
+
+  // para saber si hay cupo para mas jugadores
+  hasMaxPlayers(): boolean {
+    return this.currentGame?.players.length === this.maxPlayers;
   }
 }

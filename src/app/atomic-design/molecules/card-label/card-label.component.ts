@@ -16,9 +16,10 @@ export class CardLabelComponent {
   @Input() isSelected!: boolean;
   @Input() isRevealed!: boolean;
   @Input() isClickable!: boolean;
+  showButton!: boolean;
+
   @Input() buttonText!: string;
   @Input() buttonType!: ButtonType;
-  showButton!: boolean;
 
   // habilitar el boton o no
   @Input() enableButton: boolean = true;
@@ -28,13 +29,11 @@ export class CardLabelComponent {
   @Output() buttonClicked = new EventEmitter<void>();
 
   onHover(): void {
-    console.log('onHover');
     this.showButton = true;
 
   }
 
   onLeave(): void {
-    console.log('onLeave');
     this.showButton = false;
 
   }
