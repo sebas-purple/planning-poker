@@ -15,4 +15,14 @@
       font-size: $font-size-base;
     }
   }
+
+  .button-hover {
+    position: absolute;
+    padding-bottom: 98px;
+    opacity: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }

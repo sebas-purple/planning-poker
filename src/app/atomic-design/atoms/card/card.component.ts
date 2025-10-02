@@ -26,4 +26,6 @@ export class CardComponent {
       this.cardClick.emit(this.isSelected);
     }
   }
+
+
 }

@@ -1,5 +1,14 @@
 <div class="card-label">
   <!-- si el cardtype es choice, el texto es un poco mas grande -->
+  <a-button
+    *ngIf="enableButton"
+    class="button-hover"
+    (mouseenter)="onHover()"
+    (mouseleave)="onLeave()"
+    [text]="buttonText"
+    [type]="buttonType"
+    (clicked)="onButtonClicked()"
+  ></a-button>
   <a-card
     [text]="text"
     [type]="cardtype"
