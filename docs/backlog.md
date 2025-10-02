@@ -176,3 +176,23 @@ para interactuar con el sistema con los permisos jugador.
 3. el usuario quedara con el rol propietario.
 
 ---
+
+# Historia de Usuario 9
+
+**Rol:** jugador
+
+**Historia de Usuario:**  
+Visualizar la mesa de votación con los demas usuarios
+
+**Descripción:**  
+Yo como usuario jugador de planning poker
+necesito poder visualizar la mesa con los demas jugador
+para saber si ya todos eligieron carta o falta alguno
+
+**Criterios de aceptación:**
+
+1. cuando no se ha elegido carta por defecto muestra la carta en blanco, con solo el borde
+2. si es un jugador espectador la carta sale con un diseño tipo espectador
+3. se visualiza a todos los jugadores en mesa redonda
+
+---
