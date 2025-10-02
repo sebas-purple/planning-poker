@@ -1,26 +1,2 @@
-<header class="header">
-  <img [src]="srcImage" [alt]="alt" [ngClass]="'image--' + sizeImage" />
-  <a-typography [text]="textHeader"></a-typography>
-</header>
-
-<div class="content">
-  <form class="form" [formGroup]="createGameForm">
-    <m-input-label
-      [text]="textLabel"
-      [formControl]="createGameForm.controls.name"
-    ></m-input-label>
-
-    <!-- si existe mensaje de error, mostrarlo -->
-    <a-typography
-      *ngIf="messageError"
-      [text]="messageError"
-      [type]="'error'"
-    ></a-typography>
-
-    <a-button
-      [text]="textButton"
-      [disabled]="createGameForm.invalid"
-      (click)="handleSubmit()"
-    ></a-button>
-  </form>
-</div>
+<app-create-game-header></app-create-game-header>
+<app-create-game-content></app-create-game-content>

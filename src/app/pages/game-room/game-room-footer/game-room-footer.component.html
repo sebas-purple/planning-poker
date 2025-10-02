@@ -1,0 +1,48 @@
+<div class="footer">
+  <!-- Mostrar selección de cartas solo para jugadores y cuando no están reveladas -->
+  <ng-container
+    *ngIf="userService.getCurrentUser?.viewMode === 'jugador' && !isRevealed"
+  >
+    <a-typography [type]="textFooterType" [text]="textFooter"></a-typography>
+    <div class="footer-options">
+      <a-card
+        type="choice"
+        *ngFor="let card of cards"
+        [text]="card.text"
+        [isSelected]="
+          gameService.getPlayerSelectedCard(
+            userService.getCurrentUser?.id || ''
+          ) === card.id
+        "
+        (cardClick)="onCardSelected(card.id, $event)"
+        [isClickable]="true"
+      ></a-card>
+    </div>
+  </ng-container>
+
+  <!-- Mostrar estadísticas cuando las cartas están reveladas -->
+  <ng-container *ngIf="isRevealed">
+    <div class="statistics">
+      <!-- Conteo de votos por carta -->
+      <div class="votes-count">
+        <ng-container *ngFor="let vote of getVotesCountArray()">
+          <div class="vote-item">
+            <m-card-label
+              [text]="vote.value"
+              [cardtype]="'choice'"
+              [labelText]="vote.count + (vote.count === 1 ? ' voto' : ' votos')"
+              [isRevealed]="true"
+              [isClickable]="false"
+            ></m-card-label>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Promedio -->
+      <div class="average" *ngIf="getAverageScore() > 0">
+        <span>Promedio:</span>
+        <span class="average-value">{{ getAverageScore() }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

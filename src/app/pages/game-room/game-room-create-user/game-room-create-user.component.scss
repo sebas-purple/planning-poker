@@ -1,0 +1,16 @@
+@import "../../../shared/custom-styles/variables";
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-bottom: $xxxlarge;
+}

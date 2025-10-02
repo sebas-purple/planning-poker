@@ -1,3 +1,4 @@
 export type ImageSize = 'small' | 'medium' | 'large' | 'full';
 
-export type ButtonType = 'primary' | 'secondary';
+
+export type DialogType = 'primary' | 'secondary';

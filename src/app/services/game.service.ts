@@ -9,6 +9,7 @@ import { ViewMode } from '../core/enums/view-mode.enum';
 })
 export class GameService {
   private currentGame: Game | null = null;
+  private isRevealed: boolean = false;
 
   constructor() { }
 
@@ -74,6 +75,11 @@ export class GameService {
   // Método para verificar si todos los jugadores han seleccionado carta
   hasAllPlayersSelectedCard(): boolean {
     return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length === this.currentGame.players.length : false;
+  }
+
+  // metodo para verificar si almenos un jugador ha seleccionado carta
+  hasAtLeastOnePlayerSelectedCard(): boolean {
+    return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length > 0 : false;
   }
 
 
@@ -203,5 +209,21 @@ export class GameService {
     if (this.currentGame) {
       this.currentGame.selectedCards = {};
     }
+  }
+
+  // Getter para isRevealed
+  get getIsRevealed(): boolean {
+    return this.isRevealed;
+  }
+
+  // Revelar cartas
+  revealCards(): void {
+    this.isRevealed = true;
+  }
+
+  // Iniciar nueva votación
+  startNewVoting(): void {
+    this.isRevealed = false;
+    this.resetGame();
   }
 }

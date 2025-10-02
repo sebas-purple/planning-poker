@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type CardType = 'choice' | 'player' | 'viewer';
+export type CardType = 'choice' | 'player' | 'viewer' | 'profile';
 
 @Component({
   selector: 'a-card',
@@ -16,7 +16,7 @@ export class CardComponent {
 
   @Input() isSelected: boolean = false;
   @Input() isRevealed: boolean = false;
-  @Input() isClickable: boolean = true;
+  @Input() isClickable: boolean = false;
 
   @Output() cardClick = new EventEmitter<boolean>();
 

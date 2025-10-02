@@ -1,0 +1,12 @@
+<div class="dialog-background" *ngIf="showDialog">
+  <div class="dialog-content">
+    <div class="dialog-header">
+      <h2>{{ title }}</h2>
+      <button class="close-btn" (click)="handleCloseDialog()">&times;</button>
+    </div>
+
+    <div class="dialog-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

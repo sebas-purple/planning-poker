@@ -1,24 +1,15 @@
-@import '../../../shared/custom-styles/variables';
+@import "../../../shared/custom-styles/variables";
 
 .typography {
   font-family: $font-family;
-
+  color: $color-white;
+  font-weight: $font-weight-bold;
 
   &--title {
-    color: $color-white;
     font-size: $font-size-large;
-    font-weight: $font-weight-bold;
   }
 
   &--subtitle {
-    color: $color-white;
     font-size: $font-size-base;
-    font-weight: $font-weight-bold;
-  }
-
-  &--error {
-    color: #FF3B3B; // Color rojo para errores
-    font-size: $font-size-small;
-    font-weight: $font-weight-medium;
   }
 }
