@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { GameService } from 'src/app/services/game.service';
 import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { ButtonComponent, ButtonType } from "src/app/atomic-design/atoms/button/button.component";
@@ -7,6 +8,7 @@ import { CardComponent, CardType } from "src/app/atomic-design/atoms/card/card.c
 import {  ImageSize } from 'src/app/shared/types/_types';
 import { UserService } from 'src/app/services/user.service';
 import { DialogInvitePlayerComponent } from "../components/dialog-invite-player/dialog-invite-player.component";
+import { Game } from 'src/app/core/interfaces/game.interface';
 
 @Component({
   selector: 'app-game-room-header',
@@ -15,17 +17,34 @@ import { DialogInvitePlayerComponent } from "../components/dialog-invite-player/
   templateUrl: './game-room-header.component.html',
   styleUrls: ['./game-room-header.component.scss']
 })
-export class GameRoomHeaderComponent {
+export class GameRoomHeaderComponent implements OnInit, OnDestroy {
   protected readonly gameService: GameService = inject(GameService);
   private readonly userService: UserService = inject(UserService);
+  
+  private gameSubscription?: Subscription;
+  currentGame: Game | null = null;
 
   // para manejar el header
   srcImage: string = "assets/logo/isotipo_blanco.svg";
   alt: string = "isotipo";
   sizeImage: ImageSize = "small";
 
-  textHeader: string = this.gameService.getCurrentGame?.name || "";
   typeTypography: TypographyType = "title";
+
+  ngOnInit(): void {
+    // Suscribirse a cambios del juego
+    this.gameSubscription = this.gameService.game$.subscribe(game => {
+      this.currentGame = game;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.gameSubscription?.unsubscribe();
+  }
+
+  get textHeader(): string {
+    return this.currentGame?.name || "";
+  }
 
   typeCard: CardType = "profile";
 
