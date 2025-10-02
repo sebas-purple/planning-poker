@@ -218,3 +218,22 @@ para mostrarles a los demas mi puntaje
 5. una vez elegida la carta se debe notificar a todos los jugadores que se ha elegido una carta y cambiar la carta de la mesa de votación por una carta default
 
 ---
+
+# Historia de Usuario 11
+
+**Rol:** jugador
+
+**Historia de Usuario:**  
+Invitar participantes por medio de un link
+
+**Descripción:**  
+Yo como usuario jugador de planning poker
+necesito poder generar un link
+para invitar a otros usuarios, y asi tener un puntaje mas certero
+
+**Criterios de aceptación:**
+
+1. generar un link para invitar a otros usuarios
+2. boton para copiarlo de forma rapida
+
+---
