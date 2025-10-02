@@ -52,6 +52,7 @@ export class GameRoomHeaderComponent implements OnInit, OnDestroy {
 
   textButton: string = "Invitar jugadores";
   typeButton: ButtonType = "tertiary";
+  isSuccessButton: boolean = false;
 
   get textCard(): string {
     return this.userService.getCurrentUser?.name?.slice(0, 2).toUpperCase() || "";
@@ -83,7 +84,7 @@ export class GameRoomHeaderComponent implements OnInit, OnDestroy {
   }
 
   handleButtonInvitePlayersClick(): void {
-      if (this.typeButton === "tertiary") {
+      if (!this.isSuccessButton) {
         this.showDialog = true;
       }
   }
@@ -106,22 +107,20 @@ export class GameRoomHeaderComponent implements OnInit, OnDestroy {
     this.showDialog = false;
   }
 
-
   private readonly originalTextButton: string = "Invitar jugadores";
-  private readonly originalTypeButton: ButtonType = "tertiary";
 
   handleButtonCopyLinkDialog(): void {
     const inviteLink = this.placeholderDialog;
 
     navigator.clipboard.writeText(inviteLink).then(() => {
       this.textButton = "¡Copiado!";
-      this.typeButton = "quaternary";
-      this.showDialog = false;
+      this.isSuccessButton = true;
+      this.handleCloseDialog();
       
       // Restaurar texto original después de 1 segundo
       setTimeout(() => {
         this.textButton = this.originalTextButton;
-        this.typeButton = this.originalTypeButton;
+        this.isSuccessButton = false;
       }, 3000);
     }).catch(() => {
       // Si falla la copia, mostrar error temporalmente
@@ -129,7 +128,7 @@ export class GameRoomHeaderComponent implements OnInit, OnDestroy {
       
       setTimeout(() => {
         this.textButton = this.originalTextButton;
-        this.typeButton = this.originalTypeButton;
+        this.isSuccessButton = false;
       }, 3000);
     });
   }
