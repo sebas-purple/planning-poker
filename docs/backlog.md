@@ -196,3 +196,25 @@ para saber si ya todos eligieron carta o falta alguno
 3. se visualiza a todos los jugadores en mesa redonda
 
 ---
+
+# Historia de Usuario 10
+
+**Rol:** jugador
+
+**Historia de Usuario:**  
+Elegir una carta con puntaje
+
+**Descripción:**  
+Yo como usuario jugador de planning poker
+necesito poder elegir una carta del pool de cartas visibles
+para mostrarles a los demas mi puntaje
+
+**Criterios de aceptación:**
+
+1. Solo los usuarios con tipo de visualizacion jugador, pueden elegir carta
+2. se debe elegir una de las cartas visualizadas
+3. las cartas tienen que tener un puntaje, y no se pueden repetir los puntajes
+4. las cartas se cargan de forma dinamica y no hay ninguna carta se debe mostrar un mensaje de no hay cartas registrada
+5. una vez elegida la carta se debe notificar a todos los jugadores que se ha elegido una carta y cambiar la carta de la mesa de votación por una carta default
+
+---
