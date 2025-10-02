@@ -21,8 +21,7 @@ export class CardLabelComponent {
   @Input() buttonText!: string;
   @Input() buttonType!: ButtonType;
 
-  // habilitar el boton o no
-  @Input() enableButton: boolean = true;
+  @Input() enableButton: boolean = false;
 
   @Input({required: true}) labelText!: string;
 
