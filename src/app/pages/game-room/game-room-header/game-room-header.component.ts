@@ -45,7 +45,14 @@ export class GameRoomHeaderComponent {
   titleDialog: string = "Invitar jugadores";
   textButtonDialog: string = "Copiar link";
   typeButtonDialog: ButtonType = "primary";
-  placeholderDialog: string = "https://planning-poker.com/game/1234567890";
+  
+  get placeholderDialog(): string {
+    try {
+      return this.gameService.generateInviteLink();
+    } catch {
+      return "https://planning-poker.com/game/1234567890";
+    }
+  }
   
   handleCloseDialog(): void {
     this.showDialog = false;
@@ -56,8 +63,9 @@ export class GameRoomHeaderComponent {
   private readonly originalTypeButton: ButtonType = "tertiary";
 
   handleButtonCopyLinkDialog(): void {
+    const inviteLink = this.placeholderDialog;
 
-    navigator.clipboard.writeText(this.placeholderDialog).then(() => {
+    navigator.clipboard.writeText(inviteLink).then(() => {
       this.textButton = "¡Copiado!";
       this.typeButton = "quaternary";
       this.showDialog = false;

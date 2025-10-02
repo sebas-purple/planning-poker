@@ -163,6 +163,16 @@ export class GameService {
     return this.currentGame?.owner === userId;
   }
 
+  // Generar link de invitación
+  generateInviteLink(): string {
+    if (!this.currentGame) {
+      throw new Error('No hay juego activo para generar link');
+    }
+    
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/join-game/${this.currentGame.id}`;
+  }
+
   // Obtener el conteo de votos por carta
   getVotesCount(): { [cardValue: string]: number } {
     if (!this.currentGame?.selectedCards) return {};
