@@ -58,10 +58,10 @@ export class GameRoomCreateUserComponent {
         this.gameService.addPlayer(newUser);
   
         // todo: se usa para pruebas, eliminar luego de implementar
-        this.gameService.addMockPlayers();
+        // this.gameService.addMockPlayers();
   
         // todo: se usa para pruebas, eliminar luego de implementar
-        this.gameService.addMockSelectedCardsToSelectedCards();
+        // this.gameService.addMockSelectedCardsToSelectedCards();
 
         this.gameRoomForm.reset();
         this.showDialog = false;

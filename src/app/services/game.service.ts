@@ -23,6 +23,7 @@ export class GameService {
     };
     
     this.currentGame = newGame;
+    this.saveGameToStorage(); // Guardar inmediatamente en localStorage
     return newGame;
   }
 
@@ -32,6 +33,7 @@ export class GameService {
         ...this.currentGame,
         owner: ownerId
       };
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -42,6 +44,7 @@ export class GameService {
   addPlayer(player: User): void {
     if (this.currentGame) {
       this.currentGame.players.push(player);
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -52,6 +55,7 @@ export class GameService {
       this.currentGame.selectedCards ??= {};
       // Actualizar el estado de selección en el juego
       this.currentGame.selectedCards[userId] = cardId;
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -59,6 +63,7 @@ export class GameService {
   unselectCard(userId: string): void {
     if (this.currentGame) {
       delete this.currentGame.selectedCards?.[userId];
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -173,6 +178,35 @@ export class GameService {
     return `${baseUrl}/join-game/${this.currentGame.id}`;
   }
 
+  // Guardar juego en localStorage
+  private saveGameToStorage(): void {
+    if (this.currentGame) {
+      localStorage.setItem(`planning-poker-game-${this.currentGame.id}`, JSON.stringify(this.currentGame));
+    }
+  }
+
+  // Cargar juego desde localStorage
+  loadGameFromStorage(gameId: string): Game | null {
+    try {
+      const gameData = localStorage.getItem(`planning-poker-game-${gameId}`);
+      if (gameData) {
+        const game = JSON.parse(gameData);
+        // Convertir fecha string de vuelta a Date
+        game.createdAt = new Date(game.createdAt);
+        this.currentGame = game;
+        return game;
+      }
+    } catch (error) {
+      console.error('Error al cargar juego desde localStorage:', error);
+    }
+    return null;
+  }
+
+  // Verificar si existe un juego en localStorage
+  gameExistsInStorage(gameId: string): boolean {
+    return localStorage.getItem(`planning-poker-game-${gameId}`) !== null;
+  }
+
   // Obtener el conteo de votos por carta
   getVotesCount(): { [cardValue: string]: number } {
     if (!this.currentGame?.selectedCards) return {};
@@ -218,6 +252,7 @@ export class GameService {
   resetGame(): void {
     if (this.currentGame) {
       this.currentGame.selectedCards = {};
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -229,11 +264,12 @@ export class GameService {
   // Revelar cartas
   revealCards(): void {
     this.isRevealed = true;
+    // No necesita guardar isRevealed porque es estado local de la sesión
   }
 
   // Iniciar nueva votación
   startNewVoting(): void {
     this.isRevealed = false;
-    this.resetGame();
+    this.resetGame(); // resetGame ya guarda los cambios
   }
 }
