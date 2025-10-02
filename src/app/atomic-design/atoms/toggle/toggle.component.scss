@@ -1,3 +1,5 @@
+@import "../../../shared/custom-styles/variables";
+
 /* Estilos para el toggle */
 .switch {
   position: relative;
@@ -37,14 +39,40 @@
   background-color: white;
   border-radius: 50%;
   transition: 0.4s;
+  z-index: 1;
 }
 
 /* Cuando el input está chequeado */
 .switch input:checked + .slider {
-  background-color: #2196f3;
+  background-color: $color-secondary;
 }
 
 /* Mueve el círculo cuando está activado */
 .switch input:checked + .slider::before {
   transform: translateX(22px);
+}
+
+/* Muestra el ícono (ej: ✔️) */
+input:checked + .slider::after {
+  // obtener el emoji del options
+  content: "🎮 ";
+  opacity: 1;
+  font-size: $font-size-large;
+  line-height: 1;
+  text-align: center;
+  color: $color-white;
+  position: absolute;
+  margin: 7px 3px 3px 3px;
+}
+
+/* Muestra el ícono (ej: espectador) cuando está desactivado */
+input:not(:checked) + .slider::after {
+  content: "👁️";
+  opacity: 1;
+  font-size: $font-size-large;
+  line-height: 1;
+  text-align: center;
+  color: $color-white;
+  position: absolute;
+  margin: 7px 3px 3px 25px;
 }

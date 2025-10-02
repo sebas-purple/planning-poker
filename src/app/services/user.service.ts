@@ -28,4 +28,13 @@ export class UserService {
     return this.currentUser;
   }
 
+  // Método para cambiar el modo de visualización del usuario actual
+  changeViewMode(newViewMode: ViewMode): boolean {
+    if (this.currentUser) {
+      this.currentUser.viewMode = newViewMode;
+      return true;
+    }
+    return false;
+  }
+
 }

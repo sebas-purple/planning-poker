@@ -5,15 +5,17 @@ import { GameService } from 'src/app/services/game.service';
 import { TypographyComponent, TypographyType } from "src/app/atomic-design/atoms/typography/typography.component";
 import { ButtonComponent, ButtonType } from "src/app/atomic-design/atoms/button/button.component";
 import { CardComponent, CardType } from "src/app/atomic-design/atoms/card/card.component";
+import { ToggleComponent } from "src/app/atomic-design/atoms/toggle/toggle.component";
 import {  ImageSize } from 'src/app/shared/types/_types';
 import { UserService } from 'src/app/services/user.service';
 import { DialogInvitePlayerComponent } from "../components/dialog-invite-player/dialog-invite-player.component";
 import { Game } from 'src/app/core/interfaces/game.interface';
+import { ViewMode } from 'src/app/core/enums/view-mode.enum';
 
 @Component({
   selector: 'app-game-room-header',
   standalone: true,
-  imports: [CommonModule, TypographyComponent, ButtonComponent, CardComponent, DialogInvitePlayerComponent],
+  imports: [CommonModule, TypographyComponent, ButtonComponent, CardComponent, ToggleComponent, DialogInvitePlayerComponent],
   templateUrl: './game-room-header.component.html',
   styleUrls: ['./game-room-header.component.scss']
 })
@@ -55,8 +57,35 @@ export class GameRoomHeaderComponent implements OnInit, OnDestroy {
     return this.userService.getCurrentUser?.name?.slice(0, 2).toUpperCase() || "";
   }
 
+  // Toggle para modo de visualización
+  viewModeOptions: ViewMode[] = [
+    ViewMode.jugador,
+    ViewMode.espectador
+  ];
+
+  get currentViewMode(): ViewMode {
+    return this.userService.getCurrentUser?.viewMode || ViewMode.jugador;
+  }
+
+  onViewModeChange(newViewMode: ViewMode): void {
+    
+    // Cambiar el modo en el UserService
+    const success = this.userService.changeViewMode(newViewMode);
+    
+    if (success && this.userService.getCurrentUser) {
+      // Actualizar el jugador en la partida
+      this.gameService.updatePlayer(this.userService.getCurrentUser);
+      
+      console.log(`Modo de visualización cambiado a: ${newViewMode}`);
+    } else {
+      console.error('Error al cambiar el modo de visualización');
+    }
+  }
+
   handleButtonInvitePlayersClick(): void {
-    this.showDialog = true;
+      if (this.typeButton === "tertiary") {
+        this.showDialog = true;
+      }
   }
 
   // para manejas el dialogo de invitar jugadores
