@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Game, SelectedCards } from '../core/interfaces/game.interface';
 import { User } from '../core/interfaces/user.interface';
 import { UserRole } from '../core/enums/user-role.enum';
@@ -9,9 +10,36 @@ import { ViewMode } from '../core/enums/view-mode.enum';
 })
 export class GameService {
   private currentGame: Game | null = null;
-  private isRevealed: boolean = false;
 
-  constructor() { }
+  // BehaviorSubject para notificar cambios del juego
+  private readonly gameSubject = new BehaviorSubject<Game | null>(null);
+  public game$: Observable<Game | null> = this.gameSubject.asObservable();
+
+  constructor() { 
+    this.setupStorageListener();
+  }
+
+  // Configurar listener para cambios en localStorage desde otras pestañas
+  private setupStorageListener(): void {
+    window.addEventListener('storage', (event) => {
+      // Solo procesar cambios de juegos de planning poker
+      if (event.key && event.key.startsWith('planning-poker-game-') && event.newValue) {
+        try {
+          const updatedGame = JSON.parse(event.newValue);
+          // Convertir fecha string de vuelta a Date
+          updatedGame.createdAt = new Date(updatedGame.createdAt);
+          
+          // Si es el juego actual, actualizarlo
+          if (this.currentGame && this.currentGame.id === updatedGame.id) {
+            this.currentGame = updatedGame;
+            this.gameSubject.next(updatedGame);
+          }
+        } catch (error) {
+          console.error('Error al procesar cambio de localStorage:', error);
+        }
+      }
+    });
+  }
 
   createGame(name: string): Game {
     const newGame: Game = {
@@ -19,10 +47,12 @@ export class GameService {
       name: name.trim(),
       createdAt: new Date(),
       players: [],
-      selectedCards: {}
+      selectedCards: {},
+      isRevealed: false  // Inicializar estado de revelación
     };
     
     this.currentGame = newGame;
+    this.saveGameToStorage(); // Guardar inmediatamente en localStorage
     return newGame;
   }
 
@@ -32,6 +62,7 @@ export class GameService {
         ...this.currentGame,
         owner: ownerId
       };
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -42,6 +73,7 @@ export class GameService {
   addPlayer(player: User): void {
     if (this.currentGame) {
       this.currentGame.players.push(player);
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -52,6 +84,7 @@ export class GameService {
       this.currentGame.selectedCards ??= {};
       // Actualizar el estado de selección en el juego
       this.currentGame.selectedCards[userId] = cardId;
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -59,6 +92,7 @@ export class GameService {
   unselectCard(userId: string): void {
     if (this.currentGame) {
       delete this.currentGame.selectedCards?.[userId];
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
@@ -163,6 +197,49 @@ export class GameService {
     return this.currentGame?.owner === userId;
   }
 
+  // Generar link de invitación
+  generateInviteLink(): string {
+    if (!this.currentGame) {
+      throw new Error('No hay juego activo para generar link');
+    }
+    
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/join-game/${this.currentGame.id}`;
+  }
+
+  // Guardar juego en localStorage y notificar cambios
+  private saveGameToStorage(): void {
+    if (this.currentGame) {
+      localStorage.setItem(`planning-poker-game-${this.currentGame.id}`, JSON.stringify(this.currentGame));
+      // Notificar a todos los suscriptores del cambio
+      this.gameSubject.next(this.currentGame);
+    }
+  }
+
+  // Cargar juego desde localStorage
+  loadGameFromStorage(gameId: string): Game | null {
+    try {
+      const gameData = localStorage.getItem(`planning-poker-game-${gameId}`);
+      if (gameData) {
+        const game = JSON.parse(gameData);
+        // Convertir fecha string de vuelta a Date
+        game.createdAt = new Date(game.createdAt);
+        this.currentGame = game;
+        // Notificar que se cargó un juego
+        this.gameSubject.next(game);
+        return game;
+      }
+    } catch (error) {
+      console.error('Error al cargar juego desde localStorage:', error);
+    }
+    return null;
+  }
+
+  // Verificar si existe un juego en localStorage
+  gameExistsInStorage(gameId: string): boolean {
+    return localStorage.getItem(`planning-poker-game-${gameId}`) !== null;
+  }
+
   // Obtener el conteo de votos por carta
   getVotesCount(): { [cardValue: string]: number } {
     if (!this.currentGame?.selectedCards) return {};
@@ -208,22 +285,28 @@ export class GameService {
   resetGame(): void {
     if (this.currentGame) {
       this.currentGame.selectedCards = {};
+      this.saveGameToStorage(); // Guardar cambios
     }
   }
 
   // Getter para isRevealed
   get getIsRevealed(): boolean {
-    return this.isRevealed;
+    return this.currentGame?.isRevealed || false;
   }
 
   // Revelar cartas
   revealCards(): void {
-    this.isRevealed = true;
+    if (this.currentGame) {
+      this.currentGame.isRevealed = true;
+      this.saveGameToStorage(); // Guardar cambios para sincronizar
+    }
   }
 
   // Iniciar nueva votación
   startNewVoting(): void {
-    this.isRevealed = false;
-    this.resetGame();
+    if (this.currentGame) {
+      this.currentGame.isRevealed = false;
+      this.resetGame(); // resetGame ya guarda los cambios
+    }
   }
 }

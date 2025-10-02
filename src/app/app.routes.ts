@@ -13,6 +13,10 @@ export const routes: Routes = [
         component: GameRoomComponent
     },
     {
+        path: 'join-game/:gameId',
+        component: GameRoomComponent
+    },
+    {
         path: '',
         component: SplashScreenComponent
     },

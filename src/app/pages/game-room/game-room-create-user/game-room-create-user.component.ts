@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewMode } from 'src/app/core/enums/view-mode.enum';
+import { UserRole } from 'src/app/core/enums/user-role.enum';
 import { UserService } from 'src/app/services/user.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { nameValidator } from 'src/app/shared/validators/name-validator';
@@ -18,6 +19,8 @@ import { InputComponent } from "src/app/atomic-design/atoms/input/input.componen
   styleUrls: ['./game-room-create-user.component.scss']
 })
 export class GameRoomCreateUserComponent {
+  @Input() userRole: UserRole = UserRole.propietario;
+  
   protected readonly userService: UserService = inject(UserService);
   protected readonly gameService: GameService = inject(GameService);
 
@@ -43,20 +46,22 @@ export class GameRoomCreateUserComponent {
       const viewMode = this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
       
       try {
-        // se crea el usuario de forma local como propietario
-        const newUser = this.userService.createUser(newName, viewMode);
+        // se crea el usuario con el rol correspondiente (propietario o otro)
+        const newUser = this.userService.createUser(newName, viewMode, this.userRole);
 
-        // se setea el usuario como propietario de la partida
-        this.gameService.setGameOwner(newUser.id);
+        // solo si es propietario, se setea como owner de la partida
+        if (this.userRole === UserRole.propietario) {
+          this.gameService.setGameOwner(newUser.id);
+        }
 
         // se agrega el usuario a la partida
         this.gameService.addPlayer(newUser);
   
         // todo: se usa para pruebas, eliminar luego de implementar
-        this.gameService.addMockPlayers();
+        // this.gameService.addMockPlayers();
   
         // todo: se usa para pruebas, eliminar luego de implementar
-        this.gameService.addMockSelectedCardsToSelectedCards();
+        // this.gameService.addMockSelectedCardsToSelectedCards();
 
         this.gameRoomForm.reset();
         this.showDialog = false;

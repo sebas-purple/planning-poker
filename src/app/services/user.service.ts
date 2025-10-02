@@ -11,12 +11,11 @@ export class UserService {
 
   constructor() { }
 
-  createUser(name: string, viewMode: ViewMode): User {
+  createUser(name: string, viewMode: ViewMode, rol: UserRole = UserRole.propietario): User {
     const newUser: User = {
       id: crypto.randomUUID(),
       name: name.trim(),
-      // TODO: cambiar a UserRole.participante cuando se agregue la funcionalidad de participantes
-      rol: UserRole.propietario,
+      rol: rol,
       viewMode: viewMode,
     };
     
