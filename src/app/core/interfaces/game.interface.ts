@@ -1,4 +1,5 @@
 import { User } from './user.interface';
+import { ScoringMode } from '../enums/scoring-mode.enum';
 
 export interface Game {
   id: string;
@@ -9,6 +10,7 @@ export interface Game {
   selectedCards?: SelectedCards;  // Mapeo de usuario a carta seleccionada
   isRevealed?: boolean;  // Estado de revelación de cartas (sincronizado entre jugadores)
   maxPlayers: number;
+  scoringMode?: ScoringMode;  // Modo de puntaje seleccionado (por defecto Fibonacci)
 }
 
 // tipo para el mapeo de usuario a carta seleccionada

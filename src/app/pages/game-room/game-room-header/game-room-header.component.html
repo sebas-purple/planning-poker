@@ -7,6 +7,15 @@
   </div>
   <div class="header-item">
     <a-card [text]="textCard" [type]="typeCard"></a-card>
+
+    <!-- Selector de modo de puntaje (solo para administradores) -->
+    <m-scoring-mode-selector
+      *ngIf="isAdmin"
+      [currentMode]="currentScoringMode"
+      [disabled]="!canChangeScoringMode"
+      (modeChanged)="onScoringModeChange($event)"
+    ></m-scoring-mode-selector>
+
     <a-toggle
       [options]="viewModeOptions"
       [selectedValue]="currentViewMode"
