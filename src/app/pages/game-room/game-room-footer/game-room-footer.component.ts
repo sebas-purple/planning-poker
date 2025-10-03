@@ -9,11 +9,13 @@ import { Card } from 'src/app/core/interfaces/card.interface';
 import { CardPoolService } from 'src/app/services/card-pool.service';
 import { GameService } from 'src/app/services/game.service';
 import { Game } from 'src/app/core/interfaces/game.interface';
+import { SelectorComponent } from "src/app/atomic-design/atoms/selector/selector.component";
+import { ScoringMode } from 'src/app/core/enums/scoring-mode.enum';
 
 @Component({
   selector: 'app-game-room-footer',
   standalone: true,
-  imports: [CommonModule, TypographyComponent, CardComponent, CardLabelComponent],
+  imports: [CommonModule, TypographyComponent, CardComponent, CardLabelComponent, SelectorComponent],
   templateUrl: './game-room-footer.component.html',
   styleUrls: ['./game-room-footer.component.scss']
 })
@@ -69,6 +71,62 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
 
   getAverageScore(): string {
     return this.gameService.calculateAverageScore();
+  }
+
+  // Propiedades para el selector de modo de puntaje
+
+  labelScoringMode: string = "Modo de puntaje:";
+
+  get isAdmin(): boolean {
+    const currentUserId = this.userService.getCurrentUser?.id || '';
+    return this.gameService.isAdmin(currentUserId);
+  }
+
+  get scoringModeLabels(): string[] {
+    return ['Fibonacci', 'T-Shirt Sizes', 'Powers of 2', 'Linear'];
+  }
+
+  get currentScoringMode(): ScoringMode {
+    return this.gameService.getCurrentScoringMode();
+  }
+
+  get currentScoringModeLabel(): string {
+    const mode = this.currentScoringMode;
+    switch(mode) {
+      case ScoringMode.FIBONACCI: return 'Fibonacci';
+      case ScoringMode.T_SHIRT: return 'T-Shirt Sizes';
+      case ScoringMode.POWERS_OF_2: return 'Powers of 2';
+      case ScoringMode.LINEAR: return 'Linear';
+      default: return 'Fibonacci';
+    }
+  }
+
+  get canChangeScoringMode(): boolean {
+    const currentUserId = this.userService.getCurrentUser?.id || '';
+    return this.gameService.canChangeScoringMode(currentUserId);
+  }
+
+  onScoringModeChange(selectedLabel: string): void {
+    // Convertir el label de vuelta al enum
+    let newMode: ScoringMode;
+    switch(selectedLabel) {
+      case 'Fibonacci': newMode = ScoringMode.FIBONACCI; break;
+      case 'T-Shirt Sizes': newMode = ScoringMode.T_SHIRT; break;
+      case 'Powers of 2': newMode = ScoringMode.POWERS_OF_2; break;
+      case 'Linear': newMode = ScoringMode.LINEAR; break;
+      default: return;
+    }
+
+    const currentUserId = this.userService.getCurrentUser?.id || '';
+    const success = this.gameService.changeScoringMode(newMode, currentUserId);
+    
+    if (success) {
+      // Sincronizar inmediatamente el CardPoolService
+      this.cardPoolService.setScoringMode(newMode);
+      console.log(`Modo de puntaje cambiado a: ${newMode}`);
+    } else {
+      console.error('Error al cambiar el modo de puntaje');
+    }
   }
 
 }

@@ -9,12 +9,14 @@
     <a-card [text]="textCard" [type]="typeCard"></a-card>
 
     <!-- Selector de modo de puntaje (solo para administradores) -->
-    <m-scoring-mode-selector
+    <!-- <a-selector
       *ngIf="isAdmin"
-      [currentMode]="currentScoringMode"
+      [options]="scoringModeLabels"
+      [selectedOption]="currentScoringModeLabel"
       [disabled]="!canChangeScoringMode"
-      (modeChanged)="onScoringModeChange($event)"
-    ></m-scoring-mode-selector>
+      [label]="'Modo de puntaje:'"
+      (selectedOptionEmitter)="onScoringModeChange($event)"
+    ></a-selector> -->
 
     <a-toggle
       [options]="viewModeOptions"
