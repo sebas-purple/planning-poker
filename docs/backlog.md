@@ -266,9 +266,9 @@ para no votar en determinado momento
 Darle el rol administrador a otros usuarios
 
 **Descripción:**  
-"Yo como usuario administrador de planning poker
+Yo como usuario administrador de planning poker
 necesito poder asignarle el rol administrador a otros usuarios
-para delegar la tarea de revelar votación en determinado momento"
+para delegar la tarea de revelar votación en determinado momento
 
 **Criterios de aceptación:**
 
@@ -276,3 +276,24 @@ para delegar la tarea de revelar votación en determinado momento"
 2. los usuarios administrador son los unicos que pueden reinciiar la partida
 
 ---
+
+# Historia de Usuario 14
+
+**Rol:** administrador
+
+**Historia de Usuario:**  
+Cambiar el modo de puntajes de las tarjetas
+
+**Descripción:**  
+Yo como usuario administrador de planning poker
+necesito poder cambiar los modos de puntajes de las tarjetas
+para tener un puntaje mas certero y tomar mejores decisiones
+
+**Criterios de aceptación:**
+
+1. solo los usuarios administrador pueden cambiar el modo de puntaje de tarjetas
+2. solo se puede seleccionar un modo de puntaje de tarjetas
+3. solo se podra cambiar el modo de puntaje de tarjetas antes de revelar las cartas, si ya se revelaron las cartas, tiene que reiniciar la partida, para que pueda cambiar el modo
+4. si los lugares ya votaron, se les reseteara la votación para no tener seleccionada ninguna carta
+5. por defecto sale seleccionado la primera opción de la lista
+6. esto hace que las cartas que puedan elegir los usuarios en modo jugador cambien

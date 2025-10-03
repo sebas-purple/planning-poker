@@ -1,23 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Card, AVAILABLE_SCORES } from '../core/interfaces/card.interface';
+import { Card, SCORING_MODES_CARDS } from '../core/interfaces/card.interface';
+import { ScoringMode } from '../core/enums/scoring-mode.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardPoolService {
   private cards: Card[] = [];
+  private currentScoringMode: ScoringMode = ScoringMode.FIBONACCI;
 
   constructor() {
     this.initializeCards();
   }
 
-  // Inicializa el pool de cartas
+  // Inicializa el pool de cartas según el modo actual
   private initializeCards(): void {
-    this.cards = AVAILABLE_SCORES.map(score => ({
+    const scores = SCORING_MODES_CARDS[this.currentScoringMode];
+    this.cards = scores.map(score => ({
       id: score,
       score: score,
       text: score,
     }));
+  }
+
+  // Cambiar modo de puntaje y regenerar cartas
+  setScoringMode(mode: ScoringMode): void {
+    this.currentScoringMode = mode;
+    this.initializeCards();
+  }
+
+  // Obtener modo actual
+  getCurrentScoringMode(): ScoringMode {
+    return this.currentScoringMode;
   }
 
   // convertir a un getter

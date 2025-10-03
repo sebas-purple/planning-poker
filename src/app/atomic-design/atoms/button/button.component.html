@@ -2,7 +2,7 @@
   class="button"
   [disabled]="disabled"
   (click)="onClick()"
-  [ngClass]="'button--' + type"
+  [ngClass]="['button--' + type, isSuccess ? 'button--success' : '']"
 >
   {{ text }}
 </button>

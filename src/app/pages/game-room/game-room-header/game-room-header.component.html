@@ -7,6 +7,17 @@
   </div>
   <div class="header-item">
     <a-card [text]="textCard" [type]="typeCard"></a-card>
+
+    <!-- Selector de modo de puntaje (solo para administradores) -->
+    <!-- <a-selector
+      *ngIf="isAdmin"
+      [options]="scoringModeLabels"
+      [selectedOption]="currentScoringModeLabel"
+      [disabled]="!canChangeScoringMode"
+      [label]="'Modo de puntaje:'"
+      (selectedOptionEmitter)="onScoringModeChange($event)"
+    ></a-selector> -->
+
     <a-toggle
       [options]="viewModeOptions"
       [selectedValue]="currentViewMode"
@@ -15,6 +26,7 @@
     <a-button
       [text]="textButton"
       [type]="typeButton"
+      [isSuccess]="isSuccessButton"
       (click)="handleButtonInvitePlayersClick()"
     ></a-button>
   </div>

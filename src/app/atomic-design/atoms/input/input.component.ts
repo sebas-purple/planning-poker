@@ -19,14 +19,11 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModu
 export class InputComponent implements ControlValueAccessor, AfterViewInit {
   @Input() type: string = "text";
   @Input({required: true}) formControl: FormControl = new FormControl("");
-
-  // label para el input
   @Input({required: true}) label!: string;
-  // error para el input
   @Input() error: string = "";
-  // propiedad para controlar si el input debe estar enfocado por defecto
-  @Input() autoFocus: boolean = true;
 
+  // se usa para el enfoque por defecto del input
+  @Input() autoFocus: boolean = true;
   @ViewChild('inputElement', { static: false }) inputElement!: ElementRef;
 
   onChange: (value: string) => void = () => {};

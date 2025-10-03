@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Game, SelectedCards } from '../core/interfaces/game.interface';
+import { Game } from '../core/interfaces/game.interface';
 import { User } from '../core/interfaces/user.interface';
 import { UserRole } from '../core/enums/user-role.enum';
 import { ViewMode } from '../core/enums/view-mode.enum';
+import { ScoringMode } from '../core/enums/scoring-mode.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,8 @@ export class GameService {
       players: [],
       selectedCards: {},
       isRevealed: false,  // Inicializar estado de revelación
-      maxPlayers: this.maxPlayers
+      maxPlayers: this.maxPlayers,
+      scoringMode: ScoringMode.FIBONACCI  // Por defecto Fibonacci
     };
     
     this.currentGame = newGame;
@@ -228,6 +230,10 @@ export class GameService {
         const game = JSON.parse(gameData);
         // Convertir fecha string de vuelta a Date
         game.createdAt = new Date(game.createdAt);
+        // Asegurar que tenga un modo de puntaje por defecto
+        if (!game.scoringMode) {
+          game.scoringMode = ScoringMode.FIBONACCI;
+        }
         this.currentGame = game;
         // Notificar que se cargó un juego
         this.gameSubject.next(game);
@@ -265,6 +271,8 @@ export class GameService {
   // Calcular el promedio de los votos (excluyendo espectadores)
   calculateAverageScore(): string {
     if (!this.currentGame?.selectedCards) return '0';
+    // si el modo de juego es el de las camisetas devolver esto ""
+    if (this.currentGame?.scoringMode === ScoringMode.T_SHIRT) return '';
 
     const players = this.currentGame.players;
     let sum = 0;
@@ -322,5 +330,42 @@ export class GameService {
   // para saber si hay cupo para mas jugadores
   hasMaxPlayers(): boolean {
     return this.currentGame?.players.length === this.maxPlayers;
+  }
+
+  // Obtener modo de puntaje actual
+  getCurrentScoringMode(): ScoringMode {
+    return this.currentGame?.scoringMode || ScoringMode.FIBONACCI;
+  }
+
+  // Cambiar modo de puntaje (solo administradores, solo antes de revelar)
+  changeScoringMode(newMode: ScoringMode, userId: string): boolean {
+    if (!this.currentGame) return false;
+
+    // Solo administradores pueden cambiar el modo
+    if (!this.isAdmin(userId)) return false;
+
+    // No se puede cambiar si las cartas ya están reveladas
+    if (this.currentGame.isRevealed) return false;
+
+    // Si hay votos, resetearlos
+    if (this.hasAtLeastOnePlayerSelectedCard()) {
+      this.currentGame.selectedCards = {};
+    }
+
+    // Cambiar el modo
+    this.currentGame.scoringMode = newMode;
+    this.saveGameToStorage();
+    return true;
+  }
+
+  // Verificar si se puede cambiar el modo de puntaje
+  canChangeScoringMode(userId: string): boolean {
+    if (!this.currentGame) return false;
+    
+    // Solo administradores pueden cambiar
+    if (!this.isAdmin(userId)) return false;
+    
+    // No se puede cambiar si las cartas están reveladas
+    return !this.currentGame.isRevealed;
   }
 }

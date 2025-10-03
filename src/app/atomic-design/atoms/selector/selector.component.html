@@ -1,0 +1,13 @@
+<div class="selector-container">
+  <label class="selector-label">{{ label }}</label>
+  <select
+    class="selector-select"
+    [value]="selectedOption"
+    (change)="onSelect($event)"
+    [disabled]="disabled"
+  >
+    <option class="selector-option" *ngFor="let option of options">
+      {{ option }}
+    </option>
+  </select>
+</div>

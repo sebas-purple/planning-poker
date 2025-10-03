@@ -1,4 +1,17 @@
 <div class="footer">
+  <!-- cambiar modo de puntaje -->
+
+  <div class="scoring-mode-selector">
+    <a-selector
+      *ngIf="isAdmin"
+      [options]="scoringModeLabels"
+      [selectedOption]="currentScoringModeLabel"
+      [disabled]="!canChangeScoringMode"
+      [label]="labelScoringMode"
+      (selectedOptionEmitter)="onScoringModeChange($event)"
+    ></a-selector>
+  </div>
+
   <!-- Mostrar selección de cartas solo para jugadores y cuando no están reveladas -->
   <ng-container
     *ngIf="userService.getCurrentUser?.viewMode === 'jugador' && !isRevealed"
