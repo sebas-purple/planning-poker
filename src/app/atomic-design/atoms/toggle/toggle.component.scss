@@ -54,8 +54,8 @@
 
 /* Muestra el ícono (ej: ✔️) */
 input:checked + .slider::after {
-  // obtener el emoji del options
-  content: "🎮 ";
+  // emoji de joystick antiguo
+  content: "🕹️";
   opacity: 1;
   font-size: $font-size-large;
   line-height: 1;

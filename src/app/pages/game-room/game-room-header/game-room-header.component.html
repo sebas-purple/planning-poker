@@ -1,22 +1,15 @@
 <header class="header">
+  <!-- logo -->
   <div class="header-item">
     <img [src]="srcImage" [alt]="alt" [ngClass]="'image--' + sizeImage" />
   </div>
+  <!-- titulo -->
   <div class="header-item">
     <a-typography [text]="textHeader" [type]="typeTypography"></a-typography>
   </div>
+  <!-- opciones -->
   <div class="header-item">
     <a-card [text]="textCard" [type]="typeCard"></a-card>
-
-    <!-- Selector de modo de puntaje (solo para administradores) -->
-    <!-- <a-selector
-      *ngIf="isAdmin"
-      [options]="scoringModeLabels"
-      [selectedOption]="currentScoringModeLabel"
-      [disabled]="!canChangeScoringMode"
-      [label]="'Modo de puntaje:'"
-      (selectedOptionEmitter)="onScoringModeChange($event)"
-    ></a-selector> -->
 
     <a-toggle
       [options]="viewModeOptions"
@@ -32,6 +25,7 @@
   </div>
 </header>
 
+<!-- dialogo de invitar jugadores -->
 <c-dialog-invite-player
   [title]="titleDialog"
   [showDialog]="showDialog"
