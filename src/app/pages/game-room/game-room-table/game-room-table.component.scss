@@ -1,16 +1,16 @@
 @import "../../../shared/custom-styles/variables";
 
 :host {
-  position: fixed; // Posición fija respecto a la pantalla
-  top: 50%; // Centro vertical
-  left: 50%; // Centro horizontal
-  transform: translate(-50%, -50%); // Ajuste para centrar exactamente
-  pointer-events: none; // Permite que los clics pasen a través del host
-  z-index: 1; // Por debajo del header y footer
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 :host > * {
-  pointer-events: auto; // Reactiva los clics en los elementos hijos
+  pointer-events: auto; // Reactiva los clics en los elementos hijos, util para el boton de revelar cartas
 }
 
 .table-container {

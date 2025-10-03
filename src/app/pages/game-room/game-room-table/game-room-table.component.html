@@ -1,5 +1,6 @@
 <div class="table-container">
   <div class="table">
+    <!-- boton para revelar cartas o nueva votación -->
     <ng-container *ngIf="isButtonRevealCardsVisible()">
       <a-button
         *ngIf="!isRevealed"
@@ -17,38 +18,41 @@
       ></a-button>
     </ng-container>
   </div>
+
+  <!-- container para los jugadores, donde se muestran las cartas de los jugadores -->
   <div class="players-container">
     <div class="player-slot" *ngFor="let player of players">
-      <ng-container *ngIf="player.viewMode === 'espectador'; else playerView">
+      <!-- si el jugador es espectador, se muestra la carta del jugador -->
+
+      <!-- EXTRAER condicional -->
+      <ng-container *ngIf="isPlayerSpectator(player); else playerView">
+        <!-- EXTRAER TEXT EN FUNCION -->
         <m-card-label
-          [text]="player.name.slice(0, 2).toUpperCase()"
-          [cardtype]="'viewer'"
+          [text]="getPlayerSpectatorText(player)"
+          [cardtype]="cardTypeSpectator"
           [labelText]="getPlayerDisplayName(player)"
           class="player-card"
           [enableButton]="canManagePlayer(player)"
-          [buttonText]="
-            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
-          "
-          [buttonType]="'quinary'"
+          [buttonText]="buttonTextAdminStatus(player)"
+          [buttonType]="buttonTypePlayer"
           (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-container>
+
+      <!-- si el jugador es jugador, se muestra la carta del jugador -->
       <ng-template #playerView>
-        <!-- solo pasar el texto si isRevealed es true -->
+        <!-- solo pasar el texto si isRevealed es true, para que no se muestre el texto de la carta -->
+        <!-- extraer gameService.getPlayerSelectedCard(player.id) -->
         <m-card-label
-          [cardtype]="'player'"
+          [cardtype]="cardTypePlayer"
           [labelText]="getPlayerDisplayName(player)"
-          [isSelected]="gameService.hasPlayerSelectedCard(player.id)"
+          [isSelected]="hasPlayerSelectedCard(player.id)"
           [isRevealed]="isRevealed"
-          [text]="
-            isRevealed ? gameService.getPlayerSelectedCard(player.id) || '' : ''
-          "
+          [text]="isRevealed ? getPlayerSelectedCard(player.id) || '' : ''"
           class="player-card"
           [enableButton]="canManagePlayer(player)"
-          [buttonText]="
-            gameService.isAdmin(player.id) ? '❌ Quitar' : '👑 Admin'
-          "
-          [buttonType]="'quinary'"
+          [buttonText]="buttonTextAdminStatus(player)"
+          [buttonType]="buttonTypePlayer"
           (buttonClicked)="changeAdminStatus(player.id)"
         ></m-card-label>
       </ng-template>
