@@ -6,9 +6,13 @@ import { CreateGameContentComponent } from './create-game-content/create-game-co
 @Component({
   selector: 'app-create-game',
   standalone: true,
-  imports: [CommonModule, CreateGameHeaderComponent, CreateGameContentComponent],
+  imports: [
+    CommonModule,
+    CreateGameHeaderComponent,
+    CreateGameContentComponent,
+  ],
   templateUrl: './create-game.component.html',
-  styleUrls: ['./create-game.component.scss']
+  styleUrls: ['./create-game.component.scss'],
 })
 export class CreateGameComponent {
   opciones = ['Opción 1', 'Opción 2', 'Opción 3'];

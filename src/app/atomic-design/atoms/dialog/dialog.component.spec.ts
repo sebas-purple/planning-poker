@@ -8,7 +8,7 @@ describe('DialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DialogComponent]
+      imports: [DialogComponent],
     });
     fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;
@@ -17,5 +17,19 @@ describe('DialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render dialog when showDialog is true', () => {
+    component.showDialog = true;
+    fixture.detectChanges();
+    const dialog = fixture.nativeElement.querySelector('.dialog-content');
+    expect(dialog).toBeTruthy();
+  });
+
+  it('should not render dialog when showDialog is false', () => {
+    component.showDialog = false;
+    fixture.detectChanges();
+    const dialog = fixture.nativeElement.querySelector('.dialog-content');
+    expect(dialog).toBeNull();
   });
 });
