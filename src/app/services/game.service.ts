@@ -13,7 +13,6 @@ export class GameService {
   private currentGame: Game | null = null;
   private readonly maxPlayers: number = 8;
 
-  // BehaviorSubject para notificar cambios del juego
   private readonly gameSubject = new BehaviorSubject<Game | null>(null);
   public game$: Observable<Game | null> = this.gameSubject.asObservable();
 
@@ -45,18 +44,18 @@ export class GameService {
 
   createGame(name: string): Game {
     const newGame: Game = {
-      id: crypto.randomUUID(), // Genera un ID único
+      id: crypto.randomUUID(),
       name: name.trim(),
       createdAt: new Date(),
       players: [],
       selectedCards: {},
-      isRevealed: false,  // Inicializar estado de revelación
+      isRevealed: false,
       maxPlayers: this.maxPlayers,
-      scoringMode: ScoringMode.FIBONACCI  // Por defecto Fibonacci
+      scoringMode: ScoringMode.FIBONACCI
     };
     
     this.currentGame = newGame;
-    this.saveGameToStorage(); // Guardar inmediatamente en localStorage
+    this.saveGameToStorage();
     return newGame;
   }
 
@@ -66,7 +65,7 @@ export class GameService {
         ...this.currentGame,
         owner: ownerId
       };
-      this.saveGameToStorage(); // Guardar cambios
+      this.saveGameToStorage();
     }
   }
 
@@ -85,13 +84,12 @@ export class GameService {
     }
   }
 
-  // Método para actualizar un jugador existente en la partida
   updatePlayer(updatedPlayer: User): boolean {
     if (this.currentGame) {
       const playerIndex = this.currentGame.players.findIndex(p => p.id === updatedPlayer.id);
       if (playerIndex !== -1) {
         this.currentGame.players[playerIndex] = updatedPlayer;
-        this.saveGameToStorage(); // Guardar cambios
+        this.saveGameToStorage();
         this.gameSubject.next(this.currentGame); // Notificar cambios
         return true;
       }
@@ -102,38 +100,31 @@ export class GameService {
   // Método para manejar la selección de cartas
   selectCard(userId: string, cardId: string): void {
     if (this.currentGame) {
-      // Inicializar selectedCards si no existe
       this.currentGame.selectedCards ??= {};
-      // Actualizar el estado de selección en el juego
       this.currentGame.selectedCards[userId] = cardId;
-      this.saveGameToStorage(); // Guardar cambios
+      this.saveGameToStorage();
     }
   }
 
-  // Método para deseleccionar carta
   unselectCard(userId: string): void {
     if (this.currentGame) {
       delete this.currentGame.selectedCards?.[userId];
-      this.saveGameToStorage(); // Guardar cambios
+      this.saveGameToStorage();
     }
   }
 
-  // Método para verificar si un jugador ha seleccionado carta
   hasPlayerSelectedCard(userId: string): boolean {
     return this.currentGame ? !!this.currentGame.selectedCards?.[userId] : false;
   }
 
-  // Método para obtener la carta seleccionada de un jugador
   getPlayerSelectedCard(userId: string): string | null {
     return this.currentGame?.selectedCards?.[userId] || null;
   }
 
-  // Método para verificar si todos los jugadores han seleccionado carta
   hasAllPlayersSelectedCard(): boolean {
     return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length === this.currentGame.players.length : false;
   }
 
-  // metodo para verificar si almenos un jugador ha seleccionado carta
   hasAtLeastOnePlayerSelectedCard(): boolean {
     return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length > 0 : false;
   }
@@ -217,7 +208,6 @@ export class GameService {
   private saveGameToStorage(): void {
     if (this.currentGame) {
       localStorage.setItem(`planning-poker-game-${this.currentGame.id}`, JSON.stringify(this.currentGame));
-      // Notificar a todos los suscriptores del cambio
       this.gameSubject.next(this.currentGame);
     }
   }
@@ -245,7 +235,6 @@ export class GameService {
     return null;
   }
 
-  // Verificar si existe un juego en localStorage
   gameExistsInStorage(gameId: string): boolean {
     return localStorage.getItem(`planning-poker-game-${gameId}`) !== null;
   }
@@ -271,7 +260,7 @@ export class GameService {
   // Calcular el promedio de los votos (excluyendo espectadores)
   calculateAverageScore(): string {
     if (!this.currentGame?.selectedCards) return '0';
-    // si el modo de juego es el de las camisetas devolver esto ""
+    // si el modo de juego es el de las camisetas devolver ""
     if (this.currentGame?.scoringMode === ScoringMode.T_SHIRT) return '';
 
     const players = this.currentGame.players;
@@ -290,23 +279,21 @@ export class GameService {
       }
     });
 
-    // devoler con "," no con "."
     const result = count > 0 ? Number((sum / count).toFixed(1)) : 0;
 
     // reemplazar "." por ","
-    const result2 = result.toString().replace('.', ',');
-    return result2;
+    const resultFormatted = result.toString().replace('.', ',');
+    return resultFormatted;
   }
 
   // reiniciar la partida
   resetGame(): void {
     if (this.currentGame) {
       this.currentGame.selectedCards = {};
-      this.saveGameToStorage(); // Guardar cambios
+      this.saveGameToStorage();
     }
   }
 
-  // Getter para isRevealed
   get getIsRevealed(): boolean {
     return this.currentGame?.isRevealed || false;
   }
@@ -315,7 +302,7 @@ export class GameService {
   revealCards(): void {
     if (this.currentGame) {
       this.currentGame.isRevealed = true;
-      this.saveGameToStorage(); // Guardar cambios para sincronizar
+      this.saveGameToStorage();
     }
   }
 
@@ -323,7 +310,7 @@ export class GameService {
   startNewVoting(): void {
     if (this.currentGame) {
       this.currentGame.isRevealed = false;
-      this.resetGame(); // resetGame ya guarda los cambios
+      this.resetGame();
     }
   }
 

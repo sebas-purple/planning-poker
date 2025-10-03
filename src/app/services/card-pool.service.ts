@@ -29,12 +29,10 @@ export class CardPoolService {
     this.initializeCards();
   }
 
-  // Obtener modo actual
   getCurrentScoringMode(): ScoringMode {
     return this.currentScoringMode;
   }
 
-  // convertir a un getter
   get getCards(): Card[] {
     return this.cards;
   }

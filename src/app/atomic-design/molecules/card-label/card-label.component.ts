@@ -11,20 +11,21 @@ import { ButtonComponent, ButtonType } from "../../atoms/button/button.component
   styleUrls: ['./card-label.component.scss']
 })
 export class CardLabelComponent {
+  // se usa para la card
   @Input() text!: string;
   @Input({required: true}) cardtype!: CardType;
   @Input() isSelected!: boolean;
   @Input() isRevealed!: boolean;
   @Input() isClickable!: boolean;
   showButton!: boolean;
-
-  @Input() buttonText!: string;
-  @Input() buttonType!: ButtonType;
-
-  @Input() enableButton: boolean = false;
-
+  
+  // se usa para el label
   @Input({required: true}) labelText!: string;
 
+  // se usa para el boton
+  @Input() buttonText!: string;
+  @Input() buttonType!: ButtonType;
+  @Input() enableButton: boolean = false;
   @Output() buttonClicked = new EventEmitter<void>();
 
   onHover(): void {

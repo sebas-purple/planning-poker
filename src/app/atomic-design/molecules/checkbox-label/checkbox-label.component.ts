@@ -18,7 +18,10 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
   ]
 })
 export class CheckboxLabelComponent implements ControlValueAccessor {
+  // se usa para el label
   @Input({required: true}) text!: string;
+  
+  // se usa para el checkbox
   @Input({required: true}) value!: any;
   @Input({required: true}) formControl!: FormControl;
   onChange: any = () => {};

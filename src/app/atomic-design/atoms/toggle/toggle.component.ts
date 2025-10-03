@@ -15,8 +15,6 @@ export class ToggleComponent {
   
   @Output() valueChange = new EventEmitter<ViewMode>();
 
-  viewModeChecked : ViewMode = ViewMode.jugador;
-
   onToggleChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const newValue = target.checked ? ViewMode.jugador : ViewMode.espectador;
@@ -24,6 +22,7 @@ export class ToggleComponent {
   }
   
   get isJugadorMode(): boolean {
+    // extraerlo para que sea dinamico
     return this.selectedValue === ViewMode.jugador;
   }
 

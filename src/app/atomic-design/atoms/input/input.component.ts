@@ -17,7 +17,6 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModu
   ]
 })
 export class InputComponent implements ControlValueAccessor, AfterViewInit {
-  @Input() type: string = "text";
   @Input({required: true}) formControl: FormControl = new FormControl("");
   @Input({required: true}) label!: string;
   @Input() error: string = "";

@@ -14,5 +14,5 @@ export const SCORING_MODES_CARDS = {
   [ScoringMode.LINEAR]: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "?", "☕"]
 };
 
-// Mantener compatibilidad con código existente
+// Mantiene compatibilidad con el código existente
 export const AVAILABLE_SCORES = SCORING_MODES_CARDS[ScoringMode.FIBONACCI];

@@ -6,7 +6,7 @@ export const gameRoomGuard: CanActivateFn = (route, state) => {
   const gameService = inject(GameService);
   const router = inject(Router);
 
-  // Si es la ruta join-game/:gameId, intentar cargar el juego
+  // Si es la ruta join-game/:gameId, intentar cargar el juego que es para cuando se une a una partida con un link
   if (route.params['gameId']) {
     const gameId = route.params['gameId'];
     const loadedGame = gameService.loadGameFromStorage(gameId);
