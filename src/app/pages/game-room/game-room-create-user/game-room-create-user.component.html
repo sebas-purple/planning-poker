@@ -1,11 +1,13 @@
 <a-dialog [showDialog]="showDialog">
   <form class="form" [formGroup]="gameRoomForm">
+    <!-- input para ingresar el nombre del usuario -->
     <a-input
       [label]="textLabel"
       [formControl]="gameRoomForm.controls.name"
       [error]="hasNameInput ? messageError : ''"
     ></a-input>
 
+    <!-- checkbox para seleccionar el modo de visualización del usuario -->
     <div class="checkbox-container">
       <m-checkbox-label
         [text]="textLabeljugador"
@@ -20,6 +22,7 @@
       ></m-checkbox-label>
     </div>
 
+    <!-- boton para continuar -->
     <a-button
       [text]="textButton"
       [disabled]="gameRoomForm.invalid"
