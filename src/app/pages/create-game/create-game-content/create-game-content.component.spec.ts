@@ -4,19 +4,22 @@ import { CreateGameContentComponent } from './create-game-content.component';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
+import { GameService } from '../../../services/game.service';
 
 describe('CreateGameContentComponent', () => {
   let component: CreateGameContentComponent;
   let fixture: ComponentFixture<CreateGameContentComponent>;
+  let gameService: GameService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CreateGameContentComponent, InputComponent, ButtonComponent],
+      providers: [GameService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CreateGameContentComponent);
     component = fixture.componentInstance;
-
+    gameService = TestBed.inject(GameService);
     fixture.detectChanges();
   });
 
@@ -24,7 +27,6 @@ describe('CreateGameContentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // testear que si se pone un nombre con caracteres especiales, se muestre el mensaje de error
   it('should show error message if the name contains special characters', () => {
     component.createGameForm.controls.name.setValue('test@test.com');
     fixture.detectChanges();
@@ -157,5 +159,24 @@ describe('CreateGameContentComponent', () => {
       sonAtomButton.componentInstance;
 
     expect(sonAtomButtonComponent.disabled).toBeFalsy();
+  });
+
+  // testear que se cree una partida
+  it('should create a game', () => {
+    // mock the game service
+    const spy = jest.spyOn(gameService, 'createGame');
+
+    component.createGameForm.controls.name.setValue('party game');
+    fixture.detectChanges();
+
+    expect(component.createGameForm.valid).toBe(true);
+
+    const sonAtomButton = fixture.debugElement.query(
+      By.directive(ButtonComponent)
+    );
+    sonAtomButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith('Party game');
   });
 });

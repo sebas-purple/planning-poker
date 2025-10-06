@@ -4,17 +4,23 @@ import { GameRoomCreateUserComponent } from './game-room-create-user.component';
 import { By } from '@angular/platform-browser';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
+import { UserService } from '../../../services/user.service';
+import { ViewMode } from '../../../core/enums/view-mode.enum';
+import { UserRole } from '../../../core/enums/user-role.enum';
 
 describe('GameRoomCreateUserComponent', () => {
   let component: GameRoomCreateUserComponent;
   let fixture: ComponentFixture<GameRoomCreateUserComponent>;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [GameRoomCreateUserComponent, InputComponent],
+      providers: [UserService],
     });
     fixture = TestBed.createComponent(GameRoomCreateUserComponent);
     component = fixture.componentInstance;
+    userService = TestBed.inject(UserService);
     fixture.detectChanges();
   });
 
@@ -92,5 +98,103 @@ describe('GameRoomCreateUserComponent', () => {
 
     expect(component.gameRoomForm.invalid).toBeTruthy();
     expect(sonAtomButtonComponent.disabled).toBeTruthy();
+  });
+
+  it('should create user as propietario', () => {
+    component.userRole = UserRole.propietario;
+
+    // mock the game service
+    const spy = jest.spyOn(userService, 'createUser');
+
+    component.gameRoomForm.controls.name.setValue('sebas');
+    fixture.detectChanges();
+
+    expect(component.gameRoomForm.valid).toBe(true);
+
+    const sonAtomButton = fixture.debugElement.query(
+      By.directive(ButtonComponent)
+    );
+    sonAtomButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(
+      'Sebas',
+      ViewMode.jugador,
+      UserRole.propietario
+    );
+  });
+
+  it('should create user as invite player', () => {
+    component.userRole = UserRole.jugador;
+
+    // mock the game service
+    const spy = jest.spyOn(userService, 'createUser');
+
+    component.gameRoomForm.controls.name.setValue('sebas');
+    fixture.detectChanges();
+
+    expect(component.gameRoomForm.valid).toBe(true);
+
+    const sonAtomButton = fixture.debugElement.query(
+      By.directive(ButtonComponent)
+    );
+    sonAtomButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(
+      'Sebas',
+      ViewMode.jugador,
+      UserRole.jugador
+    );
+  });
+
+  it('should create user as player', () => {
+    component.userRole = UserRole.propietario;
+
+    const spy = jest.spyOn(userService, 'createUser');
+
+    component.gameRoomForm.controls.name.setValue('sebas');
+    component.gameRoomForm.controls.selectedOption.setValue(ViewMode.jugador);
+    fixture.detectChanges();
+
+    expect(component.gameRoomForm.valid).toBe(true);
+
+    const sonAtomButton = fixture.debugElement.query(
+      By.directive(ButtonComponent)
+    );
+    sonAtomButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(
+      'Sebas',
+      ViewMode.jugador,
+      UserRole.propietario
+    );
+  });
+
+  it('should create user as viewer', () => {
+    component.userRole = UserRole.propietario;
+
+    const spy = jest.spyOn(userService, 'createUser');
+
+    component.gameRoomForm.controls.name.setValue('sebas');
+    component.gameRoomForm.controls.selectedOption.setValue(
+      ViewMode.espectador
+    );
+    fixture.detectChanges();
+
+    expect(component.gameRoomForm.valid).toBe(true);
+
+    const sonAtomButton = fixture.debugElement.query(
+      By.directive(ButtonComponent)
+    );
+    sonAtomButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(
+      'Sebas',
+      ViewMode.espectador,
+      UserRole.propietario
+    );
   });
 });

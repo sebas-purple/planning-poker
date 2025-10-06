@@ -4,21 +4,25 @@ import { UserRole } from '../core/enums/user-role.enum';
 import { ViewMode } from '../core/enums/view-mode.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private currentUser: User | null = null;
 
-  constructor() { }
+  constructor() {}
 
-  createUser(name: string, viewMode: ViewMode, rol: UserRole = UserRole.propietario): User {
+  createUser(
+    name: string,
+    viewMode: ViewMode,
+    rol: UserRole = UserRole.propietario
+  ): User {
     const newUser: User = {
       id: crypto.randomUUID(),
       name: name.trim(),
       rol: rol,
       viewMode: viewMode,
     };
-    
+
     this.currentUser = newUser;
     return newUser;
   }
@@ -36,5 +40,4 @@ export class UserService {
     }
     return false;
   }
-
 }

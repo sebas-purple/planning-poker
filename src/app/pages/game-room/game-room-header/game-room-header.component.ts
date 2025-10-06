@@ -1,28 +1,24 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { GameService } from 'src/app/services/game.service';
-import { CardPoolService } from 'src/app/services/card-pool.service';
+import { GameService } from '../../../services/game.service';
 import {
   TypographyComponent,
   TypographyType,
-} from 'src/app/atomic-design/atoms/typography/typography.component';
+} from '../../../atomic-design/atoms/typography/typography.component';
 import {
   ButtonComponent,
   ButtonType,
-} from 'src/app/atomic-design/atoms/button/button.component';
+} from '../../../atomic-design/atoms/button/button.component';
 import {
   CardComponent,
   CardType,
-} from 'src/app/atomic-design/atoms/card/card.component';
-import { ToggleComponent } from 'src/app/atomic-design/atoms/toggle/toggle.component';
-import { SelectorComponent } from 'src/app/atomic-design/atoms/selector/selector.component';
-import { ImageSize } from 'src/app/shared/types/_types';
-import { UserService } from 'src/app/services/user.service';
+} from '../../../atomic-design/atoms/card/card.component';
+import { ToggleComponent } from '../../../atomic-design/atoms/toggle/toggle.component';
+import { ImageSize } from '../../../shared/types/_types';
+import { UserService } from '../../../services/user.service';
 import { DialogInvitePlayerComponent } from '../components/dialog-invite-player/dialog-invite-player.component';
-import { Game } from 'src/app/core/interfaces/game.interface';
-import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { ScoringMode } from 'src/app/core/enums/scoring-mode.enum';
+import { Game } from '../../../core/interfaces/game.interface';
+import { ViewMode } from '../../../core/enums/view-mode.enum';
 
 @Component({
   selector: 'app-game-room-header',
@@ -41,9 +37,7 @@ import { ScoringMode } from 'src/app/core/enums/scoring-mode.enum';
 export class GameRoomHeaderComponent {
   protected readonly gameService: GameService = inject(GameService);
   private readonly userService: UserService = inject(UserService);
-  private readonly cardPoolService: CardPoolService = inject(CardPoolService);
 
-  private gameSubscription?: Subscription;
   currentGame: Game | null = null;
 
   // para manejar el header
