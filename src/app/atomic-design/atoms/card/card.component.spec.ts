@@ -56,4 +56,27 @@ describe('CardComponent', () => {
     card.click();
     expect(component.cardClick.emit).not.toHaveBeenCalled();
   });
+
+  it('should set isSelected to true when clicked, only if type is choice', () =>  {
+    component.type = 'choice';
+    const card = fixture.nativeElement.querySelector('div');
+    card.click();
+    expect(component.isSelected).toBe(true);
+  });
+
+  it('should apply correct classes when isRevealed is true for player type', () => {
+    component.isRevealed = true;
+    fixture.detectChanges();
+    const card = fixture.nativeElement.querySelector('div');
+    expect(card.classList.contains('card--revealed')).toBe(true);
+  });
+
+
+  it('should apply correct class when isClickable is true', () => {
+    component.isClickable = true;
+    fixture.detectChanges();
+    const card = fixture.nativeElement.querySelector('div');
+    expect(card.classList.contains('card--clickable')).toBe(true);
+  });
+
 });
