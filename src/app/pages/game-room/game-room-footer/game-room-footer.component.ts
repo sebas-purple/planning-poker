@@ -4,22 +4,22 @@ import { Subscription } from 'rxjs';
 import {
   TypographyComponent,
   TypographyType,
-} from 'src/app/atomic-design/atoms/typography/typography.component';
+} from '../../../atomic-design/atoms/typography/typography.component';
 import {
   CardComponent,
   CardType,
-} from 'src/app/atomic-design/atoms/card/card.component';
-import { CardLabelComponent } from 'src/app/atomic-design/molecules/card-label/card-label.component';
-import { UserService } from 'src/app/services/user.service';
-import { Card } from 'src/app/core/interfaces/card.interface';
-import { CardPoolService } from 'src/app/services/card-pool.service';
-import { GameService } from 'src/app/services/game.service';
-import { Game } from 'src/app/core/interfaces/game.interface';
-import { SelectorComponent } from 'src/app/atomic-design/atoms/selector/selector.component';
+} from '../../../atomic-design/atoms/card/card.component';
+import { CardLabelComponent } from '../../../atomic-design/molecules/card-label/card-label.component';
+import { UserService } from '../../../services/user.service';
+import { Card } from '../../../core/interfaces/card.interface';
+import { CardPoolService } from '../../../services/card-pool.service';
+import { GameService } from '../../../services/game.service';
+import { Game } from '../../../core/interfaces/game.interface';
+import { SelectorComponent } from '../../../atomic-design/atoms/selector/selector.component';
 import {
   SCORING_MODE_LABELS,
   ScoringMode,
-} from 'src/app/core/enums/scoring-mode.enum';
+} from '../../../core/enums/scoring-mode.enum';
 
 @Component({
   selector: 'app-game-room-footer',
@@ -35,10 +35,10 @@ import {
   styleUrls: ['./game-room-footer.component.scss'],
 })
 export class GameRoomFooterComponent implements OnInit, OnDestroy {
-  protected readonly userService: UserService = inject(UserService);
-  protected readonly gameService: GameService = inject(GameService);
-  private readonly cardPoolService: CardPoolService = inject(CardPoolService);
-  private gameSubscription?: Subscription;
+  readonly userService: UserService = inject(UserService);
+  readonly gameService: GameService = inject(GameService);
+  readonly cardPoolService: CardPoolService = inject(CardPoolService);
+  gameSubscription?: Subscription;
 
   // para manejar el cambio de modo de puntaje
   get isAdmin(): boolean {
