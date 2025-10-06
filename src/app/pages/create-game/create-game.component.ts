@@ -14,13 +14,4 @@ import { CreateGameContentComponent } from './create-game-content/create-game-co
   templateUrl: './create-game.component.html',
   styleUrls: ['./create-game.component.scss'],
 })
-export class CreateGameComponent {
-  opciones = ['Opción 1', 'Opción 2', 'Opción 3'];
-  opcionSeleccionada = this.opciones[0];
-
-  valor = 'Opción 1';
-
-  onChange(event: string): void {
-    this.opcionSeleccionada = event;
-  }
-}
+export class CreateGameComponent {}

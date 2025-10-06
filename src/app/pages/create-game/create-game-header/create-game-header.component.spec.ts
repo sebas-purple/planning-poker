@@ -8,9 +8,8 @@ describe('CreateGameHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateGameHeaderComponent]
-    })
-    .compileComponents();
+      imports: [CreateGameHeaderComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(CreateGameHeaderComponent);
     component = fixture.componentInstance;
@@ -19,5 +18,19 @@ describe('CreateGameHeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render create game header with correct image', () => {
+    fixture.detectChanges();
+    const image = fixture.nativeElement.querySelector('img');
+    expect(image).toBeTruthy();
+    expect(image?.src).toContain('assets/logo/isotipo_blanco.svg');
+  });
+
+  it('should render create game header with correct text', () => {
+    fixture.detectChanges();
+    const text = fixture.nativeElement.querySelector('a-typography');
+    expect(text).toBeTruthy();
+    expect(text?.textContent).toContain('Crear partida');
   });
 });

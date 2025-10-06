@@ -6,11 +6,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { nameValidator } from 'src/app/shared/validators/name-validator';
-import { ButtonComponent } from 'src/app/atomic-design/atoms/button/button.component';
-import { GameService } from 'src/app/services/game.service';
+
+import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
+import { GameService } from '../../../services/game.service';
 import { Router } from '@angular/router';
-import { InputComponent } from 'src/app/atomic-design/atoms/input/input.component';
+import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
+import { nameValidator } from '../../../shared/validators/name-validator';
 
 @Component({
   selector: 'app-create-game-content',
