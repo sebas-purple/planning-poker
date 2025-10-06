@@ -1,20 +1,20 @@
 import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { UserRole } from 'src/app/core/enums/user-role.enum';
-import { UserService } from 'src/app/services/user.service';
+import { ViewMode } from '../../../core/enums/view-mode.enum';
+import { UserRole } from '../../../core/enums/user-role.enum';
+import { UserService } from '../../../services/user.service';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { nameValidator } from 'src/app/shared/validators/name-validator';
-import { GameService } from 'src/app/services/game.service';
-import { DialogComponent } from 'src/app/atomic-design/atoms/dialog/dialog.component';
-import { CheckboxLabelComponent } from 'src/app/atomic-design/molecules/checkbox-label/checkbox-label.component';
-import { ButtonComponent } from 'src/app/atomic-design/atoms/button/button.component';
-import { InputComponent } from 'src/app/atomic-design/atoms/input/input.component';
+import { nameValidator } from '../../../shared/validators/name-validator';
+import { GameService } from '../../../services/game.service';
+import { DialogComponent } from '../../../atomic-design/atoms/dialog/dialog.component';
+import { CheckboxLabelComponent } from '../../../atomic-design/molecules/checkbox-label/checkbox-label.component';
+import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
+import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 
 @Component({
   selector: 'app-game-room-create-user',

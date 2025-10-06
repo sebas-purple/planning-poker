@@ -8,7 +8,6 @@ import { ButtonComponent } from '../../../atomic-design/atoms/button/button.comp
 describe('CreateGameContentComponent', () => {
   let component: CreateGameContentComponent;
   let fixture: ComponentFixture<CreateGameContentComponent>;
-  let compiled: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,7 +16,7 @@ describe('CreateGameContentComponent', () => {
 
     fixture = TestBed.createComponent(CreateGameContentComponent);
     component = fixture.componentInstance;
-    compiled = fixture.nativeElement;
+
     fixture.detectChanges();
   });
 
