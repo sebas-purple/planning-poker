@@ -7,15 +7,28 @@ describe('SplashScreenComponent', () => {
   let fixture: ComponentFixture<SplashScreenComponent>;
   let compiled: HTMLElement;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SplashScreenComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(SplashScreenComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-    compiled = fixture.nativeElement;
   });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
+    fixture.detectChanges();
+  });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -23,13 +36,13 @@ describe('SplashScreenComponent', () => {
 
   it('should render splash screen with image', () => {
     fixture.detectChanges();
-    const image = compiled.querySelector('img');
+    const image = fixture.nativeElement.querySelector('img');
     expect(image).toBeTruthy();
   });
 
   it('should render splash screen with correct images', () => {
     fixture.detectChanges();
-    const image = compiled.querySelectorAll('img');
+    const image = fixture.nativeElement.querySelectorAll('img');
     const image1 = image[0];
     const image2 = image[1];
     expect(image1?.src).toContain('assets/logo/isotipo_blanco.svg');

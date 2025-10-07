@@ -27,12 +27,10 @@ export class UserService {
     return newUser;
   }
 
-  // convertir a un getter
   get getCurrentUser(): User | null {
     return this.currentUser;
   }
 
-  // Método para cambiar el modo de visualización del usuario actual
   changeViewMode(newViewMode: ViewMode): boolean {
     if (this.currentUser) {
       this.currentUser.viewMode = newViewMode;
