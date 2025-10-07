@@ -6,14 +6,28 @@ describe('SelectorComponent', () => {
   let component: SelectorComponent;
   let fixture: ComponentFixture<SelectorComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [SelectorComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(SelectorComponent);
     component = fixture.componentInstance;
+  });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -40,5 +54,26 @@ describe('SelectorComponent', () => {
     fixture.detectChanges();
     const selector = fixture.nativeElement.querySelector('select');
     expect(selector.disabled).toBe(true);
+  });
+
+  // Tests Typescript (LAS MAS IMPORTANTES)
+
+  // onSelect
+
+  it('onSelect: should emit selectedOption event when selector is changed', () => {
+    const spy = jest
+      .spyOn(component.selectedOptionEmitter, 'emit')
+      .mockImplementation();
+
+    const eventMock = {
+      target: {
+        value: 'option-mock',
+      },
+    } as unknown as Event;
+
+    component['onSelect'](eventMock);
+    expect(component.selectedOption).toBe('option-mock');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith('option-mock');
   });
 });
