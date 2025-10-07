@@ -6,23 +6,37 @@ describe('InputComponent', () => {
   let component: InputComponent;
   let fixture: ComponentFixture<InputComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [InputComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(InputComponent);
     component = fixture.componentInstance;
+  });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should render input with label', () => {
+    const label = fixture.nativeElement.querySelector('label');
     component.label = 'Test Label';
     fixture.detectChanges();
-    const label = fixture.nativeElement.querySelector('label');
     expect(label.textContent).toContain('Test Label');
   });
 
@@ -34,9 +48,9 @@ describe('InputComponent', () => {
   });
 
   it('should not render error when error is empty', () => {
+    const error = fixture.nativeElement.querySelector('p');
     component.error = '';
     fixture.detectChanges();
-    const error = fixture.nativeElement.querySelector('p');
     expect(error).toBeNull();
   });
 });
