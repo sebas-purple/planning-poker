@@ -22,7 +22,7 @@
   <!-- container para los jugadores, donde se muestran las cartas de los jugadores -->
   <div class="players-container">
     <div class="player-slot" *ngFor="let player of players">
-      <!-- si el jugador es espectador, se muestra la carta del jugador -->
+      <!-- si el jugador es espectador, se muestra la carta del espectador -->
 
       <!-- EXTRAER condicional -->
       <ng-container *ngIf="isPlayerSpectator(player); else playerView">

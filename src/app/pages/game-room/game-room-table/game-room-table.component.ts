@@ -1,17 +1,17 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { GameService } from 'src/app/services/game.service';
-import { UserService } from 'src/app/services/user.service';
+import { GameService } from '../../../services/game.service';
+import { UserService } from '../../../services/user.service';
 import {
   ButtonComponent,
   ButtonType,
-} from 'src/app/atomic-design/atoms/button/button.component';
-import { CardLabelComponent } from 'src/app/atomic-design/molecules/card-label/card-label.component';
-import { User } from 'src/app/core/interfaces/user.interface';
-import { Game } from 'src/app/core/interfaces/game.interface';
-import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { CardType } from 'src/app/atomic-design/atoms/card/card.component';
+} from '../../../atomic-design/atoms/button/button.component';
+import { CardLabelComponent } from '../../../atomic-design/molecules/card-label/card-label.component';
+import { User } from '../../../core/interfaces/user.interface';
+import { Game } from '../../../core/interfaces/game.interface';
+import { ViewMode } from '../../../core/enums/view-mode.enum';
+import { CardType } from '../../../atomic-design/atoms/card/card.component';
 
 @Component({
   selector: 'app-game-room-table',

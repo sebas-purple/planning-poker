@@ -5,8 +5,8 @@ import { GameRoomCreateUserComponent } from './game-room-create-user/game-room-c
 import { GameRoomFooterComponent } from './game-room-footer/game-room-footer.component';
 import { GameRoomTableComponent } from './game-room-table/game-room-table.component';
 import { GameRoomHeaderComponent } from './game-room-header/game-room-header.component';
-import { UserRole } from 'src/app/core/enums/user-role.enum';
-import { GameService } from 'src/app/services/game.service';
+import { UserRole } from '../../core/enums/user-role.enum';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-game-room',
