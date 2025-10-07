@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 export type CardType = 'choice' | 'player' | 'viewer' | 'profile';
 
-// choice son las cartas qeu se muestran en el footer de la mesa y se pueden seleccionar 
+// choice son las cartas qeu se muestran en el footer de la mesa y se pueden seleccionar
 // player son las cartas que se muestran en la mesa
 // viewer son las cartas que se muestran en la mesa cuando un jugador es espectador
 // profile es la carta que se muestra en el header de la mesa y representa un usuario
@@ -13,11 +13,11 @@ export type CardType = 'choice' | 'player' | 'viewer' | 'profile';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss']
+  styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
   @Input() text!: string;
-  @Input({required: true}) type!: CardType;
+  @Input({ required: true }) type!: CardType;
 
   // isSelected se usa para seleccioar una carta, util solo para el tipo choice
   @Input() isSelected: boolean = false;
@@ -30,12 +30,10 @@ export class CardComponent {
 
   @Output() cardClick = new EventEmitter<boolean>();
 
-  onClick(): void {
+  public onClick(): void {
     if (this.type === 'choice') {
       this.isSelected = !this.isSelected;
       this.cardClick.emit(this.isSelected);
     }
   }
-
-
 }

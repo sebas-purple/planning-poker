@@ -40,7 +40,8 @@ describe('ButtonComponent', () => {
     expect(button.textContent).toContain('Test Button');
   });
 
-  // Tests Typescript
+  // Tests Typescript (LAS MAS IMPORTANTES)
+
   // onClick
 
   it('onClick: should emit click event when clicked', () => {

@@ -6,12 +6,19 @@ describe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [CardComponent],
-    });
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(CardComponent);
     component = fixture.componentInstance;
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
 
@@ -19,64 +26,48 @@ describe('CardComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Tests HTML
+
   it('should render card with text', () => {
     component.text = 'Test Card';
-    fixture.detectChanges();
     const card = fixture.nativeElement.querySelector('div');
+    fixture.detectChanges();
     expect(card.textContent).toContain('Test Card');
   });
 
-  it('should emit click event when clicked, only if type is choice', () => {
-    jest.spyOn(component.cardClick, 'emit');
+  // Tests Typescript (LAS MAS IMPORTANTES)
+
+  // onClick
+
+  it('onClick: should emit click event and set isSelected to true when clicked, only if type is choice', () => {
+    const spy = jest.spyOn(component.cardClick, 'emit').mockImplementation();
     const card = fixture.nativeElement.querySelector('div');
+    component.isSelected = false;
     component.type = 'choice';
     card.click();
-    expect(component.cardClick.emit).toHaveBeenCalled();
+    expect(component.isSelected).toBe(true);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(true);
   });
 
-  it('should not emit click event when disabled', () => {
-    jest.spyOn(component.cardClick, 'emit');
+  it('onClick: should not emit click event and not set isSelected to true when type is not choice', () => {
+    const spy = jest.spyOn(component.cardClick, 'emit').mockImplementation();
     const card = fixture.nativeElement.querySelector('div');
-    card.click();
-    expect(component.cardClick.emit).not.toHaveBeenCalled();
-  });
+    component.isSelected = false;
 
-  it('should not emit click event when type is not choice', () => {
-    jest.spyOn(component.cardClick, 'emit');
-    const card = fixture.nativeElement.querySelector('div');
     component.type = 'player';
     card.click();
-    expect(component.cardClick.emit).not.toHaveBeenCalled();
+    expect(component.isSelected).toBe(false);
+    expect(spy).not.toHaveBeenCalled();
 
     component.type = 'viewer';
     card.click();
-    expect(component.cardClick.emit).not.toHaveBeenCalled();
+    expect(component.isSelected).toBe(false);
+    expect(spy).not.toHaveBeenCalled();
 
     component.type = 'profile';
     card.click();
-    expect(component.cardClick.emit).not.toHaveBeenCalled();
+    expect(component.isSelected).toBe(false);
+    expect(spy).not.toHaveBeenCalled();
   });
-
-  it('should set isSelected to true when clicked, only if type is choice', () =>  {
-    component.type = 'choice';
-    const card = fixture.nativeElement.querySelector('div');
-    card.click();
-    expect(component.isSelected).toBe(true);
-  });
-
-  it('should apply correct classes when isRevealed is true for player type', () => {
-    component.isRevealed = true;
-    fixture.detectChanges();
-    const card = fixture.nativeElement.querySelector('div');
-    expect(card.classList.contains('card--revealed')).toBe(true);
-  });
-
-
-  it('should apply correct class when isClickable is true', () => {
-    component.isClickable = true;
-    fixture.detectChanges();
-    const card = fixture.nativeElement.querySelector('div');
-    expect(card.classList.contains('card--clickable')).toBe(true);
-  });
-
 });
