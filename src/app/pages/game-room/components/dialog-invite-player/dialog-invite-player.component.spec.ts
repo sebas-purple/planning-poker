@@ -8,7 +8,7 @@ describe('DialogInvitePlayerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [DialogInvitePlayerComponent]
+      imports: [DialogInvitePlayerComponent],
     });
     fixture = TestBed.createComponent(DialogInvitePlayerComponent);
     component = fixture.componentInstance;

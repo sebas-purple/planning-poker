@@ -43,6 +43,7 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   // para manejar el cambio de modo de puntaje
   get isAdmin(): boolean {
     const currentUserId = this.userService.getCurrentUser?.id || '';
+    console.log('currentUserId', currentUserId);
     return this.gameService.isAdmin(currentUserId);
   }
 
