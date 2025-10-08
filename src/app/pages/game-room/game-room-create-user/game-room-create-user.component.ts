@@ -15,6 +15,7 @@ import { DialogComponent } from '../../../atomic-design/atoms/dialog/dialog.comp
 import { CheckboxLabelComponent } from '../../../atomic-design/molecules/checkbox-label/checkbox-label.component';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
+import { GameSignalService } from '../../../services/game-signal.service';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -35,6 +36,8 @@ export class GameRoomCreateUserComponent {
 
   protected readonly userService: UserService = inject(UserService);
   protected readonly gameService: GameService = inject(GameService);
+  protected readonly gameSignalService: GameSignalService =
+    inject(GameSignalService);
 
   // para manejar el dialog
   showDialog: boolean = true;

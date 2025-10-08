@@ -12,7 +12,7 @@ import { GameService } from '../../../services/game.service';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { nameValidator } from '../../../shared/validators/name-validator';
-import { GameSignalService } from 'src/app/services/game-signal.service';
+import { GameSignalService } from '../../../services/game-signal.service';
 
 @Component({
   selector: 'app-create-game-content',
