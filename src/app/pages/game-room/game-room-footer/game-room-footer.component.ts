@@ -40,6 +40,17 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   readonly cardPoolService: CardPoolService = inject(CardPoolService);
   gameSubscription?: Subscription;
 
+  labelScoringMode: string = 'Modo de puntaje:';
+
+  textFooterType: TypographyType = 'subtitle';
+  textFooter: string = 'Elije una carta 👇';
+
+  cardType: CardType = 'choice';
+  isClickableButton: boolean = true;
+  cards: Card[] = [];
+
+  isRevealedCard: boolean = true;
+
   // para manejar el cambio de modo de puntaje
   get isAdmin(): boolean {
     const currentUserId = this.userService.getCurrentUser?.id || '';
@@ -71,8 +82,6 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
     const currentUserId = this.userService.getCurrentUser?.id || '';
     return this.gameService.canChangeScoringMode(currentUserId);
   }
-
-  labelScoringMode: string = 'Modo de puntaje:';
 
   onScoringModeChange(selectedLabel: string): void {
     let newMode: ScoringMode;
@@ -113,13 +122,6 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
       !this.isRevealed
     );
   }
-
-  textFooterType: TypographyType = 'subtitle';
-  textFooter: string = 'Elije una carta 👇';
-
-  cardType: CardType = 'choice';
-  isClickableButton: boolean = true;
-  cards: Card[] = [];
 
   ngOnInit(): void {
     this.cards = this.cardPoolService.getCards;
@@ -172,8 +174,6 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   getVotesCountLabel(count: number): string {
     return count === 1 ? ' voto' : ' votos';
   }
-
-  isRevealedCard: boolean = true;
 
   // para manejar el promedio
   getAverageScore(): string {

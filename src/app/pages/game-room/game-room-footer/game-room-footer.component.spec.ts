@@ -13,16 +13,30 @@ describe('GameRoomFooterComponent', () => {
   let userService: UserService;
   let gameService: GameService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [GameRoomFooterComponent],
-      providers: [UserService, GameService],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(GameRoomFooterComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     gameService = TestBed.inject(GameService);
   });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
+    fixture.detectChanges();
+  });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();
