@@ -4,24 +4,10 @@ import { CreateGameContentComponent } from './create-game-content.component';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { By } from '@angular/platform-browser';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
-import { GameService } from '../../../services/game.service';
 
 describe('CreateGameContentComponent', () => {
   let component: CreateGameContentComponent;
   let fixture: ComponentFixture<CreateGameContentComponent>;
-  let gameService: GameService;
-
-  // beforeEach(async () => {
-  //   await TestBed.configureTestingModule({
-  //     imports: [CreateGameContentComponent, InputComponent, ButtonComponent],
-  //     providers: [GameService],
-  //   }).compileComponents();
-
-  //   fixture = TestBed.createComponent(CreateGameContentComponent);
-  //   component = fixture.componentInstance;
-  //   gameService = TestBed.inject(GameService);
-  //   fixture.detectChanges();
-  // });
 
   // Configuracion beforeEach
 
@@ -196,11 +182,8 @@ describe('CreateGameContentComponent', () => {
       .spyOn(component.createGameForm, 'reset')
       .mockImplementation();
     const spy4 = jest.spyOn(component.router, 'navigate').mockImplementation();
-
     component.createGameForm.controls.name.setValue('test*');
-
     component.handleSubmit();
-
     expect(spy1).not.toHaveBeenCalled();
     expect(spy2).not.toHaveBeenCalled();
     expect(spy3).not.toHaveBeenCalled();
@@ -216,11 +199,8 @@ describe('CreateGameContentComponent', () => {
       .spyOn(component.createGameForm, 'reset')
       .mockImplementation();
     const spy4 = jest.spyOn(component.router, 'navigate').mockImplementation();
-
     component.createGameForm.controls.name.setValue('test123');
-
     component.handleSubmit();
-
     expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy2).toHaveBeenCalledTimes(1);
     expect(spy3).toHaveBeenCalledTimes(1);
@@ -233,11 +213,8 @@ describe('CreateGameContentComponent', () => {
     const spy = jest
       .spyOn(component.gameService, 'createGame')
       .mockImplementation();
-
     const gameNameMock = 'test123';
-
     component.createGame(gameNameMock);
-
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(gameNameMock);
   });
