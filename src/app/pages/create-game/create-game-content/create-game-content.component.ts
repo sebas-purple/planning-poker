@@ -12,6 +12,7 @@ import { GameService } from '../../../services/game.service';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { nameValidator } from '../../../shared/validators/name-validator';
+import { GameSignalService } from 'src/app/services/game-signal.service';
 
 @Component({
   selector: 'app-create-game-content',
@@ -21,7 +22,8 @@ import { nameValidator } from '../../../shared/validators/name-validator';
   styleUrls: ['./create-game-content.component.scss'],
 })
 export class CreateGameContentComponent {
-  readonly gameService: GameService = inject(GameService);
+  // readonly gameService: GameService = inject(GameService);
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
   readonly router: Router = inject(Router);
 
   textLabel: string = 'Nombra la partida';
@@ -31,6 +33,8 @@ export class CreateGameContentComponent {
     name: new FormControl('', [nameValidator()]),
   });
 
+  $gameSignal = this.gameSignalService.getGameSignal;
+
   // $nameErrors = signal(this.createGameForm.controls.name.errors?.['message']);
 
   // $formInvalid = computed(() => this.createGameForm.invalid);
@@ -38,23 +42,34 @@ export class CreateGameContentComponent {
   handleSubmit(): void {
     if (this.createGameForm.valid) {
       const name = this.createGameForm.value.name?.trim() || '';
-      try {
-        const newName = this.capitalizeFirstLetter(name);
-        this.createGame(newName);
-        this.createGameForm.reset();
-        this.router.navigate(['/game-room']);
-      } catch (error) {
-        console.error('Error al crear partida:', error);
-      }
+      const newName = this.capitalizeFirstLetter(name);
+
+      // this.createGame(newName);
+      this.createGameSignal(newName);
+      this.createGameForm.reset();
+      this.router.navigate(['/game-room']);
     } else {
+      // PARA PROBAR LAS SIGNALS
+      // this.gameSignalService.createGame(
+      //   this.createGameForm.value.name?.trim() || ''
+      // );
       console.log('Formulario inválido al crear partida');
     }
   }
 
-  createGame(gameName: string): void {
+  // createGame(gameName: string): void {
+  //   try {
+  //     const newGame = this.gameService.createGame(gameName);
+  //     console.log('Partida creada exitosamente:', newGame);
+  //   } catch (error) {
+  //     console.error('Error al crear partida:', error);
+  //   }
+  // }
+
+  createGameSignal(gameName: string): void {
     try {
-      const newGame = this.gameService.createGame(gameName);
-      console.log('Partida creada exitosamente:', newGame);
+      this.gameSignalService.createGame(gameName);
+      console.log('Partida creada exitosamente:', this.$gameSignal());
     } catch (error) {
       console.error('Error al crear partida:', error);
     }

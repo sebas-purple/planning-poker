@@ -1,3 +1,6 @@
+<!-- style color blanco -->
+<!-- <p style="color: white">{{ $gameSignal() | json }}</p> -->
+
 <div class="content">
   <form class="form" [formGroup]="createGameForm">
     <a-input
@@ -6,10 +9,6 @@
       [error]="createGameForm.controls.name.value ? createGameForm.controls.name.errors?.['message'] : ''"
     ></a-input>
 
-    <a-button
-      [text]="textButton"
-      [disabled]="createGameForm.invalid"
-      (click)="handleSubmit()"
-    ></a-button>
+    <a-button [text]="textButton" (click)="handleSubmit()"></a-button>
   </form>
 </div>
