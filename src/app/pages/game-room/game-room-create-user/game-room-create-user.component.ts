@@ -43,7 +43,6 @@ export class GameRoomCreateUserComponent {
   textLabel: string = 'Tu nombre';
 
   // para manejar los checkboxes
-
   textLabeljugador: string = 'Jugador';
   jugador: ViewMode = ViewMode.jugador;
 
@@ -53,49 +52,47 @@ export class GameRoomCreateUserComponent {
   // para manejar el boton
   textButton: string = 'Continuar';
 
-  handleSubmit() {
-    if (this.gameRoomForm.valid) {
-      const name = this.gameRoomForm.value.name?.trim() || '';
-      const newName = name.charAt(0).toUpperCase() + name.slice(1);
-      const viewMode =
-        this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
-
-      try {
-        // se crea el usuario con el rol correspondiente (propietario o otro)
-        const newUser = this.userService.createUser(
-          newName,
-          viewMode,
-          this.userRole
-        );
-
-        // solo si es propietario, se setea como owner de la partida
-        if (this.userRole === UserRole.propietario) {
-          this.gameService.setGameOwner(newUser.id);
-        }
-
-        // se agrega el usuario a la partida
-        this.gameService.addPlayer(newUser);
-
-        this.gameRoomForm.reset();
-        this.showDialog = false;
-
-        console.log('Usuario creado exitosamente:', newUser);
-        console.log(
-          'Partida creada exitosamente:',
-          this.gameService.getCurrentGame
-        );
-      } catch (error) {
-        console.error('Error al crear usuario:', error);
-      }
-    } else {
-      console.log('Formulario inválido al crear usuario');
-    }
-  }
-
   // para manejar el formulario
   gameRoomForm = new FormGroup({
     name: new FormControl('', [Validators.required, nameValidator()]),
 
     selectedOption: new FormControl(this.jugador, [Validators.required]),
   });
+
+  handleSubmit() {
+    if (this.gameRoomForm.valid) {
+      const name = this.gameRoomForm.value.name?.trim() || '';
+      const newName = this.capitalizeFirstLetter(name);
+      const viewMode =
+        this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
+      this.createUser(newName, viewMode, this.userRole);
+      this.gameRoomForm.reset();
+      this.showDialog = false;
+      console.log(
+        'Partida creada exitosamente:',
+        this.gameService.getCurrentGame
+      );
+    } else {
+      console.log('Formulario inválido al crear usuario');
+    }
+  }
+
+  capitalizeFirstLetter(name: string): string {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  createUser(name: string, viewMode: ViewMode, userRole: UserRole): void {
+    try {
+      const newUser = this.userService.createUser(name, viewMode, userRole);
+
+      if (userRole === UserRole.propietario) {
+        this.gameService.setGameOwner(newUser.id);
+      }
+
+      this.gameService.addPlayer(newUser);
+      console.log('Usuario creado exitosamente:', newUser);
+    } catch (error) {
+      console.error('Error al crear usuario:', error);
+    }
+  }
 }

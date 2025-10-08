@@ -52,8 +52,12 @@ export class CreateGameContentComponent {
   }
 
   createGame(gameName: string): void {
-    const newGame = this.gameService.createGame(gameName);
-    console.log('Partida creada exitosamente:', newGame);
+    try {
+      const newGame = this.gameService.createGame(gameName);
+      console.log('Partida creada exitosamente:', newGame);
+    } catch (error) {
+      console.error('Error al crear partida:', error);
+    }
   }
 
   capitalizeFirstLetter(name: string): string {
