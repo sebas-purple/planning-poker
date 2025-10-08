@@ -3,7 +3,7 @@
     <a-input
       [label]="textLabel"
       [formControl]="createGameForm.controls.name"
-      [error]="hasNameInput ? messageError : ''"
+      [error]="createGameForm.controls.name.value ? createGameForm.controls.name.errors?.['message'] : ''"
     ></a-input>
 
     <a-button

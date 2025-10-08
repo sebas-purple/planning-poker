@@ -7,16 +7,15 @@ import { ViewMode } from '../core/enums/view-mode.enum';
 import { ScoringMode } from '../core/enums/scoring-mode.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameService {
   private currentGame: Game | null = null;
   private readonly maxPlayers: number = 8;
-
   private readonly gameSubject = new BehaviorSubject<Game | null>(null);
   public game$: Observable<Game | null> = this.gameSubject.asObservable();
 
-  constructor() { 
+  constructor() {
     this.setupStorageListener();
   }
 
@@ -24,12 +23,16 @@ export class GameService {
   private setupStorageListener(): void {
     window.addEventListener('storage', (event) => {
       // Solo procesar cambios de juegos de planning poker
-      if (event.key && event.key.startsWith('planning-poker-game-') && event.newValue) {
+      if (
+        event.key &&
+        event.key.startsWith('planning-poker-game-') &&
+        event.newValue
+      ) {
         try {
           const updatedGame = JSON.parse(event.newValue);
           // Convertir fecha string de vuelta a Date
           updatedGame.createdAt = new Date(updatedGame.createdAt);
-          
+
           // Si es el juego actual, actualizarlo
           if (this.currentGame && this.currentGame.id === updatedGame.id) {
             this.currentGame = updatedGame;
@@ -51,9 +54,9 @@ export class GameService {
       selectedCards: {},
       isRevealed: false,
       maxPlayers: this.maxPlayers,
-      scoringMode: ScoringMode.FIBONACCI
+      scoringMode: ScoringMode.FIBONACCI,
     };
-    
+
     this.currentGame = newGame;
     this.saveGameToStorage();
     return newGame;
@@ -63,7 +66,7 @@ export class GameService {
     if (this.currentGame) {
       this.currentGame = {
         ...this.currentGame,
-        owner: ownerId
+        owner: ownerId,
       };
       this.saveGameToStorage();
     }
@@ -86,7 +89,9 @@ export class GameService {
 
   updatePlayer(updatedPlayer: User): boolean {
     if (this.currentGame) {
-      const playerIndex = this.currentGame.players.findIndex(p => p.id === updatedPlayer.id);
+      const playerIndex = this.currentGame.players.findIndex(
+        (p) => p.id === updatedPlayer.id
+      );
       if (playerIndex !== -1) {
         this.currentGame.players[playerIndex] = updatedPlayer;
         this.saveGameToStorage();
@@ -114,7 +119,9 @@ export class GameService {
   }
 
   hasPlayerSelectedCard(userId: string): boolean {
-    return this.currentGame ? !!this.currentGame.selectedCards?.[userId] : false;
+    return this.currentGame
+      ? !!this.currentGame.selectedCards?.[userId]
+      : false;
   }
 
   getPlayerSelectedCard(userId: string): string | null {
@@ -122,11 +129,16 @@ export class GameService {
   }
 
   hasAllPlayersSelectedCard(): boolean {
-    return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length === this.currentGame.players.length : false;
+    return this.currentGame
+      ? Object.keys(this.currentGame.selectedCards || {}).length ===
+          this.currentGame.players.length
+      : false;
   }
 
   hasAtLeastOnePlayerSelectedCard(): boolean {
-    return this.currentGame ? Object.keys(this.currentGame.selectedCards || {}).length > 0 : false;
+    return this.currentGame
+      ? Object.keys(this.currentGame.selectedCards || {}).length > 0
+      : false;
   }
 
   isGameOwner(userId: string): boolean {
@@ -136,27 +148,29 @@ export class GameService {
   // Verificar si un usuario es administrador (propietario o administrador)
   isAdmin(userId: string): boolean {
     if (!this.currentGame) return false;
-    
+
     // El propietario siempre es admin
     if (this.isGameOwner(userId)) return true;
-    
+
     // Verificar si tiene rol de administrador
-    const player = this.currentGame.players.find(p => p.id === userId);
+    const player = this.currentGame.players.find((p) => p.id === userId);
     return player?.rol === UserRole.administrador;
   }
 
   // Promover un jugador a administrador
   promoteToAdmin(userId: string, promoterId: string): boolean {
     if (!this.currentGame) return false;
-    
+
     // Solo el propietario o administradores pueden promover
     if (!this.isAdmin(promoterId)) return false;
-    
-    const playerIndex = this.currentGame.players.findIndex(p => p.id === userId);
+
+    const playerIndex = this.currentGame.players.findIndex(
+      (p) => p.id === userId
+    );
     if (playerIndex !== -1) {
       // No se puede promover al propietario (ya es admin)
       if (this.isGameOwner(userId)) return false;
-      
+
       this.currentGame.players[playerIndex].rol = UserRole.administrador;
       this.saveGameToStorage();
       this.gameSubject.next(this.currentGame);
@@ -168,15 +182,20 @@ export class GameService {
   // Degradar un administrador a jugador
   demoteFromAdmin(userId: string, demoterId: string): boolean {
     if (!this.currentGame) return false;
-    
+
     // Solo el propietario o administradores pueden degradar
     if (!this.isAdmin(demoterId)) return false;
-    
+
     // No se puede degradar al propietario
     if (this.isGameOwner(userId)) return false;
-    
-    const playerIndex = this.currentGame.players.findIndex(p => p.id === userId);
-    if (playerIndex !== -1 && this.currentGame.players[playerIndex].rol === UserRole.administrador) {
+
+    const playerIndex = this.currentGame.players.findIndex(
+      (p) => p.id === userId
+    );
+    if (
+      playerIndex !== -1 &&
+      this.currentGame.players[playerIndex].rol === UserRole.administrador
+    ) {
       this.currentGame.players[playerIndex].rol = UserRole.jugador;
       this.saveGameToStorage();
       this.gameSubject.next(this.currentGame);
@@ -188,9 +207,10 @@ export class GameService {
   // Obtener lista de administradores (incluyendo propietario)
   getAdmins(): User[] {
     if (!this.currentGame) return [];
-    
-    return this.currentGame.players.filter(player => 
-      this.isGameOwner(player.id) || player.rol === UserRole.administrador
+
+    return this.currentGame.players.filter(
+      (player) =>
+        this.isGameOwner(player.id) || player.rol === UserRole.administrador
     );
   }
 
@@ -199,7 +219,7 @@ export class GameService {
     if (!this.currentGame) {
       throw new Error('No hay juego activo para generar link');
     }
-    
+
     const baseUrl = window.location.origin;
     return `${baseUrl}/join-game/${this.currentGame.id}`;
   }
@@ -207,7 +227,10 @@ export class GameService {
   // Guardar juego en localStorage y notificar cambios
   private saveGameToStorage(): void {
     if (this.currentGame) {
-      localStorage.setItem(`planning-poker-game-${this.currentGame.id}`, JSON.stringify(this.currentGame));
+      localStorage.setItem(
+        `planning-poker-game-${this.currentGame.id}`,
+        JSON.stringify(this.currentGame)
+      );
       this.gameSubject.next(this.currentGame);
     }
   }
@@ -246,13 +269,15 @@ export class GameService {
     const votesCount: { [cardValue: string]: number } = {};
     const players = this.currentGame.players;
 
-    Object.entries(this.currentGame.selectedCards).forEach(([userId, cardId]) => {
-      // Verificar que el usuario no sea espectador
-      const player = players.find(p => p.id === userId);
-      if (player && player.viewMode !== ViewMode.espectador) {
-        votesCount[cardId || ''] = (votesCount[cardId || ''] || 0) + 1;
+    Object.entries(this.currentGame.selectedCards).forEach(
+      ([userId, cardId]) => {
+        // Verificar que el usuario no sea espectador
+        const player = players.find((p) => p.id === userId);
+        if (player && player.viewMode !== ViewMode.espectador) {
+          votesCount[cardId || ''] = (votesCount[cardId || ''] || 0) + 1;
+        }
       }
-    });
+    );
 
     return votesCount;
   }
@@ -267,17 +292,20 @@ export class GameService {
     let sum = 0;
     let count = 0;
 
-    Object.entries(this.currentGame.selectedCards).forEach(([userId, cardId]) => {
-      // Verificar que el usuario no sea espectador
-      const player = players.find(p => p.id === userId);
-      if (player && player.viewMode !== ViewMode.espectador) {
-        const numericValue = parseFloat(cardId || '0');
-        if (!isNaN(numericValue)) { // Solo contar valores numéricos
-          sum += numericValue;
-          count++;
+    Object.entries(this.currentGame.selectedCards).forEach(
+      ([userId, cardId]) => {
+        // Verificar que el usuario no sea espectador
+        const player = players.find((p) => p.id === userId);
+        if (player && player.viewMode !== ViewMode.espectador) {
+          const numericValue = parseFloat(cardId || '0');
+          if (!isNaN(numericValue)) {
+            // Solo contar valores numéricos
+            sum += numericValue;
+            count++;
+          }
         }
       }
-    });
+    );
 
     const result = count > 0 ? Number((sum / count).toFixed(1)) : 0;
 
@@ -348,10 +376,10 @@ export class GameService {
   // Verificar si se puede cambiar el modo de puntaje
   canChangeScoringMode(userId: string): boolean {
     if (!this.currentGame) return false;
-    
+
     // Solo administradores pueden cambiar
     if (!this.isAdmin(userId)) return false;
-    
+
     // No se puede cambiar si las cartas están reveladas
     return !this.currentGame.isRevealed;
   }

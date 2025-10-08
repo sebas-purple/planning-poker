@@ -42,24 +42,6 @@ export class GameRoomCreateUserComponent {
   // para manejar el input
   textLabel: string = 'Tu nombre';
 
-  get hasNameInput(): boolean {
-    const value = this.gameRoomForm.controls.name.value;
-    return (value ?? '').length > 0;
-  }
-
-  get messageError(): string {
-    const errors = this.gameRoomForm.controls.name.errors;
-    if (errors) {
-      if (errors['specialChars'] || errors['required']) {
-        return errors['message'];
-      } else {
-        const errorKey = Object.keys(errors)[0];
-        return errors[errorKey].message;
-      }
-    }
-    return '';
-  }
-
   // para manejar los checkboxes
 
   textLabeljugador: string = 'Jugador';
