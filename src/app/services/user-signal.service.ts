@@ -18,6 +18,13 @@ export class UserSignalService {
     return user?.viewMode || ViewMode.jugador;
   });
 
+  /**
+   * Crea un nuevo usuario
+   * @param name - El nombre del usuario
+   * @param viewMode - El modo de visualización del usuario
+   * @param rol - El rol del usuario
+   * @author Sebastian Aristizabal Castañeda
+   */
   createUser(
     name: string,
     viewMode: ViewMode,
@@ -31,5 +38,23 @@ export class UserSignalService {
     };
 
     this.userSignal.set(newUser);
+  }
+
+  /**
+   * Cambia el modo de visualización del usuario
+   * @param newViewMode - El nuevo modo de visualización
+   * @author Sebastian Aristizabal Castañeda
+   */
+  changeViewMode(newViewMode: ViewMode): void {
+    const user = this.userSignal();
+
+    if (user) {
+      this.userSignal.set({ ...user, viewMode: newViewMode });
+      console.log(
+        `changeViewMode: Modo de visualización cambiado a: ${newViewMode}`
+      );
+    } else {
+      console.log(`changeViewMode: Usuario no encontrado`);
+    }
   }
 }

@@ -33,6 +33,11 @@ export class GameSignalService {
     () => this.gameSignal() !== null
   );
 
+  readonly getGameName: Signal<string> = computed(() => {
+    const game = this.gameSignal();
+    return game?.name || '';
+  });
+
   readonly hasMaxPlayers: Signal<boolean> = computed(
     () => this.gameSignal()?.players.length === this.maxPlayers
   );
@@ -133,7 +138,18 @@ export class GameSignalService {
   });
 
   readonly canSelectCard: Signal<boolean> = computed(() => {
-    return this.userSignalService.getViewMode() && !this.getIsRevealed();
+    const currentUser = this.userSignalService.getUserSignal();
+    const isRevealed = this.getIsRevealed();
+    return currentUser?.viewMode === ViewMode.jugador && !isRevealed;
+  });
+
+  readonly inviteLink: Signal<string> = computed(() => {
+    if (!this.gameSignal()) {
+      console.log('generateInviteLink: No hay juego activo para generar link');
+      return 'https://planning-poker.com/game/1234567890';
+    }
+    const baseUrl = window.location.origin;
+    return `${baseUrl}/join-game/${this.gameSignal()?.id}`;
   });
 
   /**
@@ -287,20 +303,22 @@ export class GameSignalService {
    * @author Sebastian Aristizabal Castañeda
    */
   changeScoringMode(newMode: ScoringMode): void {
-    if (!this.gameSignal()) return;
+    const currentGame = this.gameSignal();
+
+    if (!currentGame) return;
 
     if (!this.isAdmin()) return;
 
-    if (this.gameSignal()?.isRevealed) return;
+    if (currentGame.isRevealed) return;
 
     // Resetear votos si hay alguno
     const selectedCards = this.hasAtLeastOnePlayerSelectedCard()
       ? {}
-      : this.gameSignal()?.selectedCards;
+      : currentGame.selectedCards;
 
     // Cambiar el modo
     const updatedGame: Game = {
-      ...this.gameSignal()!,
+      ...currentGame,
       scoringMode: newMode,
       selectedCards,
     };
@@ -315,18 +333,19 @@ export class GameSignalService {
    * @author Sebastian Aristizabal Castañeda
    */
   selectCard(cardId: string): void {
-    const game = this.gameSignal();
+    const currentGame = this.gameSignal();
+
     const user = this.userSignalService.getUserSignal();
 
-    if (!game) return;
+    if (!currentGame) return;
 
     const updatedSelectedCards = {
-      ...(game.selectedCards || {}),
+      ...(currentGame.selectedCards || {}),
       [user?.id ?? '']: cardId,
     };
 
     const updatedGame: Game = {
-      ...game,
+      ...currentGame,
       selectedCards: updatedSelectedCards,
     };
 
@@ -339,19 +358,53 @@ export class GameSignalService {
    * @author Sebastian Aristizabal Castañeda
    */
   unselectCard(): void {
-    const game = this.gameSignal();
+    const currentGame = this.gameSignal();
     const user = this.userSignalService.getUserSignal();
 
-    if (!game || !game.selectedCards?.[user?.id ?? '']) return;
+    if (!currentGame || !currentGame.selectedCards?.[user?.id ?? '']) return;
 
-    const { [user?.id ?? '']: removed, ...remainingCards } = game.selectedCards;
+    const { [user?.id ?? '']: removed, ...remainingCards } =
+      currentGame.selectedCards;
 
     const updatedGame: Game = {
-      ...game,
+      ...currentGame,
       selectedCards: remainingCards,
     };
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
+  }
+
+  /**
+   * Actualiza un jugador.
+   * @param updatedPlayer El jugador a actualizar.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  updatePlayer(updatedPlayer: User): void {
+    const currentGame = this.gameSignal();
+
+    if (currentGame) {
+      const playerIndex = currentGame.players.findIndex(
+        (p) => p.id === updatedPlayer.id
+      );
+
+      if (playerIndex !== -1) {
+        const updatedPlayers = [...currentGame.players];
+        updatedPlayers[playerIndex] = updatedPlayer;
+
+        const updatedGame: Game = {
+          ...currentGame,
+          players: updatedPlayers,
+        };
+
+        this.gameSignal.set(updatedGame);
+        this.saveGameToStorage(); // actualiza el storage
+        console.log('updatePlayer: Jugador actualizado:', updatedPlayer);
+      } else {
+        console.log('updatePlayer: Jugador no encontrado');
+      }
+    } else {
+      console.log('updatePlayer: Juego no encontrado');
+    }
   }
 }

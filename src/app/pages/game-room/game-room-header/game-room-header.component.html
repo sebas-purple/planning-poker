@@ -5,15 +5,15 @@
   </div>
   <!-- titulo -->
   <div class="header-item">
-    <a-typography [text]="textHeader" [type]="typeTypography"></a-typography>
+    <a-typography [text]="$gameName()" [type]="typeTypography"></a-typography>
   </div>
   <!-- opciones -->
   <div class="header-item">
-    <a-card [text]="textCard" [type]="typeCard"></a-card>
+    <a-card [text]="$getTextCard()" [type]="typeCard"></a-card>
 
     <a-toggle
       [options]="viewModeOptions"
-      [selectedValue]="currentViewMode"
+      [selectedValue]="$getCurrentViewMode()"
       (valueChange)="onViewModeChange($event)"
     ></a-toggle>
     <a-button
@@ -31,7 +31,7 @@
   [showDialog]="showDialog"
   (closeDialog)="handleCloseDialog()"
 >
-  <input class="input" type="text" readonly [value]="placeholderDialog" />
+  <input class="input" type="text" readonly [value]="$inviteLink()" />
   <a-button
     [text]="textButtonDialog"
     [type]="typeButtonDialog"
