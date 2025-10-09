@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GameRoomFooterComponent } from './game-room-footer.component';
-import { UserService } from '../../../services/user.service';
 import { UserRole } from '../../../core/enums/user-role.enum';
-import { GameService } from '../../../services/game.service';
-import { By } from '@angular/platform-browser';
+
 import { ViewMode } from '../../../core/enums/view-mode.enum';
+import {
+  SCORING_MODE_LABELS,
+  ScoringMode,
+} from '../../../core/enums/scoring-mode.enum';
 
 describe('GameRoomFooterComponent', () => {
   let component: GameRoomFooterComponent;
   let fixture: ComponentFixture<GameRoomFooterComponent>;
-  let userService: UserService;
-  let gameService: GameService;
 
   // Configuracion beforeEach
 
@@ -26,8 +26,6 @@ describe('GameRoomFooterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GameRoomFooterComponent);
     component = fixture.componentInstance;
-    userService = TestBed.inject(UserService);
-    gameService = TestBed.inject(GameService);
   });
 
   // 3. Inicializar la vista
@@ -42,108 +40,167 @@ describe('GameRoomFooterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('When user is admin (propietario)', () => {
-    beforeEach(() => {
-      jest.spyOn(gameService, 'isAdmin').mockReturnValue(true);
-      fixture.detectChanges();
-    });
+  // Tests Typescript (LAS MAS IMPORTANTES)
 
-    it('should show the scoring mode selector', () => {
-      const selector = fixture.debugElement.query(By.css('a-selector'));
-      expect(component.isAdmin).toBe(true);
-      expect(selector).toBeTruthy();
-    });
+  // getPlayerSelectedCard
+
+  it('getPlayerSelectedCard: should return the player selected card', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'getPlayerSelectedCard')
+      .mockReturnValue('2');
+
+    const userMock = {
+      id: '1',
+      name: 'TestName',
+      viewMode: ViewMode.jugador,
+      rol: UserRole.propietario,
+    };
+
+    (component as any).$userSignal = () => userMock;
+
+    const result = component.getPlayerSelectedCard();
+
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith('1');
+    expect(result).toBe('2');
   });
 
-  describe('When user is not admin', () => {
-    beforeEach(() => {
-      jest.spyOn(gameService, 'isAdmin').mockReturnValue(false);
-      fixture.detectChanges();
-    });
+  it('getPlayerSelectedCard: should return null if the user is not found', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'getPlayerSelectedCard')
+      .mockImplementation();
 
-    it('should not show the scoring mode selector', () => {
-      const selector = fixture.debugElement.query(By.css('a-selector'));
-      expect(component.isAdmin).toBe(false);
-      expect(selector).toBeNull();
-    });
+    const userMock = null;
+
+    (component as any).$userSignal = () => userMock;
+
+    const result = component.getPlayerSelectedCard();
+
+    expect(spy1).not.toHaveBeenCalled();
+    expect(result).toBe(null);
   });
 
-  describe('When user has player view mode', () => {
-    beforeEach(() => {
-      jest.spyOn(userService, 'getCurrentUser', 'get').mockReturnValue({
-        id: '1',
-        name: 'John Doe',
-        rol: UserRole.propietario,
-        viewMode: ViewMode.jugador,
-      });
-      fixture.detectChanges();
-    });
+  // onScoringModeChange
 
-    it('should show the cards', () => {
-      expect(component.userService.getCurrentUser?.viewMode).toBe(
-        ViewMode.jugador
-      );
-      const cards = fixture.debugElement.query(By.css('a-card'));
-      expect(cards).toBeTruthy();
-    });
+  it('onScoringModeChange: should change the scoring mode to fibonacci', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'changeScoringMode')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.cardPoolSignalService, 'setScoringMode')
+      .mockImplementation();
+    const mockSelectedLabel: string =
+      SCORING_MODE_LABELS[ScoringMode.FIBONACCI];
+    component.onScoringModeChange(mockSelectedLabel);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith(ScoringMode.FIBONACCI);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(ScoringMode.FIBONACCI);
   });
 
-  describe('When user has spectator view mode', () => {
-    beforeEach(() => {
-      jest.spyOn(userService, 'getCurrentUser', 'get').mockReturnValue({
-        id: '2',
-        name: 'Jane Doe',
-        rol: UserRole.propietario,
-        viewMode: ViewMode.espectador,
-      });
-      fixture.detectChanges();
-    });
-
-    it('should not show the cards', () => {
-      expect(component.userService.getCurrentUser?.viewMode).toBe(
-        ViewMode.espectador
-      );
-      const cards = fixture.debugElement.query(By.css('a-card'));
-      expect(cards).toBeNull();
-    });
+  it('onScoringModeChange: should change the scoring mode to t-shirt', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'changeScoringMode')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.cardPoolSignalService, 'setScoringMode')
+      .mockImplementation();
+    const mockSelectedLabel: string = SCORING_MODE_LABELS[ScoringMode.T_SHIRT];
+    component.onScoringModeChange(mockSelectedLabel);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith(ScoringMode.T_SHIRT);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(ScoringMode.T_SHIRT);
   });
 
-  describe('When cards are revealed', () => {
-    beforeEach(() => {
-      jest.spyOn(gameService, 'getIsRevealed', 'get').mockReturnValue(true);
-
-      fixture.detectChanges();
-    });
-
-    it('should show the statistics', () => {
-      const statistics = fixture.debugElement.query(By.css('.statistics'));
-      expect(component.isRevealed).toBe(true);
-      expect(statistics).toBeTruthy();
-    });
-
-    it('should show the average', () => {
-      const average = fixture.debugElement.query(By.css('.average'));
-      expect(component.isRevealed).toBe(true);
-      expect(average).toBeTruthy();
-    });
+  it('onScoringModeChange: should change the scoring mode to powers of 2', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'changeScoringMode')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.cardPoolSignalService, 'setScoringMode')
+      .mockImplementation();
+    const mockSelectedLabel: string =
+      SCORING_MODE_LABELS[ScoringMode.POWERS_OF_2];
+    component.onScoringModeChange(mockSelectedLabel);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith(ScoringMode.POWERS_OF_2);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(ScoringMode.POWERS_OF_2);
   });
 
-  describe('When cards are not revealed', () => {
-    beforeEach(() => {
-      jest.spyOn(gameService, 'getIsRevealed', 'get').mockReturnValue(false);
-      fixture.detectChanges();
-    });
+  it('onScoringModeChange: should change the scoring mode to linear', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'changeScoringMode')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.cardPoolSignalService, 'setScoringMode')
+      .mockImplementation();
+    const mockSelectedLabel: string = SCORING_MODE_LABELS[ScoringMode.LINEAR];
+    component.onScoringModeChange(mockSelectedLabel);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith(ScoringMode.LINEAR);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(ScoringMode.LINEAR);
+  });
 
-    it('should not show the statistics', () => {
-      const statistics = fixture.debugElement.query(By.css('.statistics'));
-      expect(component.isRevealed).toBe(false);
-      expect(statistics).toBeNull();
-    });
+  it('onScoringModeChange: should change the scoring mode to default', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'changeScoringMode')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.cardPoolSignalService, 'setScoringMode')
+      .mockImplementation();
+    const mockSelectedLabel: string = 'mockDefault';
+    component.onScoringModeChange(mockSelectedLabel);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith(ScoringMode.FIBONACCI);
+    expect(spy2).toHaveBeenCalledTimes(1);
+    expect(spy2).toHaveBeenCalledWith(ScoringMode.FIBONACCI);
+  });
 
-    it('should not show the average', () => {
-      const average = fixture.debugElement.query(By.css('.average'));
-      expect(component.isRevealed).toBe(false);
-      expect(average).toBeNull();
-    });
+  // onCardSelected
+
+  it('onCardSelected: should select the card clicked', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'selectCard')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.gameSignalService, 'unselectCard')
+      .mockImplementation();
+    const mockCardId: string = '1';
+    const mockIsSelected: boolean = true;
+    component.onCardSelected(mockCardId, mockIsSelected);
+    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledWith('1');
+    expect(spy2).not.toHaveBeenCalled();
+  });
+
+  it('onCardSelected: should unselect the card clicked', () => {
+    const spy1 = jest
+      .spyOn(component.gameSignalService, 'selectCard')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.gameSignalService, 'unselectCard')
+      .mockImplementation();
+    const mockCardId: string = '1';
+    const mockIsSelected: boolean = false;
+    component.onCardSelected(mockCardId, mockIsSelected);
+    expect(spy1).not.toHaveBeenCalled();
+    expect(spy2).toHaveBeenCalledTimes(1);
+  });
+
+  // getVotesCountLabel
+
+  it('getVotesCountLabel: should return the correct label for 1 vote', () => {
+    const mockCount = 1;
+    const result = component.getVotesCountLabel(mockCount);
+    expect(result).toBe(' voto');
+  });
+
+  it('getVotesCountLabel: should return the correct label for 2 votes', () => {
+    const mockCount = 2;
+    const result = component.getVotesCountLabel(mockCount);
+    expect(result).toBe(' votos');
   });
 });
