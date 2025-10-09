@@ -20,7 +20,7 @@
         [type]="cardType"
         *ngFor="let card of cards"
         [text]="card.text"
-        [isSelected]="$getPlayerSelectedCard() === card.id"
+        [isSelected]="getPlayerSelectedCard() === card.id"
         (cardClick)="onCardSelected(card.id, $event)"
         [isClickable]="isClickableButton"
       ></a-card>

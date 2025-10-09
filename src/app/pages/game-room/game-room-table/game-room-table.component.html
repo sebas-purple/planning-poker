@@ -1,7 +1,7 @@
 <div class="table-container">
   <div class="table">
     <!-- boton para revelar cartas o nueva votación -->
-    <ng-container *ngIf="isButtonRevealCardsVisible()">
+    <ng-container *ngIf="$isButtonRevealCardsVisible()">
       <a-button
         *ngIf="!isRevealed"
         [text]="textButtonRevealCards"
@@ -21,7 +21,7 @@
 
   <!-- container para los jugadores, donde se muestran las cartas de los jugadores -->
   <div class="players-container">
-    <div class="player-slot" *ngFor="let player of players">
+    <div class="player-slot" *ngFor="let player of $players()">
       <!-- si el jugador es espectador, se muestra la carta del espectador -->
 
       <!-- EXTRAER condicional -->

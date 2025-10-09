@@ -42,24 +42,29 @@ export class GameSignalService {
     () => this.gameSignal()?.players.length === this.maxPlayers
   );
 
-  readonly isAdmin: Signal<boolean> = computed(() => {
-    const game = this.gameSignal();
-    const user = this.userSignalService.getUserSignal();
+  // readonly isAdmin: Signal<boolean> = computed(() => {
+  //   const game = this.gameSignal();
+  //   const user = this.userSignalService.getUserSignal();
 
-    if (!game || !user) return false;
+  //   if (!game || !user) return false;
 
-    // Owner siempre es admin
-    if (game.owner === user.id) return true;
+  //   // Owner siempre es admin
+  //   if (game.owner === user.id) return true;
 
-    // Buscar si el usuario tiene rol de admin
-    const player = game.players.find((p) => p.id === user.id);
-    return player?.rol === UserRole.administrador;
-  });
+  //   // Buscar si el usuario tiene rol de admin
+  //   const player = game.players.find((p) => p.id === user.id);
+  //   return player?.rol === UserRole.administrador;
+  // });
 
   readonly canChangeScoringMode: Signal<boolean> = computed(() => {
-    if (!this.isAdmin()) return false;
+    const user = this.userSignalService.getUserSignal();
+    const currentGame = this.gameSignal();
 
-    return !this.gameSignal()?.isRevealed;
+    if (!user || !currentGame) return false;
+
+    if (!this.isAdmin(user.id, currentGame)) return false;
+
+    return !currentGame?.isRevealed;
   });
 
   readonly getCurrentScoringMode: Signal<string> = computed(() => {
@@ -72,12 +77,12 @@ export class GameSignalService {
     return game ? Object.keys(game.selectedCards || {}).length > 0 : false;
   });
 
-  readonly getPlayerSelectedCard: Signal<string | null> = computed(() => {
-    const game = this.gameSignal();
-    const user = this.userSignalService.getUserSignal();
+  // readonly getPlayerSelectedCard: Signal<string | null> = computed(() => {
+  //   const game = this.gameSignal();
+  //   const user = this.userSignalService.getUserSignal();
 
-    return game?.selectedCards?.[user?.id ?? ''] || null;
-  });
+  //   return game?.selectedCards?.[user?.id ?? ''] || null;
+  // });
 
   readonly getIsRevealed: Signal<boolean> = computed(() => {
     const game = this.gameSignal();
@@ -150,6 +155,21 @@ export class GameSignalService {
     }
     const baseUrl = window.location.origin;
     return `${baseUrl}/join-game/${this.gameSignal()?.id}`;
+  });
+
+  readonly isButtonRevealCardsVisible: Signal<boolean> = computed(() => {
+    const user = this.userSignalService.getUserSignal();
+    const game = this.gameSignal();
+
+    if (!user || !game) return false;
+
+    return (
+      this.isAdmin(user.id, game) && this.hasAtLeastOnePlayerSelectedCard()
+    );
+  });
+
+  readonly getPlayers: Signal<User[]> = computed(() => {
+    return this.gameSignal()?.players || [];
   });
 
   /**
@@ -303,11 +323,12 @@ export class GameSignalService {
    * @author Sebastian Aristizabal Castañeda
    */
   changeScoringMode(newMode: ScoringMode): void {
+    const user = this.userSignalService.getUserSignal();
     const currentGame = this.gameSignal();
 
-    if (!currentGame) return;
+    if (!user || !currentGame) return;
 
-    if (!this.isAdmin()) return;
+    if (!this.isAdmin(user.id, currentGame)) return;
 
     if (currentGame.isRevealed) return;
 
@@ -406,5 +427,246 @@ export class GameSignalService {
     } else {
       console.log('updatePlayer: Juego no encontrado');
     }
+  }
+
+  /**
+   * Revela las cartas.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  revealCards(): void {
+    const game = this.gameSignal();
+
+    if (game) {
+      const updatedGame: Game = {
+        ...game,
+        isRevealed: true,
+      };
+
+      this.gameSignal.set(updatedGame);
+      this.saveGameToStorage();
+    }
+  }
+
+  /**
+   * Inicia una nueva votación.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  startNewVoting(): void {
+    const game = this.gameSignal();
+
+    if (game) {
+      const updatedGame: Game = {
+        ...game,
+        isRevealed: false,
+      };
+
+      this.gameSignal.set(updatedGame);
+      this.resetGame();
+    }
+  }
+
+  /**
+   * Reinicia el juego.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  resetGame(): void {
+    const game = this.gameSignal();
+
+    if (game) {
+      const updatedGame: Game = {
+        ...game,
+        selectedCards: {}, // limpiamos las cartas seleccionadas
+      };
+
+      this.gameSignal.set(updatedGame);
+      this.saveGameToStorage();
+    }
+  }
+
+  /**
+   * Verifica si un usuario es administrador.
+   * @param userId El id del usuario.
+   * @param game El juego.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  isAdmin(userId: string, game: Game | null): boolean {
+    if (!game) return false;
+
+    if (this.isGameOwner(userId, game)) return true;
+
+    const player = game.players.find((p) => p.id === userId);
+    return player?.rol === UserRole.administrador;
+  }
+
+  /**
+   * Verifica si un usuario es el propietario del juego.
+   * @param userId El id del usuario.
+   * @param game El juego.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  isGameOwner(userId: string, game: Game): boolean {
+    return game.owner === userId;
+  }
+
+  // /**
+  //  * Promueve un usuario a administrador.
+  //  * @param userId El id del usuario.
+  //  * @param promoterId El id del promotor.
+  //  * @author Sebastian Aristizabal Castañeda
+  //  */
+  // promoteToAdmin(userId: string, promoterId: string): void {
+  //   const game = this.gameSignal();
+
+  //   if (!game) return;
+
+  //   if (!this.isAdmin(promoterId, game)) return;
+  //   if (this.isGameOwner(userId, game)) return;
+
+  //   const playerIndex = game.players.findIndex((p) => p.id === userId);
+
+  //   if (playerIndex === -1) return;
+
+  //   const updatedPlayers = [...game.players];
+  //   updatedPlayers[playerIndex] = {
+  //     ...updatedPlayers[playerIndex],
+  //     rol: UserRole.administrador,
+  //   };
+
+  //   const updatedGame: Game = {
+  //     ...game,
+  //     players: updatedPlayers,
+  //   };
+
+  //   this.gameSignal.set(updatedGame);
+  //   this.saveGameToStorage();
+  // }
+
+  // /**
+  //  * Degrada un usuario de administrador a jugador.
+  //  * @param userId El id del usuario.
+  //  * @param demoterId El id del degradador.
+  //  * @author Sebastian Aristizabal Castañeda
+  //  */
+  // demoteFromAdmin(userId: string, demoterId: string): void {
+  //   const game = this.gameSignal();
+
+  //   if (!game) return;
+
+  //   if (!this.isAdmin(demoterId, game)) return;
+  //   if (this.isGameOwner(userId, game)) return;
+
+  //   const playerIndex = game.players.findIndex((p) => p.id === userId);
+
+  //   if (
+  //     playerIndex === -1 ||
+  //     game.players[playerIndex].rol !== UserRole.administrador
+  //   ) {
+  //     return;
+  //   }
+
+  //   const updatedPlayers = [...game.players];
+  //   updatedPlayers[playerIndex] = {
+  //     ...updatedPlayers[playerIndex],
+  //     rol: UserRole.jugador,
+  //   };
+
+  //   const updatedGame: Game = {
+  //     ...game,
+  //     players: updatedPlayers,
+  //   };
+
+  //   this.gameSignal.set(updatedGame);
+  //   this.saveGameToStorage();
+  // }
+
+  /**
+   * Promueve un usuario a administrador.
+   * @param userId El id del usuario.
+   * @param promoterId El id del promotor.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  promoteToAdmin(userId: string, promoterId: string): boolean {
+    const game = this.gameSignal();
+
+    if (!game) return false;
+
+    if (!this.isAdmin(promoterId, game)) return false;
+    if (this.isGameOwner(userId, game)) return false;
+
+    const playerIndex = game.players.findIndex((p) => p.id === userId);
+    if (playerIndex === -1) return false;
+
+    const updatedPlayers = [...game.players];
+    updatedPlayers[playerIndex] = {
+      ...updatedPlayers[playerIndex],
+      rol: UserRole.administrador,
+    };
+
+    const updatedGame: Game = {
+      ...game,
+      players: updatedPlayers,
+    };
+
+    this.gameSignal.set(updatedGame);
+    this.saveGameToStorage();
+    return true;
+  }
+
+  /**
+   * Degrada un usuario de administrador a jugador.
+   * @param userId El id del usuario.
+   * @param demoterId El id del degradador.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  demoteFromAdmin(userId: string, demoterId: string): boolean {
+    const game = this.gameSignal();
+
+    if (!game) return false;
+
+    if (!this.isAdmin(demoterId, game)) return false;
+    if (this.isGameOwner(userId, game)) return false;
+
+    const playerIndex = game.players.findIndex((p) => p.id === userId);
+    if (
+      playerIndex === -1 ||
+      game.players[playerIndex].rol !== UserRole.administrador
+    ) {
+      return false;
+    }
+
+    const updatedPlayers = [...game.players];
+    updatedPlayers[playerIndex] = {
+      ...updatedPlayers[playerIndex],
+      rol: UserRole.jugador,
+    };
+
+    const updatedGame: Game = {
+      ...game,
+      players: updatedPlayers,
+    };
+
+    this.gameSignal.set(updatedGame);
+    this.saveGameToStorage();
+    return true;
+  }
+
+  /**
+   * Verifica si un usuario ha seleccionado una carta.
+   * @param userId El id del usuario.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  hasPlayerSelectedCard(userId: string): boolean {
+    const game = this.gameSignal();
+    return !!game?.selectedCards?.[userId];
+  }
+
+  /**
+   * Obtiene la carta seleccionada por un usuario.
+   * @param userId El id del usuario.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  getPlayerSelectedCard(userId: string): string | null {
+    const game = this.gameSignal();
+    return game?.selectedCards?.[userId] || null;
   }
 }

@@ -1,4 +1,11 @@
-import { Component, inject, OnInit, OnDestroy, Signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  Signal,
+  computed,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import {
@@ -23,6 +30,7 @@ import {
 import { GameSignalService } from 'src/app/services/game-signal.service';
 import { UserSignalService } from 'src/app/services/user-signal.service';
 import { CardPoolSignalService } from 'src/app/services/card-pool-signal.service';
+import { User } from 'src/app/core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room-footer',
@@ -59,19 +67,20 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   // señales
 
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
-  $isAdmin: Signal<boolean> = this.gameSignalService.isAdmin;
+  // $isAdmin: Signal<boolean> = this.gameSignalService.isAdmin;
   $canChangeScoringMode: Signal<boolean> =
     this.gameSignalService.canChangeScoringMode;
   $getCurrentScoringMode: Signal<string> =
     this.gameSignalService.getCurrentScoringMode;
-  $getPlayerSelectedCard: Signal<string | null> =
-    this.gameSignalService.getPlayerSelectedCard;
+  // $getPlayerSelectedCard: Signal<string | null> =
+  //   this.gameSignalService.getPlayerSelectedCard;
   $getIsRevealed: Signal<boolean> = this.gameSignalService.getIsRevealed;
   $getVotesCountArray: Signal<{ value: string; count: number }[]> =
     this.gameSignalService.getVotesCountArray;
   $getAverageScore: Signal<string> = this.gameSignalService.getAverageScore;
   $canSelectCard: Signal<boolean> = this.gameSignalService.canSelectCard;
 
+  $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
   // variables
 
   labelScoringMode: string = 'Modo de puntaje:';
@@ -89,6 +98,19 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
 
   get scoringModeLabels(): string[] {
     return Object.values(SCORING_MODE_LABELS);
+  }
+
+  $isAdmin: Signal<boolean> = computed(() => {
+    const user = this.$userSignal();
+    const game = this.$gameSignal();
+    if (!user || !game) return false;
+    return this.gameSignalService.isAdmin(user.id, game);
+  });
+
+  getPlayerSelectedCard(): string | null {
+    const user = this.$userSignal();
+    if (!user) return null;
+    return this.gameSignalService.getPlayerSelectedCard(user.id);
   }
 
   // get currentScoringModeLabel(): string {
