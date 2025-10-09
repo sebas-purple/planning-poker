@@ -14,6 +14,8 @@ import { ImageSize } from 'src/app/shared/types/_types';
   styleUrls: ['./create-game-header.component.scss'],
 })
 export class CreateGameHeaderComponent {
+  // variables
+
   srcImage: string = 'assets/logo/isotipo_blanco.svg';
   alt: string = 'isotipo';
   sizeImage: ImageSize = 'small';

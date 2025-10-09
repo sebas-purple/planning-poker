@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal, signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { nameValidator } from '../../../shared/validators/name-validator';
 import { GameSignalService } from '../../../services/game-signal.service';
-import { Game } from 'src/app/core/interfaces/game.interface';
+import { Game } from '../../../core/interfaces/game.interface';
+import { capitalizeFirstLetter } from 'src/app/shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-create-game-content',
@@ -17,9 +18,16 @@ import { Game } from 'src/app/core/interfaces/game.interface';
   styleUrls: ['./create-game-content.component.scss'],
 })
 export class CreateGameContentComponent {
-  // readonly gameService: GameService = inject(GameService);
+  // inyecciones
+
   readonly gameSignalService: GameSignalService = inject(GameSignalService);
   readonly router: Router = inject(Router);
+
+  // señales
+
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
+  // variables
 
   textLabel: string = 'Nombra la partida';
   textButton: string = 'Crear partida';
@@ -28,56 +36,21 @@ export class CreateGameContentComponent {
     name: new FormControl('', [nameValidator()]),
   });
 
-  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
-  // $isGameLoaded: Signal<boolean> = this.gameSignalService.isGameLoaded;
+  // metodos
 
-  // $nameErrors = signal(this.createGameForm.controls.name.errors?.['message']);
-
-  // $formInvalid = computed(() => this.createGameForm.invalid);
-
+  /**
+   * Maneja el envío del formulario para crear una partida
+   * @author Sebastian Aristizabal Castañeda
+   */
   handleSubmit(): void {
     if (this.createGameForm.valid) {
       const name = this.createGameForm.value.name?.trim() || '';
-      const newName = this.capitalizeFirstLetter(name);
-
-      // this.createGame(newName);
-      this.createGameSignal(newName);
+      const newName = capitalizeFirstLetter(name);
+      this.gameSignalService.createGame(newName);
       this.createGameForm.reset();
       this.router.navigate(['/game-room']);
     } else {
-      // PARA PROBAR LAS SIGNALS
-
-      // if (this.createGameForm.value.name?.trim() === 's') {
-      //   this.gameSignalService.createGame(
-      //     this.createGameForm.value.name?.trim() || ''
-      //   );
-      // }
-
-      // console.log('gameSignal??:', this.$gameSignal());
-      // console.log('isGameLoaded ahaahHAHHA??:', this.$isGameLoaded());
-      console.log('Formulario inválido al crear partida');
+      console.log('handleSubmit: Formulario inválido al crear partida');
     }
-  }
-
-  // createGame(gameName: string): void {
-  //   try {
-  //     const newGame = this.gameService.createGame(gameName);
-  //     console.log('Partida creada exitosamente:', newGame);
-  //   } catch (error) {
-  //     console.error('Error al crear partida:', error);
-  //   }
-  // }
-
-  createGameSignal(gameName: string): void {
-    try {
-      this.gameSignalService.createGame(gameName);
-      console.log('Partida creada exitosamente:', this.$gameSignal());
-    } catch (error) {
-      console.error('Error al crear partida:', error);
-    }
-  }
-
-  capitalizeFirstLetter(name: string): string {
-    return name.charAt(0).toUpperCase() + name.slice(1);
   }
 }

@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { GameService } from '../../../services/game.service';
-import { UserService } from '../../../services/user.service';
 import {
   ButtonComponent,
   ButtonType,
@@ -20,7 +18,7 @@ import { Game } from '../../../core/interfaces/game.interface';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
 import { CardType } from '../../../atomic-design/atoms/card/card.component';
 import { GameSignalService } from '../../../services/game-signal.service';
-import { UserSignalService } from 'src/app/services/user-signal.service';
+import { UserSignalService } from '../../../services/user-signal.service';
 
 @Component({
   selector: 'app-game-room-table',
@@ -30,18 +28,30 @@ import { UserSignalService } from 'src/app/services/user-signal.service';
   styleUrls: ['./game-room-table.component.scss'],
 })
 export class GameRoomTableComponent implements OnInit, OnDestroy {
-  // protected readonly userService: UserService = inject(UserService);
-  readonly userSignalService: UserSignalService = inject(UserSignalService);
+  // inyecciones
 
-  // protected readonly gameService: GameService = inject(GameService);
+  readonly userSignalService: UserSignalService = inject(UserSignalService);
   readonly gameSignalService: GameSignalService = inject(GameSignalService);
 
+  // señales
+
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
   $isButtonRevealCardsVisible: Signal<boolean> =
     this.gameSignalService.isButtonRevealCardsVisible;
+
   $players: Signal<User[]> = this.gameSignalService.getPlayers;
-  // $isAdmin: Signal<boolean> = this.gameSignalService.isAdmin;
+
   $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
+
+  $isAdmin: Signal<boolean> = computed(() => {
+    const user = this.$userSignal();
+    const game = this.$gameSignal();
+    if (!user || !game) return false;
+    return this.gameSignalService.isAdmin(user.id, game);
+  });
+
+  // variables
 
   private gameSubscription?: Subscription;
   currentGame: Game | null = null;
@@ -56,59 +66,73 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
 
   buttonTypePlayer: ButtonType = 'quinary';
 
+  // metodos
+
+  /**
+   * Inicializa el componente y suscribe a cambios del juego
+   * @author Sebastian Aristizabal Castañeda
+   */
   ngOnInit(): void {
-    // Suscribirse a cambios del juego
     this.gameSubscription = this.gameSignalService.game$.subscribe((game) => {
       this.currentGame = game;
     });
   }
 
+  /**
+   * Destruye el componente y se desuscribe de cambios del juego
+   * @author Sebastian Aristizabal Castañeda
+   */
   ngOnDestroy(): void {
     this.gameSubscription?.unsubscribe();
   }
 
-  $isAdmin: Signal<boolean> = computed(() => {
-    const user = this.$userSignal();
-    const game = this.$gameSignal();
-    if (!user || !game) return false;
-    return this.gameSignalService.isAdmin(user.id, game);
-  });
-
-  // para manejar botones en la mesa
-  // isButtonRevealCardsVisible(): boolean {
-  //   return (
-  //     this.gameSignalService.isAdmin() &&
-  //     this.gameSignalService.hasAtLeastOnePlayerSelectedCard()
-  //   );
-  // }
-
+  /**
+   * Obtiene el estado de las cartas reveladas
+   * @author Sebastian Aristizabal Castañeda
+   */
   get isRevealed(): boolean {
     return this.currentGame?.isRevealed || false;
   }
 
+  /**
+   * Revela las cartas
+   * @author Sebastian Aristizabal Castañeda
+   */
   revealCards(): void {
     this.gameSignalService.revealCards();
   }
 
+  /**
+   * Inicia una nueva votación
+   * @author Sebastian Aristizabal Castañeda
+   */
   startNewVoting(): void {
     this.gameSignalService.startNewVoting();
   }
 
-  // para manejar los jugadores
-  // get players(): User[] {
-  //   return this.currentGame?.players || [];
-  // }
-
+  /**
+   * Verifica si el jugador es espectador
+   * @param player - El jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   isPlayerSpectator(player: User): boolean {
     return player.viewMode === ViewMode.espectador;
   }
 
+  /**
+   * Obtiene el texto del jugador espectador
+   * @param player - El jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   getPlayerSpectatorText(player: User): string {
     return player.name.slice(0, 2).toUpperCase();
   }
 
-  // cambiar el nombre de la función que represente el dar admin o quitar admin
-
+  /**
+   * Obtiene el texto del jugador administrador
+   * @param player - El jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   buttonTextAdminStatus(player: User): string {
     const game = this.$gameSignal();
     return this.gameSignalService.isAdmin(player.id, game)
@@ -116,47 +140,11 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
       : '👑 Admin';
   }
 
-  // $buttonTextAdminStatus: Signal<string> = computed(() => {
-  //   const user = this.$userSignal();
-  //   const game = this.$gameSignal();
-  //   if (!user) return '';
-  //   return this.gameSignalService.isAdmin(user.id, game)
-  //     ? '❌ Quitar'
-  //     : '👑 Admin';
-  // });
-
-  // changeAdminStatus(playerId: string): void {
-  //   const currentUserId = this.$userSignal()?.id || '';
-
-  //   if (this.$isAdmin()) {
-  //     this.gameSignalService.demoteFromAdmin(playerId, currentUserId);
-  //   } else {
-  //     this.gameSignalService.promoteToAdmin(playerId, currentUserId);
-  //   }
-  // }
-
-  //   changeAdminStatus(playerId: string): void {
-  //   const currentUserId = this.userService.getCurrentUser?.id || '';
-
-  //   if (this.gameService.isAdmin(playerId)) {
-  //     const success = this.gameService.demoteFromAdmin(playerId, currentUserId);
-
-  //     if (success) {
-  //       console.log('Administrador degradado a jugador exitosamente');
-  //     } else {
-  //       console.error('Error al degradar administrador');
-  //     }
-  //   } else {
-  //     const success = this.gameService.promoteToAdmin(playerId, currentUserId);
-
-  //     if (success) {
-  //       console.log('Jugador promovido a administrador exitosamente');
-  //     } else {
-  //       console.error('Error al promover jugador a administrador');
-  //     }
-  //   }
-  // }
-
+  /**
+   * Cambia el estado de administrador del jugador
+   * @param playerId - El id del jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   changeAdminStatus(playerId: string): void {
     const user = this.$userSignal();
     const game = this.$gameSignal();
@@ -186,15 +174,29 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Verifica si el jugador ha seleccionado una carta
+   * @param playerId - El id del jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   hasPlayerSelectedCard(playerId: string): boolean {
     return this.gameSignalService.hasPlayerSelectedCard(playerId);
   }
 
+  /**
+   * Obtiene la carta seleccionada del jugador
+   * @param playerId - El id del jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   getPlayerSelectedCard(playerId: string): string | null {
     return this.gameSignalService.getPlayerSelectedCard(playerId);
   }
 
-  // Obtener nombre del jugador con indicador de rol
+  /**
+   * Obtiene el nombre del jugador con indicador de rol
+   * @param player - El jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   getPlayerDisplayName(player: User): string {
     let displayName = player.name;
 
@@ -207,11 +209,14 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
     return displayName;
   }
 
-  // Verificar si el usuario actual puede gestionar a otro jugador
+  /**
+   * Verifica si el usuario actual puede gestionar a otro jugador
+   * @param player - El jugador a verificar
+   * @author Sebastian Aristizabal Castañeda
+   */
   canManagePlayer(player: User): boolean {
     const currentUserId = this.$userSignal()?.id || '';
 
-    // This assertion is unnecessary since the receiver accepts the original type of the expression.sonarqube(typescript:S4325)
     if (
       !this.gameSignalService.isAdmin(
         currentUserId,

@@ -1,6 +1,5 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GameService } from '../../../services/game.service';
 import {
   TypographyComponent,
   TypographyType,
@@ -15,13 +14,12 @@ import {
 } from '../../../atomic-design/atoms/card/card.component';
 import { ToggleComponent } from '../../../atomic-design/atoms/toggle/toggle.component';
 import { ImageSize } from '../../../shared/types/_types';
-import { UserService } from '../../../services/user.service';
 import { DialogInvitePlayerComponent } from '../components/dialog-invite-player/dialog-invite-player.component';
 import { Game } from '../../../core/interfaces/game.interface';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
-import { UserSignalService } from 'src/app/services/user-signal.service';
-import { User } from 'src/app/core/interfaces/user.interface';
-import { GameSignalService } from 'src/app/services/game-signal.service';
+import { UserSignalService } from '../../../services/user-signal.service';
+import { User } from '../../../core/interfaces/user.interface';
+import { GameSignalService } from '../../../services/game-signal.service';
 
 @Component({
   selector: 'app-game-room-header',
@@ -38,15 +36,33 @@ import { GameSignalService } from 'src/app/services/game-signal.service';
   styleUrls: ['./game-room-header.component.scss'],
 })
 export class GameRoomHeaderComponent {
-  // protected readonly gameService: GameService = inject(GameService);
+  // inyecciones
+
   private readonly gameSignalService: GameSignalService =
     inject(GameSignalService);
 
-  // private readonly userService: UserService = inject(UserService);
   private readonly userSignalService: UserSignalService =
     inject(UserSignalService);
 
-  // currentGame: Game | null = null;
+  // señales
+
+  $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
+  $getCurrentViewMode: Signal<ViewMode> = this.userSignalService.getViewMode;
+
+  $getTextCard: Signal<string> = computed(() => {
+    return (
+      this.userSignalService.getUserSignal()?.name?.slice(0, 2).toUpperCase() ||
+      ''
+    );
+  });
+
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
+  $gameName: Signal<string> = this.gameSignalService.getGameName;
+
+  $inviteLink: Signal<string> = this.gameSignalService.inviteLink;
+
+  // variables
 
   // para manejar el header
   srcImage: string = 'assets/logo/isotipo_blanco.svg';
@@ -72,64 +88,40 @@ export class GameRoomHeaderComponent {
 
   private readonly originalTextButton: string = 'Invitar jugadores';
 
-  $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
-  $getCurrentViewMode: Signal<ViewMode> = this.userSignalService.getViewMode;
+  // metodos
 
-  $getTextCard: Signal<string> = computed(() => {
-    return (
-      this.userSignalService.getUserSignal()?.name?.slice(0, 2).toUpperCase() ||
-      ''
-    );
-  });
-
-  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
-
-  $gameName: Signal<string> = this.gameSignalService.getGameName;
-
-  $inviteLink: Signal<string> = this.gameSignalService.inviteLink;
-
-  // get textHeader(): string {
-  //   return this.currentGame?.name || '';
-  // }
-
-  // get textCard(): string {
-  //   return (
-  //     // convertir a computed
-  //     this.userSignalService.getUserSignal()?.name?.slice(0, 2).toUpperCase() ||
-  //     ''
-  //   );
-  // }
-
-  // get currentViewMode(): ViewMode {
-  //   return this.userService.getCurrentUser?.viewMode || ViewMode.jugador;
-  // }
-
+  /**
+   * Cambia el modo de vista del usuario
+   * @param newViewMode - El nuevo modo de vista
+   * @author Sebastian Aristizabal Castañeda
+   */
   onViewModeChange(newViewMode: ViewMode): void {
-    // Cambiar el modo en el UserService
     this.userSignalService.changeViewMode(newViewMode);
-
-    // Actualizar el jugador en la partida
     this.gameSignalService.updatePlayer(this.$userSignal()!);
   }
 
+  /**
+   * Maneja el clic del botón de invitar jugadores
+   * @author Sebastian Aristizabal Castañeda
+   */
   handleButtonInvitePlayersClick(): void {
     if (!this.isSuccessButton) {
       this.showDialog = true;
     }
   }
 
-  // get placeholderDialog(): string {
-  //   try {
-  //     return this.gameSignalService.generateInviteLink();
-  //   } catch {
-  //     return 'https://planning-poker.com/game/1234567890';
-  //   }
-  // }
-
+  /**
+   * Cierra el dialogo de invitar jugadores
+   * @author Sebastian Aristizabal Castañeda
+   */
   handleCloseDialog(): void {
     this.showDialog = false;
   }
 
+  /**
+   * Maneja el clic del botón de copiar link del dialogo de invitar jugadores
+   * @author Sebastian Aristizabal Castañeda
+   */
   handleButtonCopyLinkDialog(): void {
     const inviteLink = this.$inviteLink();
 

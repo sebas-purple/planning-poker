@@ -6,8 +6,10 @@ import { ScoringMode } from '../core/enums/scoring-mode.enum';
   providedIn: 'root',
 })
 export class CardPoolSignalService {
-  private cardsSignal = signal<Card[]>([]);
-  private currentScoringMode = signal<ScoringMode>(ScoringMode.FIBONACCI);
+  private readonly cardsSignal = signal<Card[]>([]);
+  private readonly currentScoringMode = signal<ScoringMode>(
+    ScoringMode.FIBONACCI
+  );
 
   constructor() {
     this.initializeCards();
@@ -15,6 +17,7 @@ export class CardPoolSignalService {
 
   readonly getCurrentScoringMode: Signal<ScoringMode> =
     this.currentScoringMode.asReadonly();
+
   readonly getCards: Signal<Card[]> = this.cardsSignal.asReadonly();
 
   /**
@@ -39,6 +42,7 @@ export class CardPoolSignalService {
    */
   setScoringMode(mode: ScoringMode): void {
     this.currentScoringMode.set(mode);
+    console.log('setScoringMode: Modo de puntuación cambiado a:', mode);
     this.initializeCards();
   }
 }

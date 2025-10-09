@@ -17,6 +17,7 @@ import { GameSignalService } from '../../../services/game-signal.service';
 import { Game } from '../../../core/interfaces/game.interface';
 import { UserSignalService } from '../../../services/user-signal.service';
 import { User } from '../../../core/interfaces/user.interface';
+import { capitalizeFirstLetter } from 'src/app/shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -33,15 +34,21 @@ import { User } from '../../../core/interfaces/user.interface';
   styleUrls: ['./game-room-create-user.component.scss'],
 })
 export class GameRoomCreateUserComponent {
-  @Input() userRole: UserRole = UserRole.propietario;
+  // inyecciones
 
   protected readonly userSignalService: UserSignalService =
     inject(UserSignalService);
   protected readonly gameSignalService: GameSignalService =
     inject(GameSignalService);
 
+  // señales
+
   $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
+  // variables
+
+  @Input() userRole: UserRole = UserRole.propietario;
 
   // para manejar el dialog
   showDialog: boolean = true;
@@ -65,41 +72,49 @@ export class GameRoomCreateUserComponent {
     selectedOption: new FormControl(this.jugador, [Validators.required]),
   });
 
+  // metodos
+
+  /**
+   * Maneja el envío del formulario para crear un usuario
+   * @author Sebastian Aristizabal Castañeda
+   */
   handleSubmit() {
     if (this.gameRoomForm.valid) {
       const name = this.gameRoomForm.value.name?.trim() || '';
       const viewMode =
         this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
-      const newName = this.capitalizeFirstLetter(name);
+      const newName = capitalizeFirstLetter(name);
 
       this.createUser(newName, viewMode, this.userRole);
       this.gameRoomForm.reset();
       this.showDialog = false;
-      console.log('Partida creada exitosamente:', this.$gameSignal());
     } else {
-      console.log('Formulario inválido al crear usuario');
+      console.log('handleSubmit: Formulario inválido al crear usuario');
     }
   }
 
-  capitalizeFirstLetter(name: string): string {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  }
-
+  /**
+   * Crea un usuario
+   * @param name - El nombre del usuario
+   * @param viewMode - El modo de vista del usuario
+   * @param userRole - El rol del usuario
+   * @author Sebastian Aristizabal Castañeda
+   */
   createUser(name: string, viewMode: ViewMode, userRole: UserRole): void {
-    try {
-      this.userSignalService.createUser(name, viewMode, userRole);
+    this.userSignalService.createUser(name, viewMode, userRole);
 
-      if (userRole === UserRole.propietario) {
-        this.gameSignalService.setGameOwner(this.$userSignal()!.id);
-      }
-
-      this.gameSignalService.addPlayer(this.$userSignal()!);
+    if (userRole === UserRole.propietario) {
+      this.gameSignalService.setGameOwner(this.$userSignal()!.id);
       console.log(
-        'Usuario creado exitosamente con signal:',
+        'createUser: Propietario creado exitosamente:',
         this.$userSignal()!
       );
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
     }
+
+    this.gameSignalService.addPlayer(this.$userSignal()!);
+    console.log(
+      'createUser: Jugador creado exitosamente:',
+      this.$userSignal()!
+    );
   }
 }

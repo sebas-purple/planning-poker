@@ -7,7 +7,7 @@ import { UserRole } from '../core/enums/user-role.enum';
   providedIn: 'root',
 })
 export class UserSignalService {
-  private userSignal = signal<User | null>(null);
+  private readonly userSignal = signal<User | null>(null);
 
   constructor() {}
 
@@ -38,6 +38,7 @@ export class UserSignalService {
     };
 
     this.userSignal.set(newUser);
+    console.log('createUser: Usuario creado exitosamente:', newUser);
   }
 
   /**
