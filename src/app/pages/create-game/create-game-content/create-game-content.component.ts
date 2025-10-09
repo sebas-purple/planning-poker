@@ -1,18 +1,13 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
-import { GameService } from '../../../services/game.service';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { nameValidator } from '../../../shared/validators/name-validator';
 import { GameSignalService } from '../../../services/game-signal.service';
+import { Game } from 'src/app/core/interfaces/game.interface';
 
 @Component({
   selector: 'app-create-game-content',
@@ -33,7 +28,8 @@ export class CreateGameContentComponent {
     name: new FormControl('', [nameValidator()]),
   });
 
-  $gameSignal = this.gameSignalService.getGameSignal;
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+  // $isGameLoaded: Signal<boolean> = this.gameSignalService.isGameLoaded;
 
   // $nameErrors = signal(this.createGameForm.controls.name.errors?.['message']);
 
@@ -50,9 +46,15 @@ export class CreateGameContentComponent {
       this.router.navigate(['/game-room']);
     } else {
       // PARA PROBAR LAS SIGNALS
-      // this.gameSignalService.createGame(
-      //   this.createGameForm.value.name?.trim() || ''
-      // );
+
+      // if (this.createGameForm.value.name?.trim() === 's') {
+      //   this.gameSignalService.createGame(
+      //     this.createGameForm.value.name?.trim() || ''
+      //   );
+      // }
+
+      // console.log('gameSignal??:', this.$gameSignal());
+      // console.log('isGameLoaded ahaahHAHHA??:', this.$isGameLoaded());
       console.log('Formulario inválido al crear partida');
     }
   }

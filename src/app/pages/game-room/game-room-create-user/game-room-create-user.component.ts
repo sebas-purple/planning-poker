@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
 import { UserRole } from '../../../core/enums/user-role.enum';
@@ -16,6 +16,7 @@ import { CheckboxLabelComponent } from '../../../atomic-design/molecules/checkbo
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { GameSignalService } from '../../../services/game-signal.service';
+import { Game } from 'src/app/core/interfaces/game.interface';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -35,9 +36,11 @@ export class GameRoomCreateUserComponent {
   @Input() userRole: UserRole = UserRole.propietario;
 
   protected readonly userService: UserService = inject(UserService);
-  protected readonly gameService: GameService = inject(GameService);
+  // protected readonly gameService: GameService = inject(GameService);
   protected readonly gameSignalService: GameSignalService =
     inject(GameSignalService);
+
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
 
   // para manejar el dialog
   showDialog: boolean = true;
@@ -71,10 +74,7 @@ export class GameRoomCreateUserComponent {
       this.createUser(newName, viewMode, this.userRole);
       this.gameRoomForm.reset();
       this.showDialog = false;
-      console.log(
-        'Partida creada exitosamente:',
-        this.gameService.getCurrentGame
-      );
+      console.log('Partida creada exitosamente:', this.$gameSignal());
     } else {
       console.log('Formulario inválido al crear usuario');
     }
@@ -89,10 +89,10 @@ export class GameRoomCreateUserComponent {
       const newUser = this.userService.createUser(name, viewMode, userRole);
 
       if (userRole === UserRole.propietario) {
-        this.gameService.setGameOwner(newUser.id);
+        this.gameSignalService.setGameOwner(newUser.id);
       }
 
-      this.gameService.addPlayer(newUser);
+      this.gameSignalService.addPlayer(newUser);
       console.log('Usuario creado exitosamente:', newUser);
     } catch (error) {
       console.error('Error al crear usuario:', error);

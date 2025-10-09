@@ -28,8 +28,8 @@ export class GameRoomComponent implements OnInit {
   private readonly gameSignalService = inject(GameSignalService);
 
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
-  isGameLoaded: boolean = this.$gameSignal() !== null;
-  hasMaxPlayers: boolean = this.gameSignalService.hasMaxPlayers();
+  $isGameLoaded: Signal<boolean> = this.gameSignalService.isGameLoaded;
+  $hasMaxPlayers: Signal<boolean> = this.gameSignalService.hasMaxPlayers;
 
   // convertir a señal
   userRole = signal(UserRole.propietario);
@@ -44,13 +44,13 @@ export class GameRoomComponent implements OnInit {
       this.userRole.set(UserRole.jugador);
       this.gameSignalService.loadGameFromStorage(this.gameId);
 
-      if (!this.isGameLoaded) {
+      if (!this.$isGameLoaded()) {
         console.error('Juego no encontrado');
         this.router.navigate(['/']);
         return;
       }
 
-      if (this.hasMaxPlayers) {
+      if (this.$hasMaxPlayers()) {
         console.log('No hay cupo para mas jugadores');
         this.router.navigate(['/']);
         return;
