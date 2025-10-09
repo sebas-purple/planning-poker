@@ -44,6 +44,8 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
 
   $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
 
+  $isRevealed: Signal<boolean> = this.gameSignalService.getIsRevealed;
+
   $isAdmin: Signal<boolean> = computed(() => {
     const user = this.$userSignal();
     const game = this.$gameSignal();
@@ -54,7 +56,7 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
   // variables
 
   private gameSubscription?: Subscription;
-  currentGame: Game | null = null;
+  // currentGame: Game | null = null;
 
   textButtonRevealCards: string = 'Revelar cartas';
   typeButtonRevealCards: ButtonType = 'secondary';
@@ -74,7 +76,7 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     this.gameSubscription = this.gameSignalService.game$.subscribe((game) => {
-      this.currentGame = game;
+      // this.currentGame = game;
     });
   }
 
@@ -86,13 +88,13 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
     this.gameSubscription?.unsubscribe();
   }
 
-  /**
-   * Obtiene el estado de las cartas reveladas
-   * @author Sebastian Aristizabal Castañeda
-   */
-  get isRevealed(): boolean {
-    return this.currentGame?.isRevealed || false;
-  }
+  // /**
+  //  * Obtiene el estado de las cartas reveladas
+  //  * @author Sebastian Aristizabal Castañeda
+  //  */
+  // get isRevealed(): boolean {
+  //   return this.currentGame?.isRevealed || false;
+  // }
 
   /**
    * Revela las cartas
@@ -155,23 +157,9 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
 
     const alreadyAdmin = this.gameSignalService.isAdmin(playerId, game);
 
-    const success = alreadyAdmin
+    alreadyAdmin
       ? this.gameSignalService.demoteFromAdmin(playerId, currentUserId)
       : this.gameSignalService.promoteToAdmin(playerId, currentUserId);
-
-    if (success) {
-      console.log(
-        alreadyAdmin
-          ? 'Administrador degradado a jugador exitosamente'
-          : 'Jugador promovido a administrador exitosamente'
-      );
-    } else {
-      console.error(
-        alreadyAdmin
-          ? 'Error al degradar administrador'
-          : 'Error al promover jugador a administrador'
-      );
-    }
   }
 
   /**

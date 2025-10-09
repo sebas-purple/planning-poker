@@ -3,7 +3,7 @@
     <!-- boton para revelar cartas o nueva votación -->
     <ng-container *ngIf="$isButtonRevealCardsVisible()">
       <a-button
-        *ngIf="!isRevealed"
+        *ngIf="!$isRevealed()"
         [text]="textButtonRevealCards"
         [type]="typeButtonRevealCards"
         (click)="revealCards()"
@@ -11,7 +11,7 @@
 
       <!-- Botón Nueva votación solo visible si las cartas están reveladas -->
       <a-button
-        *ngIf="isRevealed"
+        *ngIf="$isRevealed()"
         [text]="textButtonNewVoting"
         [type]="typeButtonRevealCards"
         (click)="startNewVoting()"
@@ -19,14 +19,12 @@
     </ng-container>
   </div>
 
-  <!-- container para los jugadores, donde se muestran las cartas de los jugadores -->
+  <!-- container para los jugadores, donde se muestran las cartas de los jugadores alrededor de la mesa -->
   <div class="players-container">
     <div class="player-slot" *ngFor="let player of $players()">
       <!-- si el jugador es espectador, se muestra la carta del espectador -->
 
-      <!-- EXTRAER condicional -->
       <ng-container *ngIf="isPlayerSpectator(player); else playerView">
-        <!-- EXTRAER TEXT EN FUNCION -->
         <m-card-label
           [text]="getPlayerSpectatorText(player)"
           [cardtype]="cardTypeSpectator"
@@ -39,16 +37,14 @@
         ></m-card-label>
       </ng-container>
 
-      <!-- si el jugador es jugador, se muestra la carta del jugador -->
       <ng-template #playerView>
         <!-- solo pasar el texto si isRevealed es true, para que no se muestre el texto de la carta -->
-        <!-- extraer gameService.getPlayerSelectedCard(player.id) -->
         <m-card-label
           [cardtype]="cardTypePlayer"
           [labelText]="getPlayerDisplayName(player)"
           [isSelected]="hasPlayerSelectedCard(player.id)"
-          [isRevealed]="isRevealed"
-          [text]="isRevealed ? getPlayerSelectedCard(player.id) || '' : ''"
+          [isRevealed]="$isRevealed()"
+          [text]="$isRevealed() ? getPlayerSelectedCard(player.id) || '' : ''"
           class="player-card"
           [enableButton]="canManagePlayer(player)"
           [buttonText]="buttonTextAdminStatus(player)"

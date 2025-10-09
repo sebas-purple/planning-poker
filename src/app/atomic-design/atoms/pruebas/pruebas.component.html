@@ -1,9 +1,0 @@
-<!-- app.component.html -->
-<label>Elige una opción:</label>
-<select [(ngModel)]="opcionSeleccionada">
-  <option *ngFor="let opcion of opciones" [value]="opcion">
-    {{ opcion }}
-  </option>
-</select>
-
-<p>Seleccionaste: {{ opcionSeleccionada }}</p>

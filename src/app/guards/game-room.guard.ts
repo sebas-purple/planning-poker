@@ -3,8 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 import { GameSignalService } from '../services/game-signal.service';
 
 export const gameRoomGuard: CanActivateFn = (route, state) => {
+  // inyecciones
+
   const gameSignalService = inject(GameSignalService);
   const router = inject(Router);
+
+  // variables
 
   const $isGameLoaded = gameSignalService.isGameLoaded;
 

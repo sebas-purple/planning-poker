@@ -23,10 +23,8 @@ export class GameSignalService {
     this.setupStorageListener();
   }
 
-  /**
-   * Obtiene la señal del juego.
-   * @author Sebastian Aristizabal Castañeda
-   */
+  // señales computadas
+
   getGameSignal: Signal<Game | null> = this.gameSignal.asReadonly();
 
   readonly isGameLoaded: Signal<boolean> = computed(
@@ -62,13 +60,6 @@ export class GameSignalService {
     const game = this.gameSignal();
     return game ? Object.keys(game.selectedCards || {}).length > 0 : false;
   });
-
-  // readonly getPlayerSelectedCard: Signal<string | null> = computed(() => {
-  //   const game = this.gameSignal();
-  //   const user = this.userSignalService.getUserSignal();
-
-  //   return game?.selectedCards?.[user?.id ?? ''] || null;
-  // });
 
   readonly getIsRevealed: Signal<boolean> = computed(() => {
     const game = this.gameSignal();
@@ -124,7 +115,6 @@ export class GameSignalService {
 
     const result = count > 0 ? Number((sum / count).toFixed(1)) : 0;
 
-    // Reemplazar punto por coma
     return result.toString().replace('.', ',');
   });
 
@@ -157,6 +147,8 @@ export class GameSignalService {
   readonly getPlayers: Signal<User[]> = computed(() => {
     return this.gameSignal()?.players || [];
   });
+
+  // metodos
 
   /**
    * Configura un listener para cambios en localStorage.
@@ -206,6 +198,7 @@ export class GameSignalService {
 
     this.gameSignal.set(newGame);
     this.saveGameToStorage();
+    console.log('createGame: Juego creado:', newGame);
   }
 
   /**
@@ -275,6 +268,9 @@ export class GameSignalService {
 
       this.gameSignal.set(updatedGame);
       this.saveGameToStorage();
+      console.log('setGameOwner: Propietario establecido:', ownerId);
+    } else {
+      console.log('setGameOwner: Juego no encontrado');
     }
   }
 
@@ -332,6 +328,7 @@ export class GameSignalService {
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
+    console.log('changeScoringMode: Modo de puntuación cambiado:', newMode);
   }
 
   /**
@@ -358,6 +355,7 @@ export class GameSignalService {
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
+    console.log('selectCard: Carta seleccionada:', cardId);
   }
 
   /**
@@ -380,6 +378,7 @@ export class GameSignalService {
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
+    console.log('unselectCard: Carta deseleccionada');
   }
 
   /**
@@ -430,6 +429,9 @@ export class GameSignalService {
 
       this.gameSignal.set(updatedGame);
       this.saveGameToStorage();
+      console.log('revealCards: Cartas reveladas');
+    } else {
+      console.log('revealCards: Juego no encontrado');
     }
   }
 
@@ -448,6 +450,9 @@ export class GameSignalService {
 
       this.gameSignal.set(updatedGame);
       this.resetGame();
+      console.log('startNewVoting: Nueva votación iniciada');
+    } else {
+      console.log('startNewVoting: Juego no encontrado');
     }
   }
 
@@ -466,6 +471,9 @@ export class GameSignalService {
 
       this.gameSignal.set(updatedGame);
       this.saveGameToStorage();
+      console.log('resetGame: Juego reiniciado');
+    } else {
+      console.log('resetGame: Juego no encontrado');
     }
   }
 
@@ -500,16 +508,16 @@ export class GameSignalService {
    * @param promoterId El id del promotor.
    * @author Sebastian Aristizabal Castañeda
    */
-  promoteToAdmin(userId: string, promoterId: string): boolean {
+  promoteToAdmin(userId: string, promoterId: string): void {
     const game = this.gameSignal();
 
-    if (!game) return false;
+    if (!game) return;
 
-    if (!this.isAdmin(promoterId, game)) return false;
-    if (this.isGameOwner(userId, game)) return false;
+    if (!this.isAdmin(promoterId, game)) return;
+    if (this.isGameOwner(userId, game)) return;
 
     const playerIndex = game.players.findIndex((p) => p.id === userId);
-    if (playerIndex === -1) return false;
+    if (playerIndex === -1) return;
 
     const updatedPlayers = [...game.players];
     updatedPlayers[playerIndex] = {
@@ -524,7 +532,7 @@ export class GameSignalService {
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
-    return true;
+    console.log('promoteToAdmin: Usuario promovido a administrador:', userId);
   }
 
   /**
@@ -533,20 +541,20 @@ export class GameSignalService {
    * @param demoterId El id del degradador.
    * @author Sebastian Aristizabal Castañeda
    */
-  demoteFromAdmin(userId: string, demoterId: string): boolean {
+  demoteFromAdmin(userId: string, demoterId: string): void {
     const game = this.gameSignal();
 
-    if (!game) return false;
+    if (!game) return;
 
-    if (!this.isAdmin(demoterId, game)) return false;
-    if (this.isGameOwner(userId, game)) return false;
+    if (!this.isAdmin(demoterId, game)) return;
+    if (this.isGameOwner(userId, game)) return;
 
     const playerIndex = game.players.findIndex((p) => p.id === userId);
     if (
       playerIndex === -1 ||
       game.players[playerIndex].rol !== UserRole.administrador
     ) {
-      return false;
+      return;
     }
 
     const updatedPlayers = [...game.players];
@@ -562,7 +570,7 @@ export class GameSignalService {
 
     this.gameSignal.set(updatedGame);
     this.saveGameToStorage();
-    return true;
+    console.log('demoteFromAdmin: Usuario degradado de administrador:', userId);
   }
 
   /**
