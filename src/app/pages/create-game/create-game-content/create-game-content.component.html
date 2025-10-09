@@ -1,11 +1,13 @@
 <div class="content">
   <form class="form" [formGroup]="createGameForm">
+    <!-- input para el nombre del juego -->
     <a-input
       [label]="textLabel"
       [formControl]="createGameForm.controls.name"
-      [error]="hasNameInput ? messageError : ''"
+      [error]="createGameForm.controls.name.value ? createGameForm.controls.name.errors?.['message'] : ''"
     ></a-input>
 
+    <!-- boton para crear el juego -->
     <a-button
       [text]="textButton"
       [disabled]="createGameForm.invalid"

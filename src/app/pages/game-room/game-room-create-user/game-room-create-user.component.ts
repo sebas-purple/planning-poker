@@ -1,20 +1,23 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewMode } from 'src/app/core/enums/view-mode.enum';
-import { UserRole } from 'src/app/core/enums/user-role.enum';
-import { UserService } from 'src/app/services/user.service';
+import { ViewMode } from '../../../core/enums/view-mode.enum';
+import { UserRole } from '../../../core/enums/user-role.enum';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { nameValidator } from 'src/app/shared/validators/name-validator';
-import { GameService } from 'src/app/services/game.service';
-import { DialogComponent } from 'src/app/atomic-design/atoms/dialog/dialog.component';
-import { CheckboxLabelComponent } from 'src/app/atomic-design/molecules/checkbox-label/checkbox-label.component';
-import { ButtonComponent } from 'src/app/atomic-design/atoms/button/button.component';
-import { InputComponent } from 'src/app/atomic-design/atoms/input/input.component';
+import { nameValidator } from '../../../shared/validators/name-validator';
+import { DialogComponent } from '../../../atomic-design/atoms/dialog/dialog.component';
+import { CheckboxLabelComponent } from '../../../atomic-design/molecules/checkbox-label/checkbox-label.component';
+import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
+import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
+import { GameSignalService } from '../../../services/game-signal.service';
+import { Game } from '../../../core/interfaces/game.interface';
+import { UserSignalService } from '../../../services/user-signal.service';
+import { User } from '../../../core/interfaces/user.interface';
+import { capitalizeFirstLetter } from '../../../shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -31,10 +34,19 @@ import { InputComponent } from 'src/app/atomic-design/atoms/input/input.componen
   styleUrls: ['./game-room-create-user.component.scss'],
 })
 export class GameRoomCreateUserComponent {
-  @Input() userRole: UserRole = UserRole.propietario;
+  // inyecciones
 
-  protected readonly userService: UserService = inject(UserService);
-  protected readonly gameService: GameService = inject(GameService);
+  readonly userSignalService: UserSignalService = inject(UserSignalService);
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
+
+  // señales
+
+  $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
+  // variables
+
+  @Input() userRole: UserRole = UserRole.propietario;
 
   // para manejar el dialog
   showDialog: boolean = true;
@@ -42,73 +54,14 @@ export class GameRoomCreateUserComponent {
   // para manejar el input
   textLabel: string = 'Tu nombre';
 
-  get hasNameInput(): boolean {
-    const value = this.gameRoomForm.controls.name.value;
-    return (value ?? '').length > 0;
-  }
-
-  get messageError(): string {
-    const errors = this.gameRoomForm.controls.name.errors;
-    if (errors) {
-      if (errors['specialChars'] || errors['required']) {
-        return errors['message'];
-      } else {
-        const errorKey = Object.keys(errors)[0];
-        return errors[errorKey].message;
-      }
-    }
-    return '';
-  }
-
   // para manejar los checkboxes
-
   textLabeljugador: string = 'Jugador';
   jugador: ViewMode = ViewMode.jugador;
-
   textLabelespectador: string = 'Espectador';
   espectador: ViewMode = ViewMode.espectador;
 
   // para manejar el boton
   textButton: string = 'Continuar';
-
-  handleSubmit() {
-    if (this.gameRoomForm.valid) {
-      const name = this.gameRoomForm.value.name?.trim() || '';
-      const newName = name.charAt(0).toUpperCase() + name.slice(1);
-      const viewMode =
-        this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
-
-      try {
-        // se crea el usuario con el rol correspondiente (propietario o otro)
-        const newUser = this.userService.createUser(
-          newName,
-          viewMode,
-          this.userRole
-        );
-
-        // solo si es propietario, se setea como owner de la partida
-        if (this.userRole === UserRole.propietario) {
-          this.gameService.setGameOwner(newUser.id);
-        }
-
-        // se agrega el usuario a la partida
-        this.gameService.addPlayer(newUser);
-
-        this.gameRoomForm.reset();
-        this.showDialog = false;
-
-        console.log('Usuario creado exitosamente:', newUser);
-        console.log(
-          'Partida creada exitosamente:',
-          this.gameService.getCurrentGame
-        );
-      } catch (error) {
-        console.error('Error al crear usuario:', error);
-      }
-    } else {
-      console.log('Formulario inválido al crear usuario');
-    }
-  }
 
   // para manejar el formulario
   gameRoomForm = new FormGroup({
@@ -116,4 +69,42 @@ export class GameRoomCreateUserComponent {
 
     selectedOption: new FormControl(this.jugador, [Validators.required]),
   });
+
+  // metodos
+
+  /**
+   * Maneja el envío del formulario para crear un usuario
+   * @author Sebastian Aristizabal Castañeda
+   */
+  handleSubmit() {
+    if (this.gameRoomForm.valid) {
+      const name = this.gameRoomForm.value.name?.trim() || '';
+      const viewMode =
+        this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
+      const newName = capitalizeFirstLetter(name);
+
+      this.createUser(newName, viewMode, this.userRole);
+      this.gameRoomForm.reset();
+      this.showDialog = false;
+    } else {
+      console.log('handleSubmit: Formulario inválido al crear usuario');
+    }
+  }
+
+  /**
+   * Crea un usuario
+   * @param name - El nombre del usuario
+   * @param viewMode - El modo de vista del usuario
+   * @param userRole - El rol del usuario
+   * @author Sebastian Aristizabal Castañeda
+   */
+  createUser(name: string, viewMode: ViewMode, userRole: UserRole): void {
+    this.userSignalService.createUser(name, viewMode, userRole);
+
+    if (userRole === UserRole.propietario) {
+      this.gameSignalService.setGameOwner(this.$userSignal()!.id);
+    }
+
+    this.gameSignalService.addPlayer(this.$userSignal()!);
+  }
 }

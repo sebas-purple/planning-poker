@@ -6,14 +6,28 @@ describe('ButtonComponent', () => {
   let component: ButtonComponent;
   let fixture: ComponentFixture<ButtonComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [ButtonComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(ButtonComponent);
     component = fixture.componentInstance;
+  });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -26,18 +40,20 @@ describe('ButtonComponent', () => {
     expect(button.textContent).toContain('Test Button');
   });
 
-  it('should emit click event when clicked', () => {
-    jest.spyOn(component.clicked, 'emit');
-    const button = fixture.nativeElement.querySelector('button');
-    button.click();
-    expect(component.clicked.emit).toHaveBeenCalled();
+  // Tests Typescript (LAS MAS IMPORTANTES)
+
+  // onClick
+
+  it('onClick: should emit click event when clicked', () => {
+    const spy = jest.spyOn(component.clicked, 'emit').mockImplementation();
+    component['onClick']();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('should not emit click event when disabled', () => {
+  it('onClick: should not emit click event when disabled', () => {
+    const spy = jest.spyOn(component.clicked, 'emit').mockImplementation();
     component.disabled = true;
-    jest.spyOn(component.clicked, 'emit');
-    const button = fixture.nativeElement.querySelector('button');
-    button.click();
-    expect(component.clicked.emit).not.toHaveBeenCalled();
+    component['onClick']();
+    expect(spy).not.toHaveBeenCalled();
   });
 });

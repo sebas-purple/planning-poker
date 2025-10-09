@@ -1,12 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Signal, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameRoomCreateUserComponent } from './game-room-create-user/game-room-create-user.component';
 import { GameRoomFooterComponent } from './game-room-footer/game-room-footer.component';
 import { GameRoomTableComponent } from './game-room-table/game-room-table.component';
 import { GameRoomHeaderComponent } from './game-room-header/game-room-header.component';
-import { UserRole } from 'src/app/core/enums/user-role.enum';
-import { GameService } from 'src/app/services/game.service';
+import { UserRole } from '../../core/enums/user-role.enum';
+import { GameSignalService } from '../../services/game-signal.service';
+import { Game } from '../../core/interfaces/game.interface';
 
 @Component({
   selector: 'app-game-room',
@@ -22,28 +23,34 @@ import { GameService } from 'src/app/services/game.service';
   styleUrls: ['./game-room.component.scss'],
 })
 export class GameRoomComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
+  readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly gameService = inject(GameService);
+  private readonly gameSignalService = inject(GameSignalService);
 
-  isInvitedUser = false;
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+  $isGameLoaded: Signal<boolean> = this.gameSignalService.isGameLoaded;
+  $hasMaxPlayers: Signal<boolean> = this.gameSignalService.hasMaxPlayers;
+
+  // convertir a señal
+  userRole = signal(UserRole.propietario);
+
   gameId: string | null = null;
 
   ngOnInit(): void {
-    // Detectar si el usuario viene de una invitación
-    this.gameId = this.route.snapshot.paramMap.get('gameId');
-    this.isInvitedUser = !!this.gameId;
+    this.gameId = this.getGameId();
 
     // Si es usuario invitado, intentar cargar el juego desde localStorage
-    if (this.isInvitedUser && this.gameId) {
-      const gameLoaded = this.gameService.loadGameFromStorage(this.gameId);
+    if (this.gameId) {
+      this.userRole.set(UserRole.jugador);
+      this.gameSignalService.loadGameFromStorage(this.gameId);
 
-      if (!gameLoaded) {
+      if (!this.$isGameLoaded()) {
         console.error('Juego no encontrado');
         this.router.navigate(['/']);
         return;
       }
-      if (this.gameService.hasMaxPlayers()) {
+
+      if (this.$hasMaxPlayers()) {
         console.log('No hay cupo para mas jugadores');
         this.router.navigate(['/']);
         return;
@@ -51,7 +58,13 @@ export class GameRoomComponent implements OnInit {
     }
   }
 
-  get userRole(): UserRole {
-    return this.isInvitedUser ? UserRole.jugador : UserRole.propietario;
+  /**
+   * Obtiene el id del juego desde la ruta de la url.
+   *
+   * @returns El id del juego.
+   * @author Sebastian Aristizabal Castañeda
+   */
+  getGameId(): string | null {
+    return this.route.snapshot.paramMap.get('gameId');
   }
 }

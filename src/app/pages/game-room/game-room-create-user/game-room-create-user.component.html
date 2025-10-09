@@ -4,7 +4,7 @@
     <a-input
       [label]="textLabel"
       [formControl]="gameRoomForm.controls.name"
-      [error]="hasNameInput ? messageError : ''"
+      [error]="gameRoomForm.controls.name.value ? gameRoomForm.controls.name.errors?.['message'] : ''"
     ></a-input>
 
     <!-- checkbox para seleccionar el modo de visualización del usuario -->

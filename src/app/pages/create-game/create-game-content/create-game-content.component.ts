@@ -1,16 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { nameValidator } from 'src/app/shared/validators/name-validator';
-import { ButtonComponent } from 'src/app/atomic-design/atoms/button/button.component';
-import { GameService } from 'src/app/services/game.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
 import { Router } from '@angular/router';
-import { InputComponent } from 'src/app/atomic-design/atoms/input/input.component';
+import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
+import { nameValidator } from '../../../shared/validators/name-validator';
+import { GameSignalService } from '../../../services/game-signal.service';
+import { Game } from '../../../core/interfaces/game.interface';
+import { capitalizeFirstLetter } from '../../../shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-create-game-content',
@@ -20,56 +18,39 @@ import { InputComponent } from 'src/app/atomic-design/atoms/input/input.componen
   styleUrls: ['./create-game-content.component.scss'],
 })
 export class CreateGameContentComponent {
-  private readonly gameService: GameService = inject(GameService);
-  private readonly router: Router = inject(Router);
+  // inyecciones
 
-  // para el formulario
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
+  readonly router: Router = inject(Router);
+
+  // señales
+
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+
+  // variables
+
   textLabel: string = 'Nombra la partida';
-
-  createGameForm = new FormGroup({
-    name: new FormControl('', [Validators.required, nameValidator()]),
-  });
-
-  // para saber si el input tiene algun error si hay un error en el input se muestra el mensaje de error
-  get messageError(): string {
-    const errors = this.createGameForm.controls.name.errors;
-    if (errors) {
-      if (errors['specialChars'] || errors['required']) {
-        return errors['message'];
-      } else {
-        const errorKey = Object.keys(errors)[0];
-        return errors[errorKey].message;
-      }
-    }
-    return '';
-  }
-
-  // para saber si el input tiene algun valor
-  get hasNameInput(): boolean {
-    const value = this.createGameForm.controls.name.value;
-    return (value ?? '').length > 0;
-  }
-
-  //  para el boton
   textButton: string = 'Crear partida';
 
-  handleSubmit() {
+  createGameForm = new FormGroup({
+    name: new FormControl('', [nameValidator()]),
+  });
+
+  // metodos
+
+  /**
+   * Maneja el envío del formulario para crear una partida
+   * @author Sebastian Aristizabal Castañeda
+   */
+  handleSubmit(): void {
     if (this.createGameForm.valid) {
       const name = this.createGameForm.value.name?.trim() || '';
-      try {
-        const newName = name.charAt(0).toUpperCase() + name.slice(1);
-        const newGame = this.gameService.createGame(newName);
-
-        console.log('Partida creada exitosamente:', newGame);
-
-        this.createGameForm.reset();
-
-        this.router.navigate(['/game-room']);
-      } catch (error) {
-        console.error('Error al crear partida:', error);
-      }
+      const newName = capitalizeFirstLetter(name);
+      this.gameSignalService.createGame(newName);
+      this.createGameForm.reset();
+      this.router.navigate(['/game-room']);
     } else {
-      console.log('Formulario inválido al crear partida');
+      console.log('handleSubmit: Formulario inválido al crear partida');
     }
   }
 }

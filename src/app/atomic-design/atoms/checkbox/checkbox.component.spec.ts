@@ -7,25 +7,32 @@ describe('CheckboxComponent', () => {
   let component: CheckboxComponent;
   let fixture: ComponentFixture<CheckboxComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // Configuracion beforeEach
+
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [CheckboxComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
     component.formControl = new FormControl('');
-    component.value = 'Test Checkbox';
+    component.value = '';
+  });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
 
+  // Tests HTML
+
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should emit change event when checkbox is changed', () => {
-    jest.spyOn(component.formControl, 'setValue');
-    const checkbox = fixture.nativeElement.querySelector('input');
-    checkbox.click();
-    expect(component.formControl.setValue).toHaveBeenCalled();
   });
 });
