@@ -7,7 +7,7 @@ import { GameRoomTableComponent } from './game-room-table/game-room-table.compon
 import { GameRoomHeaderComponent } from './game-room-header/game-room-header.component';
 import { UserRole } from '../../core/enums/user-role.enum';
 import { GameSignalService } from '../../services/game-signal.service';
-import { Game } from 'src/app/core/interfaces/game.interface';
+import { Game } from '../../core/interfaces/game.interface';
 
 @Component({
   selector: 'app-game-room',
@@ -23,7 +23,7 @@ import { Game } from 'src/app/core/interfaces/game.interface';
   styleUrls: ['./game-room.component.scss'],
 })
 export class GameRoomComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
+  readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly gameSignalService = inject(GameSignalService);
 

@@ -4,22 +4,30 @@ import { GameRoomHeaderComponent } from './game-room-header.component';
 import { By } from '@angular/platform-browser';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
 
-import { UserRole } from '../../../core/enums/user-role.enum';
-
 describe('GameRoomHeaderComponent', () => {
   let component: GameRoomHeaderComponent;
   let fixture: ComponentFixture<GameRoomHeaderComponent>;
 
-  // Mocks
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  // 1. Configurar TestBed
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [GameRoomHeaderComponent],
-    });
+    }).compileComponents();
+  });
+
+  // 2. Crear el fixture y componente
+  beforeEach(() => {
     fixture = TestBed.createComponent(GameRoomHeaderComponent);
     component = fixture.componentInstance;
+  });
+
+  // 3. Inicializar la vista
+  beforeEach(() => {
+    jest.clearAllMocks();
     fixture.detectChanges();
   });
+
+  // Tests HTML
 
   it('should create', () => {
     expect(component).toBeTruthy();

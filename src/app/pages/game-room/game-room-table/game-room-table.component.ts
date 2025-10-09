@@ -56,7 +56,6 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
   // variables
 
   private gameSubscription?: Subscription;
-  // currentGame: Game | null = null;
 
   textButtonRevealCards: string = 'Revelar cartas';
   typeButtonRevealCards: ButtonType = 'secondary';
@@ -75,9 +74,9 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
    * @author Sebastian Aristizabal Castañeda
    */
   ngOnInit(): void {
-    this.gameSubscription = this.gameSignalService.game$.subscribe((game) => {
-      // this.currentGame = game;
-    });
+    this.gameSubscription = this.gameSignalService.game$.subscribe(
+      (game) => {}
+    );
   }
 
   /**
@@ -87,14 +86,6 @@ export class GameRoomTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.gameSubscription?.unsubscribe();
   }
-
-  // /**
-  //  * Obtiene el estado de las cartas reveladas
-  //  * @author Sebastian Aristizabal Castañeda
-  //  */
-  // get isRevealed(): boolean {
-  //   return this.currentGame?.isRevealed || false;
-  // }
 
   /**
    * Revela las cartas
