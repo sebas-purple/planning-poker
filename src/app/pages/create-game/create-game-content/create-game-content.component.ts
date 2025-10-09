@@ -8,7 +8,7 @@ import { InputComponent } from '../../../atomic-design/atoms/input/input.compone
 import { nameValidator } from '../../../shared/validators/name-validator';
 import { GameSignalService } from '../../../services/game-signal.service';
 import { Game } from '../../../core/interfaces/game.interface';
-import { capitalizeFirstLetter } from 'src/app/shared/functions/capitalize-first-letter';
+import { capitalizeFirstLetter } from '../../../shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-create-game-content',

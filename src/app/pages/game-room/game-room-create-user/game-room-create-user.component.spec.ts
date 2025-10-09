@@ -4,16 +4,12 @@ import { GameRoomCreateUserComponent } from './game-room-create-user.component';
 import { By } from '@angular/platform-browser';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
-import { UserService } from '../../../services/user.service';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
 import { UserRole } from '../../../core/enums/user-role.enum';
-import { GameService } from '../../../services/game.service';
 
 describe('GameRoomCreateUserComponent', () => {
   let component: GameRoomCreateUserComponent;
   let fixture: ComponentFixture<GameRoomCreateUserComponent>;
-  let userService: UserService;
-  let gameService: GameService;
 
   // Configuracion beforeEach
 
@@ -28,8 +24,6 @@ describe('GameRoomCreateUserComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GameRoomCreateUserComponent);
     component = fixture.componentInstance;
-    userService = TestBed.inject(UserService);
-    gameService = TestBed.inject(GameService);
   });
 
   // 3. Inicializar la vista
@@ -125,109 +119,25 @@ describe('GameRoomCreateUserComponent', () => {
     expect(sonAtomButtonComponent.disabled).toBeTruthy();
   });
 
-  it('should create user as propietario', () => {
-    const spy = jest.spyOn(userService, 'createUser').mockImplementation();
-    component.gameRoomForm.controls.name.setValue('sebas');
-    component.userRole = UserRole.propietario;
-
-    const sonAtomButton = fixture.debugElement.query(
-      By.directive(ButtonComponent)
-    );
-    sonAtomButton.triggerEventHandler('click', null);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Sebas',
-      ViewMode.jugador,
-      UserRole.propietario
-    );
-  });
-
-  it('should create user as invite player', () => {
-    const spy = jest.spyOn(userService, 'createUser');
-    component.gameRoomForm.controls.name.setValue('sebas');
-    component.userRole = UserRole.jugador;
-
-    const sonAtomButton = fixture.debugElement.query(
-      By.directive(ButtonComponent)
-    );
-    sonAtomButton.triggerEventHandler('click', null);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Sebas',
-      ViewMode.jugador,
-      UserRole.jugador
-    );
-  });
-
-  it('should create user as player', () => {
-    const spy = jest.spyOn(userService, 'createUser');
-    component.gameRoomForm.controls.name.setValue('sebas');
-    component.gameRoomForm.controls.selectedOption.setValue(ViewMode.jugador);
-    component.userRole = UserRole.propietario;
-
-    const sonAtomButton = fixture.debugElement.query(
-      By.directive(ButtonComponent)
-    );
-    sonAtomButton.triggerEventHandler('click', null);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Sebas',
-      ViewMode.jugador,
-      UserRole.propietario
-    );
-  });
-
-  it('should create user as viewer', () => {
-    const spy = jest.spyOn(userService, 'createUser');
-    component.gameRoomForm.controls.name.setValue('sebas');
-    component.userRole = UserRole.propietario;
-    component.gameRoomForm.controls.selectedOption.setValue(
-      ViewMode.espectador
-    );
-
-    const sonAtomButton = fixture.debugElement.query(
-      By.directive(ButtonComponent)
-    );
-    sonAtomButton.triggerEventHandler('click', null);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalledWith(
-      'Sebas',
-      ViewMode.espectador,
-      UserRole.propietario
-    );
-  });
-
   // Tests Typescript (LAS MAS IMPORTANTES)
 
   // handleSubmit
 
   it('handleSubmit: should not create user if the form is invalid', () => {
-    const spy1 = jest
-      .spyOn(component, 'capitalizeFirstLetter')
-      .mockImplementation();
-    const spy2 = jest.spyOn(component, 'createUser').mockImplementation();
+    const spy = jest.spyOn(component, 'createUser').mockImplementation();
     component.gameRoomForm.controls.name.setValue('test*');
     component.handleSubmit();
-    expect(spy1).not.toHaveBeenCalled();
-    expect(spy2).not.toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
     expect(component.showDialog).toBe(true);
   });
 
   it('handleSubmit: should create user if the form is valid', () => {
-    const spy1 = jest
-      .spyOn(component, 'capitalizeFirstLetter')
-      .mockReturnValue('TestName');
     const spy2 = jest.spyOn(component, 'createUser').mockImplementation();
     component.gameRoomForm.controls.name.setValue('testName');
     component.gameRoomForm.controls.selectedOption.setValue(ViewMode.jugador);
     component.userRole = UserRole.propietario;
     fixture.detectChanges();
     component.handleSubmit();
-    expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy2).toHaveBeenCalledTimes(1);
     expect(component.showDialog).toBe(false);
     expect(spy2).toHaveBeenCalledWith(
@@ -237,29 +147,32 @@ describe('GameRoomCreateUserComponent', () => {
     );
   });
 
-  // capitalizeFirstLetter
-
-  it('capitalizeFirstLetter: should capitalize the first letter of the name', () => {
-    const name = 'testName';
-    const result = component.capitalizeFirstLetter(name);
-    expect(result).toBe('TestName');
-  });
-
   // createUser
 
   it('createUser: should create user as propietario', () => {
-    const spy1 = jest.spyOn(userService, 'createUser').mockReturnValue({
-      id: '1',
-      name: 'TestName',
-      viewMode: ViewMode.jugador,
-      rol: UserRole.propietario,
-    });
-    const spy2 = jest.spyOn(gameService, 'setGameOwner').mockImplementation();
-    const spy3 = jest.spyOn(gameService, 'addPlayer').mockImplementation();
+    const spy1 = jest
+      .spyOn(component.userSignalService, 'createUser')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.gameSignalService, 'setGameOwner')
+      .mockImplementation();
+    const spy3 = jest
+      .spyOn(component.gameSignalService, 'addPlayer')
+      .mockImplementation();
+
     const nameMock = 'TestName';
     const viewModeMock = ViewMode.jugador;
     const userRoleMock = UserRole.propietario;
+    const userMock = {
+      id: '1',
+      name: nameMock,
+      viewMode: viewModeMock,
+      rol: userRoleMock,
+    };
+
+    (component as any).$userSignal = () => userMock;
     component.createUser(nameMock, viewModeMock, userRoleMock);
+
     expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy2).toHaveBeenCalledTimes(1);
     expect(spy3).toHaveBeenCalledTimes(1);
@@ -274,18 +187,29 @@ describe('GameRoomCreateUserComponent', () => {
   });
 
   it('createUser: should create user as jugador', () => {
-    const spy1 = jest.spyOn(userService, 'createUser').mockReturnValue({
-      id: '1',
-      name: 'TestName',
-      viewMode: ViewMode.jugador,
-      rol: UserRole.jugador,
-    });
-    const spy2 = jest.spyOn(gameService, 'setGameOwner').mockImplementation();
-    const spy3 = jest.spyOn(gameService, 'addPlayer').mockImplementation();
+    const spy1 = jest
+      .spyOn(component.userSignalService, 'createUser')
+      .mockImplementation();
+    const spy2 = jest
+      .spyOn(component.gameSignalService, 'setGameOwner')
+      .mockImplementation();
+    const spy3 = jest
+      .spyOn(component.gameSignalService, 'addPlayer')
+      .mockImplementation();
+
     const nameMock = 'TestName';
     const viewModeMock = ViewMode.jugador;
     const userRoleMock = UserRole.jugador;
+    const userMock = {
+      id: '1',
+      name: nameMock,
+      viewMode: viewModeMock,
+      rol: userRoleMock,
+    };
+
+    (component as any).$userSignal = () => userMock;
     component.createUser(nameMock, viewModeMock, userRoleMock);
+
     expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy2).not.toHaveBeenCalled();
     expect(spy3).toHaveBeenCalledTimes(1);

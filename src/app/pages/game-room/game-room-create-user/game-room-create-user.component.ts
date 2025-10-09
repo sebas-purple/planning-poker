@@ -17,7 +17,7 @@ import { GameSignalService } from '../../../services/game-signal.service';
 import { Game } from '../../../core/interfaces/game.interface';
 import { UserSignalService } from '../../../services/user-signal.service';
 import { User } from '../../../core/interfaces/user.interface';
-import { capitalizeFirstLetter } from 'src/app/shared/functions/capitalize-first-letter';
+import { capitalizeFirstLetter } from '../../../shared/functions/capitalize-first-letter';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -36,10 +36,8 @@ import { capitalizeFirstLetter } from 'src/app/shared/functions/capitalize-first
 export class GameRoomCreateUserComponent {
   // inyecciones
 
-  protected readonly userSignalService: UserSignalService =
-    inject(UserSignalService);
-  protected readonly gameSignalService: GameSignalService =
-    inject(GameSignalService);
+  readonly userSignalService: UserSignalService = inject(UserSignalService);
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
 
   // señales
 
@@ -105,16 +103,8 @@ export class GameRoomCreateUserComponent {
 
     if (userRole === UserRole.propietario) {
       this.gameSignalService.setGameOwner(this.$userSignal()!.id);
-      console.log(
-        'createUser: Propietario creado exitosamente:',
-        this.$userSignal()!
-      );
     }
 
     this.gameSignalService.addPlayer(this.$userSignal()!);
-    console.log(
-      'createUser: Jugador creado exitosamente:',
-      this.$userSignal()!
-    );
   }
 }
