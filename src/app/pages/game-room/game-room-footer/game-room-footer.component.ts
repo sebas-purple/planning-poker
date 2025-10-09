@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import {
@@ -20,6 +20,8 @@ import {
   SCORING_MODE_LABELS,
   ScoringMode,
 } from '../../../core/enums/scoring-mode.enum';
+import { GameSignalService } from 'src/app/services/game-signal.service';
+import { UserSignalService } from 'src/app/services/user-signal.service';
 
 @Component({
   selector: 'app-game-room-footer',
@@ -35,10 +37,29 @@ import {
   styleUrls: ['./game-room-footer.component.scss'],
 })
 export class GameRoomFooterComponent implements OnInit, OnDestroy {
-  readonly userService: UserService = inject(UserService);
-  readonly gameService: GameService = inject(GameService);
+  // readonly userService: UserService = inject(UserService);
+  readonly userSignalService: UserSignalService = inject(UserSignalService);
+
+  // readonly gameService: GameService = inject(GameService);
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
+
+  // FALTA EL CardPoolService
   readonly cardPoolService: CardPoolService = inject(CardPoolService);
   gameSubscription?: Subscription;
+
+  $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
+  $isAdmin: Signal<boolean> = this.gameSignalService.isAdmin;
+  $canChangeScoringMode: Signal<boolean> =
+    this.gameSignalService.canChangeScoringMode;
+  $getCurrentScoringMode: Signal<string> =
+    this.gameSignalService.getCurrentScoringMode;
+  $getPlayerSelectedCard: Signal<string | null> =
+    this.gameSignalService.getPlayerSelectedCard;
+  $getIsRevealed: Signal<boolean> = this.gameSignalService.getIsRevealed;
+  $getVotesCountArray: Signal<{ value: string; count: number }[]> =
+    this.gameSignalService.getVotesCountArray;
+  $getAverageScore: Signal<string> = this.gameSignalService.getAverageScore;
+  $canSelectCard: Signal<boolean> = this.gameSignalService.canSelectCard;
 
   labelScoringMode: string = 'Modo de puntaje:';
 
@@ -52,36 +73,31 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   isRevealedCard: boolean = true;
 
   // para manejar el cambio de modo de puntaje
-  get isAdmin(): boolean {
-    const currentUserId = this.userService.getCurrentUser?.id || '';
-    console.log('currentUserId', currentUserId);
-    return this.gameService.isAdmin(currentUserId);
-  }
 
   get scoringModeLabels(): string[] {
     return Object.values(SCORING_MODE_LABELS);
   }
 
-  get currentScoringModeLabel(): string {
-    const mode = this.gameService.getCurrentScoringMode();
-    switch (mode) {
-      case ScoringMode.FIBONACCI:
-        return SCORING_MODE_LABELS[ScoringMode.FIBONACCI];
-      case ScoringMode.T_SHIRT:
-        return SCORING_MODE_LABELS[ScoringMode.T_SHIRT];
-      case ScoringMode.POWERS_OF_2:
-        return SCORING_MODE_LABELS[ScoringMode.POWERS_OF_2];
-      case ScoringMode.LINEAR:
-        return SCORING_MODE_LABELS[ScoringMode.LINEAR];
-      default:
-        return SCORING_MODE_LABELS[ScoringMode.FIBONACCI];
-    }
-  }
+  // get currentScoringModeLabel(): string {
+  //   const mode = this.gameService.getCurrentScoringMode();
+  //   switch (mode) {
+  //     case ScoringMode.FIBONACCI:
+  //       return SCORING_MODE_LABELS[ScoringMode.FIBONACCI];
+  //     case ScoringMode.T_SHIRT:
+  //       return SCORING_MODE_LABELS[ScoringMode.T_SHIRT];
+  //     case ScoringMode.POWERS_OF_2:
+  //       return SCORING_MODE_LABELS[ScoringMode.POWERS_OF_2];
+  //     case ScoringMode.LINEAR:
+  //       return SCORING_MODE_LABELS[ScoringMode.LINEAR];
+  //     default:
+  //       return SCORING_MODE_LABELS[ScoringMode.FIBONACCI];
+  //   }
+  // }
 
-  get canChangeScoringMode(): boolean {
-    const currentUserId = this.userService.getCurrentUser?.id || '';
-    return this.gameService.canChangeScoringMode(currentUserId);
-  }
+  // get canChangeScoringMode(): boolean {
+  //   const currentUserId = this.userService.getCurrentUser?.id || '';
+  //   return this.gameService.canChangeScoringMode(currentUserId);
+  // }
 
   onScoringModeChange(selectedLabel: string): void {
     let newMode: ScoringMode;
@@ -102,32 +118,21 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
         newMode = ScoringMode.FIBONACCI;
         break;
     }
-
-    const currentUserId = this.userService.getCurrentUser?.id || '';
-    const success = this.gameService.changeScoringMode(newMode, currentUserId);
-
-    if (success) {
-      // Sincronizar inmediatamente el CardPoolService
-      this.cardPoolService.setScoringMode(newMode);
-      console.log(`Modo de puntaje cambiado a: ${newMode}`);
-    } else {
-      console.error('Error al cambiar el modo de puntaje');
-    }
+    this.gameSignalService.changeScoringMode(newMode);
+    this.cardPoolService.setScoringMode(newMode);
+    console.log(`Modo de puntaje cambiado a: ${newMode}`);
   }
 
   // para manejar la seleccion de cartas
-  get canSelectCard(): boolean {
-    return (
-      this.userService.getCurrentUser?.viewMode === 'jugador' &&
-      !this.isRevealed
-    );
-  }
+  // get canSelectCard(): boolean {
+  //   return this.userSignalService.getViewMode() && !this.$getIsRevealed();
+  // }
 
   ngOnInit(): void {
     this.cards = this.cardPoolService.getCards;
 
     // Suscribirse a cambios del juego para actualizar cartas cuando cambie el modo
-    this.gameSubscription = this.gameService.game$.subscribe(
+    this.gameSubscription = this.gameSignalService.game$.subscribe(
       (game: Game | null) => {
         if (game?.scoringMode) {
           // Sincronizar CardPoolService y actualizar cartas
@@ -138,45 +143,42 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
     );
   }
 
-  get playerSelectedCard(): string | null {
-    return this.gameService.getPlayerSelectedCard(
-      this.userService.getCurrentUser?.id || ''
-    );
-  }
+  // get playerSelectedCard(): string | null {
+  //   return this.gameService.getPlayerSelectedCard(
+  //     this.userService.getCurrentUser?.id || ''
+  //   );
+  // }
 
   ngOnDestroy(): void {
     this.gameSubscription?.unsubscribe();
   }
 
   onCardSelected(cardId: string, isSelected: boolean): void {
-    const currentUser = this.userService.getCurrentUser;
-    if (!currentUser) return;
-
     if (isSelected) {
-      this.gameService.selectCard(currentUser.id, cardId);
+      this.gameSignalService.selectCard(cardId);
     } else {
-      this.gameService.unselectCard(currentUser.id);
+      this.gameSignalService.unselectCard();
     }
   }
 
   // para manejar las estadisticas
-  get isRevealed(): boolean {
-    return this.gameService.getIsRevealed;
-  }
+  // get isRevealed(): boolean {
+  //   return this.gameService.getIsRevealed;
+  // }
 
-  getVotesCountArray(): { value: string; count: number }[] {
-    const votesCount = this.gameService.getVotesCount();
-    return Object.entries(votesCount)
-      .map(([value, count]) => ({ value, count }))
-      .sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
-  }
+  // getVotesCountArray(): { value: string; count: number }[] {
+  //   const votesCount = this.gameService.getVotesCount();
+  //   return Object.entries(votesCount)
+  //     .map(([value, count]) => ({ value, count }))
+  //     .sort((a, b) => parseFloat(a.value) - parseFloat(b.value));
+  // }
 
   getVotesCountLabel(count: number): string {
     return count === 1 ? ' voto' : ' votos';
   }
 
   // para manejar el promedio
-  getAverageScore(): string {
-    return this.gameService.calculateAverageScore();
-  }
+  // getAverageScore(): string {
+  //   return this.gameService.calculateAverageScore();
+  // }
 }

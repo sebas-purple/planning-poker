@@ -2,17 +2,17 @@
   <!-- cambiar modo de puntaje -->
   <div class="scoring-mode-selector">
     <a-selector
-      *ngIf="isAdmin"
+      *ngIf="$isAdmin()"
       [options]="scoringModeLabels"
-      [selectedOption]="currentScoringModeLabel"
-      [disabled]="!canChangeScoringMode"
+      [selectedOption]="$getCurrentScoringMode()"
+      [disabled]="!$canChangeScoringMode()"
       [label]="labelScoringMode"
       (selectedOptionEmitter)="onScoringModeChange($event)"
     ></a-selector>
   </div>
 
   <!-- Mostrar selección de cartas solo para jugadores y cuando no están reveladas -->
-  <ng-container *ngIf="canSelectCard">
+  <ng-container *ngIf="$canSelectCard()">
     <a-typography [type]="textFooterType" [text]="textFooter"></a-typography>
     <div class="footer-options">
       <!-- extraer validacion de isSelected -->
@@ -20,7 +20,7 @@
         [type]="cardType"
         *ngFor="let card of cards"
         [text]="card.text"
-        [isSelected]="playerSelectedCard === card.id"
+        [isSelected]="$getPlayerSelectedCard() === card.id"
         (cardClick)="onCardSelected(card.id, $event)"
         [isClickable]="isClickableButton"
       ></a-card>
@@ -28,11 +28,11 @@
   </ng-container>
 
   <!-- Mostrar estadísticas cuando las cartas están reveladas -->
-  <ng-container *ngIf="isRevealed">
+  <ng-container *ngIf="$getIsRevealed()">
     <div class="statistics">
       <!-- Conteo de votos por carta -->
       <div class="votes-count">
-        <ng-container *ngFor="let vote of getVotesCountArray()">
+        <ng-container *ngFor="let vote of $getVotesCountArray()">
           <div class="vote-item">
             <!-- extraer (vote.count === 1 ? ' voto' : ' votos') -->
             <m-card-label
@@ -46,9 +46,9 @@
       </div>
 
       <!-- Promedio -->
-      <div class="average" *ngIf="getAverageScore() >= '0'">
+      <div class="average" *ngIf="$getAverageScore() >= '0'">
         <span>Promedio:</span>
-        <span class="average-value">{{ getAverageScore() }}</span>
+        <span class="average-value">{{ $getAverageScore() }}</span>
       </div>
     </div>
   </ng-container>

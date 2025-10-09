@@ -2,7 +2,6 @@ import { Component, inject, Input, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ViewMode } from '../../../core/enums/view-mode.enum';
 import { UserRole } from '../../../core/enums/user-role.enum';
-import { UserService } from '../../../services/user.service';
 import {
   FormControl,
   FormGroup,
@@ -10,13 +9,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { nameValidator } from '../../../shared/validators/name-validator';
-import { GameService } from '../../../services/game.service';
 import { DialogComponent } from '../../../atomic-design/atoms/dialog/dialog.component';
 import { CheckboxLabelComponent } from '../../../atomic-design/molecules/checkbox-label/checkbox-label.component';
 import { ButtonComponent } from '../../../atomic-design/atoms/button/button.component';
 import { InputComponent } from '../../../atomic-design/atoms/input/input.component';
 import { GameSignalService } from '../../../services/game-signal.service';
-import { Game } from 'src/app/core/interfaces/game.interface';
+import { Game } from '../../../core/interfaces/game.interface';
+import { UserSignalService } from '../../../services/user-signal.service';
+import { User } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-game-room-create-user',
@@ -35,11 +35,12 @@ import { Game } from 'src/app/core/interfaces/game.interface';
 export class GameRoomCreateUserComponent {
   @Input() userRole: UserRole = UserRole.propietario;
 
-  protected readonly userService: UserService = inject(UserService);
-  // protected readonly gameService: GameService = inject(GameService);
+  protected readonly userSignalService: UserSignalService =
+    inject(UserSignalService);
   protected readonly gameSignalService: GameSignalService =
     inject(GameSignalService);
 
+  $userSignal: Signal<User | null> = this.userSignalService.getUserSignal;
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
 
   // para manejar el dialog
@@ -51,7 +52,6 @@ export class GameRoomCreateUserComponent {
   // para manejar los checkboxes
   textLabeljugador: string = 'Jugador';
   jugador: ViewMode = ViewMode.jugador;
-
   textLabelespectador: string = 'Espectador';
   espectador: ViewMode = ViewMode.espectador;
 
@@ -68,9 +68,10 @@ export class GameRoomCreateUserComponent {
   handleSubmit() {
     if (this.gameRoomForm.valid) {
       const name = this.gameRoomForm.value.name?.trim() || '';
-      const newName = this.capitalizeFirstLetter(name);
       const viewMode =
         this.gameRoomForm.value.selectedOption?.trim() as ViewMode;
+      const newName = this.capitalizeFirstLetter(name);
+
       this.createUser(newName, viewMode, this.userRole);
       this.gameRoomForm.reset();
       this.showDialog = false;
@@ -86,14 +87,17 @@ export class GameRoomCreateUserComponent {
 
   createUser(name: string, viewMode: ViewMode, userRole: UserRole): void {
     try {
-      const newUser = this.userService.createUser(name, viewMode, userRole);
+      this.userSignalService.createUser(name, viewMode, userRole);
 
       if (userRole === UserRole.propietario) {
-        this.gameSignalService.setGameOwner(newUser.id);
+        this.gameSignalService.setGameOwner(this.$userSignal()!.id);
       }
 
-      this.gameSignalService.addPlayer(newUser);
-      console.log('Usuario creado exitosamente:', newUser);
+      this.gameSignalService.addPlayer(this.$userSignal()!);
+      console.log(
+        'Usuario creado exitosamente con signal:',
+        this.$userSignal()!
+      );
     } catch (error) {
       console.error('Error al crear usuario:', error);
     }
