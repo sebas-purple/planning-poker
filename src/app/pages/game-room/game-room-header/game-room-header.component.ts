@@ -38,11 +38,9 @@ import { GameSignalService } from '../../../services/game-signal.service';
 export class GameRoomHeaderComponent {
   // inyecciones
 
-  private readonly gameSignalService: GameSignalService =
-    inject(GameSignalService);
+  readonly gameSignalService: GameSignalService = inject(GameSignalService);
 
-  private readonly userSignalService: UserSignalService =
-    inject(UserSignalService);
+  readonly userSignalService: UserSignalService = inject(UserSignalService);
 
   // señales
 
