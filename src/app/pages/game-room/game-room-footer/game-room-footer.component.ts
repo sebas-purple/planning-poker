@@ -22,6 +22,7 @@ import {
 } from '../../../core/enums/scoring-mode.enum';
 import { GameSignalService } from 'src/app/services/game-signal.service';
 import { UserSignalService } from 'src/app/services/user-signal.service';
+import { CardPoolSignalService } from 'src/app/services/card-pool-signal.service';
 
 @Component({
   selector: 'app-game-room-footer',
@@ -44,8 +45,18 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   readonly gameSignalService: GameSignalService = inject(GameSignalService);
 
   // FALTA EL CardPoolService
-  readonly cardPoolService: CardPoolService = inject(CardPoolService);
+  // FALTA EL CardPoolService
+  // FALTA EL CardPoolService
+  // FALTA EL CardPoolService
+  // FALTA EL CardPoolService
+  // readonly cardPoolService: CardPoolService = inject(CardPoolService);
+  readonly cardPoolSignalService: CardPoolSignalService = inject(
+    CardPoolSignalService
+  );
+
   gameSubscription?: Subscription;
+
+  // señales
 
   $gameSignal: Signal<Game | null> = this.gameSignalService.getGameSignal;
   $isAdmin: Signal<boolean> = this.gameSignalService.isAdmin;
@@ -60,6 +71,8 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
     this.gameSignalService.getVotesCountArray;
   $getAverageScore: Signal<string> = this.gameSignalService.getAverageScore;
   $canSelectCard: Signal<boolean> = this.gameSignalService.canSelectCard;
+
+  // variables
 
   labelScoringMode: string = 'Modo de puntaje:';
 
@@ -119,7 +132,7 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
         break;
     }
     this.gameSignalService.changeScoringMode(newMode);
-    this.cardPoolService.setScoringMode(newMode);
+    this.cardPoolSignalService.setScoringMode(newMode);
     console.log(`Modo de puntaje cambiado a: ${newMode}`);
   }
 
@@ -129,15 +142,15 @@ export class GameRoomFooterComponent implements OnInit, OnDestroy {
   // }
 
   ngOnInit(): void {
-    this.cards = this.cardPoolService.getCards;
+    this.cards = this.cardPoolSignalService.getCards();
 
     // Suscribirse a cambios del juego para actualizar cartas cuando cambie el modo
     this.gameSubscription = this.gameSignalService.game$.subscribe(
       (game: Game | null) => {
         if (game?.scoringMode) {
           // Sincronizar CardPoolService y actualizar cartas
-          this.cardPoolService.setScoringMode(game.scoringMode);
-          this.cards = this.cardPoolService.getCards;
+          this.cardPoolSignalService.setScoringMode(game.scoringMode);
+          this.cards = this.cardPoolSignalService.getCards();
         }
       }
     );
